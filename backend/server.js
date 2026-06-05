@@ -8,9 +8,10 @@ app.use(express.json());
 
 let users = [];
 
-// HOME
-app.get("/", (req, res) => {
-    res.send("Backend Running 🚀");
+// GET ALL USERS (untuk dashboard)
+app.get("/users", (req, res) => {
+    console.log("GET USERS HIT");
+    res.json(users);
 });
 
 // REGISTER
