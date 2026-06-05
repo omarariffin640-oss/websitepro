@@ -60,6 +60,7 @@ app.post("/login", (req, res) => {
 });
 
 // START SERVER
-app.listen(5000, "0.0.0.0", () => {
-    console.log("RUN http://localhost:5000");
+const port = process.env.PORT || 5000;
+app.listen(port, "0.0.0.0", () => {
+    console.log(`RUN http://localhost:${port}`);
 });
