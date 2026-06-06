@@ -8,6 +8,11 @@ app.use(express.json());
 
 let users = [];
 
+// HOME ROUTE (elak "Cannot GET /")
+app.get("/", (req, res) => {
+    res.json({ message: "Backend Running 🚀" });
+});
+
 // GET ALL USERS (untuk dashboard)
 app.get("/users", (req, res) => {
     console.log("GET USERS HIT");
@@ -34,7 +39,6 @@ app.post("/register", (req, res) => {
 
     console.log("USERS:", users);
 
-    // 🔴 FIX: Tambah success: true
     res.json({ success: true, message: "Register success" });
 });
 
@@ -56,7 +60,6 @@ app.post("/login", (req, res) => {
         return res.status(400).json({ success: false, message: "Wrong password" });
     }
 
-    // 🔴 FIX: Tambah success: true
     res.json({ success: true, message: "Login success" });
 });
 
