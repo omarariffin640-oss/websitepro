@@ -11,9 +11,16 @@ app.use(cors({
 }));
 app.use(express.json());
 
-// 🔑 Ganti dengan URL dan anon key awak
-const supabaseUrl = "https://mxaanohwaafzshwksqrt.supabase.co";
-const supabaseAnonKey = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Im14YWFub2h3YWFmenNod2tzcXJ0Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3NDkzMjU5MDAsImV4cCI6MjA2NDkwMTkwMH0.ABCDEFGHIJKLMNOPQRSTUVWXYZ1234567890";
+// 🔑 Baca dari environment variables
+const supabaseUrl = process.env.SUPABASE_URL;
+const supabaseAnonKey = process.env.SUPABASE_ANON_KEY;
+
+if (!supabaseUrl || !supabaseAnonKey) {
+    console.error("❌ Missing Supabase environment variables!");
+    process.exit(1);
+}
+
+console.log("✅ Supabase URL:", supabaseUrl);
 const supabase = createClient(supabaseUrl, supabaseAnonKey);
 
 // HOME ROUTE
