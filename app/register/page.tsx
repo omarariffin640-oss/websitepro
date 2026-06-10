@@ -14,7 +14,7 @@ export default function RegisterPage() {
         console.log("CLICK REGISTER");
 
         try {
-            const res = await fetch("https://websitepro-api.onrender.com/register", {
+            const res = await fetch("https://websitepro-d5cu.onrender.com/register", {
                 method: "POST",
                 headers: {
                     "Content-Type": "application/json"
