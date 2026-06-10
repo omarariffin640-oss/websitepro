@@ -17,7 +17,7 @@ export default function Dashboard() {
 
     useEffect(() => {
         // Fetch users from backend
-        fetch("https://websitepro-api.onrender.com/users")
+        fetch("https://websitepro-d5cu.onrender.com/users")
             .then(res => res.json())
             .then((data: User[]) => {
                 setUsers(data);
