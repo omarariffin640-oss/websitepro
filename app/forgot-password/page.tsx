@@ -2,13 +2,17 @@
 
 import { useState } from "react";
 import Link from "next/link";
+import { Button } from "@/components/ui/button";
+import { Input } from "@/components/ui/input";
+import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
+import { Label } from "@/components/ui/label";
 
 export default function ForgotPasswordPage() {
     const [email, setEmail] = useState("");
     const [message, setMessage] = useState("");
     const [error, setError] = useState("");
 
-    const handleSubmit = async (e: React.FormEvent) => {
+    const handleSubmit = async (e: any) => {
         e.preventDefault();
         setMessage("");
         setError("");
@@ -33,43 +37,42 @@ export default function ForgotPasswordPage() {
 
     return (
         <div className="flex min-h-screen items-center justify-center bg-gray-50">
-            <div className="w-full max-w-md space-y-8 bg-white p-8 rounded-lg shadow">
-                <h1 className="text-2xl font-bold text-center">Forgot Password</h1>
-                <p className="text-center text-gray-600">
-                    Enter your email and we'll send you a reset link.
-                </p>
+            <Card className="w-full max-w-md">
+                <CardHeader>
+                    <CardTitle className="text-2xl text-center">Forgot Password</CardTitle>
+                    <CardDescription className="text-center">
+                        Enter your email and we'll send you a reset link.
+                    </CardDescription>
+                </CardHeader>
+                <CardContent className="space-y-4">
+                    <form onSubmit={handleSubmit} className="space-y-4">
+                        <div className="space-y-2">
+                            <Label htmlFor="email">Email</Label>
+                            <Input
+                                id="email"
+                                type="email"
+                                placeholder="you@example.com"
+                                value={email}
+                                onChange={(e) => setEmail(e.target.value)}
+                                required
+                            />
+                        </div>
 
-                <form onSubmit={handleSubmit} className="space-y-6">
-                    <div>
-                        <label className="block text-sm font-medium text-gray-700">Email</label>
-                        <input
-                            type="email"
-                            required
-                            value={email}
-                            onChange={(e) => setEmail(e.target.value)}
-                            className="mt-1 w-full p-2 border rounded-md"
-                            placeholder="you@example.com"
-                        />
-                    </div>
+                        {message && <p className="text-green-600 text-center text-sm">{message}</p>}
+                        {error && <p className="text-red-600 text-center text-sm">{error}</p>}
 
-                    {message && <p className="text-green-600 text-center">{message}</p>}
-                    {error && <p className="text-red-600 text-center">{error}</p>}
+                        <Button type="submit" className="w-full">
+                            Send Reset Link
+                        </Button>
+                    </form>
 
-                    <button
-                        type="submit"
-                        className="w-full bg-blue-500 text-white p-2 rounded-md hover:bg-blue-600"
-                    >
-                        Send Reset Link
-                    </button>
-                </form>
-
-                <p className="text-center text-sm">
-                    Remember your password?{" "}
-                    <Link href="/login" className="text-blue-600 hover:underline">
-                        Login
-                    </Link>
-                </p>
-            </div>
+                    <p className="text-center text-sm">
+                        <Link href="/login" className="text-blue-600 hover:underline">
+                            Back to Login
+                        </Link>
+                    </p>
+                </CardContent>
+            </Card>
         </div>
     );
 }
