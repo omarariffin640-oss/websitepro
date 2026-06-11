@@ -2,14 +2,16 @@
 
 import { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
+import { Button } from "@/components/ui/button";
+import { Input } from "@/components/ui/input";
+import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
+import { Label } from "@/components/ui/label";
+import { Avatar, AvatarFallback } from "@/components/ui/avatar";
 
-// TAMBAH TYPE NI
 type User = {
     id: number;
     email: string;
     name?: string;
-    password?: string;
-    created_at?: string;
 };
 
 export default function ProfilePage() {
@@ -18,6 +20,7 @@ export default function ProfilePage() {
     const [name, setName] = useState("");
     const [email, setEmail] = useState("");
     const [message, setMessage] = useState("");
+    const [loading, setLoading] = useState(true);
 
     useEffect(() => {
         const userEmail = localStorage.getItem("userEmail");
@@ -35,8 +38,12 @@ export default function ProfilePage() {
                     setName(currentUser.name || "");
                     setEmail(currentUser.email);
                 }
+                setLoading(false);
             })
-            .catch(() => router.push("/login"));
+            .catch(() => {
+                setLoading(false);
+                router.push("/login");
+            });
     }, [router]);
 
     const handleUpdate = async () => {
@@ -48,6 +55,9 @@ export default function ProfilePage() {
             });
             const data = await res.json();
             setMessage(data.success ? "Profile updated successfully!" : "Update failed");
+            if (data.success) {
+                setTimeout(() => setMessage(""), 3000);
+            }
         } catch {
             setMessage("Update failed");
         }
@@ -58,24 +68,68 @@ export default function ProfilePage() {
         router.push("/login");
     };
 
-    if (!user) return <div className="p-8">Loading...</div>;
+    if (loading) {
+        return (
+            <div className="flex min-h-screen items-center justify-center">
+                <p className="text-gray-500">Loading profile...</p>
+            </div>
+        );
+    }
+
+    if (!user) return null;
 
     return (
-        <div className="p-8 max-w-md mx-auto">
-            <h1 className="text-2xl font-bold mb-6">My Profile</h1>
-            <div className="space-y-4">
-                <div>
-                    <label className="block mb-1">Email</label>
-                    <input type="email" value={email} disabled className="w-full p-2 border rounded bg-gray-100" />
-                </div>
-                <div>
-                    <label className="block mb-1">Name</label>
-                    <input type="text" value={name} onChange={(e) => setName(e.target.value)} className="w-full p-2 border rounded" placeholder="Enter your name" />
-                </div>
-                <button onClick={handleUpdate} className="w-full bg-blue-500 text-white p-2 rounded hover:bg-blue-600">Update Profile</button>
-                {message && <p className="text-center text-green-600">{message}</p>}
-                <button onClick={handleLogout} className="w-full bg-red-500 text-white p-2 rounded hover:bg-red-600 mt-4">Logout</button>
-            </div>
+        <div className="flex min-h-screen items-center justify-center bg-gray-50">
+            <Card className="w-full max-w-md">
+                <CardHeader className="text-center">
+                    <div className="flex justify-center mb-4">
+                        <Avatar className="w-20 h-20">
+                            <AvatarFallback className="text-2xl">
+                                {email.charAt(0).toUpperCase()}
+                            </AvatarFallback>
+                        </Avatar>
+                    </div>
+                    <CardTitle className="text-2xl">My Profile</CardTitle>
+                    <CardDescription>Update your personal information</CardDescription>
+                </CardHeader>
+                <CardContent className="space-y-4">
+                    <div className="space-y-2">
+                        <Label htmlFor="email">Email</Label>
+                        <Input
+                            id="email"
+                            type="email"
+                            value={email}
+                            disabled
+                            className="bg-gray-100"
+                        />
+                    </div>
+
+                    <div className="space-y-2">
+                        <Label htmlFor="name">Name</Label>
+                        <Input
+                            id="name"
+                            type="text"
+                            value={name}
+                            onChange={(e) => setName(e.target.value)}
+                            placeholder="Enter your name"
+                        />
+                    </div>
+
+                    {message && (
+                        <p className={`text-center text-sm ${message.includes("successfully") ? "text-green-600" : "text-red-600"}`}>
+                            {message}
+                        </p>
+                    )}
+
+                    <Button onClick={handleUpdate} className="w-full">
+                        Update Profile
+                    </Button>
+
+                    <Button onClick={handleLogout} variant="destructive" className="w-full">
+                        Logout
+                    </Button>
+                </CardContent>
+            </Card>
         </div>
     );
 }
