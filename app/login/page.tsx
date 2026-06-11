@@ -25,6 +25,7 @@ export default function LoginPage() {
             const data = await res.json();
 
             if (res.ok && data.message === "Login success") {
+                localStorage.setItem("userEmail", email.trim());
                 setMessage("✅ Login success!");
                 router.push("/dashboard");
             } else {
