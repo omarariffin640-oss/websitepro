@@ -48,54 +48,54 @@ export default function DashboardPage() {
     }
 
     return (
-        <>
-            <ThemeToggle />
-            <div className="min-h-screen bg-gray-50 dark:bg-gray-900">
-                <div className="container mx-auto p-8">
-                    <div className="flex justify-between items-center mb-8">
-                        <h1 className="text-3xl font-bold dark:text-white">Dashboard</h1>
+        <div className="min-h-screen bg-gray-50 dark:bg-gray-900">
+            <div className="container mx-auto p-8">
+                <div className="flex justify-between items-center mb-8">
+                    <h1 className="text-3xl font-bold dark:text-white">Dashboard</h1>
+                    <div className="flex gap-2">
+                        <ThemeToggle />
                         <Button onClick={handleLogout} variant="destructive">
                             Logout
                         </Button>
                     </div>
-
-                    <Card className="mb-8">
-                        <CardHeader>
-                            <CardTitle className="dark:text-white">Total Users</CardTitle>
-                        </CardHeader>
-                        <CardContent>
-                            <p className="text-4xl font-bold dark:text-white">{users.length}</p>
-                        </CardContent>
-                    </Card>
-
-                    <Card>
-                        <CardHeader>
-                            <CardTitle className="dark:text-white">User List</CardTitle>
-                        </CardHeader>
-                        <CardContent>
-                            {users.length === 0 ? (
-                                <p className="text-gray-500 dark:text-gray-400">No users registered yet.</p>
-                            ) : (
-                                <div className="space-y-3">
-                                    {users.map((user) => (
-                                        <div key={user.id} className="flex items-center gap-3 p-3 border rounded-lg dark:border-gray-700">
-                                            <Avatar>
-                                                <AvatarFallback>
-                                                    {user.email.charAt(0).toUpperCase()}
-                                                </AvatarFallback>
-                                            </Avatar>
-                                            <div>
-                                                <p className="font-medium dark:text-white">{user.name || user.email}</p>
-                                                <p className="text-sm text-gray-500 dark:text-gray-400">{user.email}</p>
-                                            </div>
-                                        </div>
-                                    ))}
-                                </div>
-                            )}
-                        </CardContent>
-                    </Card>
                 </div>
+
+                <Card className="mb-8">
+                    <CardHeader>
+                        <CardTitle className="dark:text-white">Total Users</CardTitle>
+                    </CardHeader>
+                    <CardContent>
+                        <p className="text-4xl font-bold dark:text-white">{users.length}</p>
+                    </CardContent>
+                </Card>
+
+                <Card>
+                    <CardHeader>
+                        <CardTitle className="dark:text-white">User List</CardTitle>
+                    </CardHeader>
+                    <CardContent>
+                        {users.length === 0 ? (
+                            <p className="text-gray-500 dark:text-gray-400">No users registered yet.</p>
+                        ) : (
+                            <div className="space-y-3">
+                                {users.map((user) => (
+                                    <div key={user.id} className="flex items-center gap-3 p-3 border rounded-lg dark:border-gray-700">
+                                        <Avatar>
+                                            <AvatarFallback>
+                                                {user.email.charAt(0).toUpperCase()}
+                                            </AvatarFallback>
+                                        </Avatar>
+                                        <div>
+                                            <p className="font-medium dark:text-white">{user.name || user.email}</p>
+                                            <p className="text-sm text-gray-500 dark:text-gray-400">{user.email}</p>
+                                        </div>
+                                    </div>
+                                ))}
+                            </div>
+                        )}
+                    </CardContent>
+                </Card>
             </div>
-        </>
+        </div>
     );
 }
