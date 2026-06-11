@@ -122,6 +122,66 @@ app.put("/profile/update", async (req, res) => {
     res.json({ success: true, message: "Profile updated" });
 });
 
+// FORGOT PASSWORD - Send reset email
+app.post("/forgot-password", async (req, res) => {
+    const { email } = req.body;
+
+    // Check if user exists
+    const { data: user } = await supabase
+        .from("users")
+        .select("email")
+        .eq("email", email)
+        .single();
+
+    if (!user) {
+        return res.status(400).json({ success: false, message: "Email not found" });
+    }
+
+    // Generate reset token (simple for now)
+    const resetToken = Math.random().toString(36).substring(2, 15);
+
+    // Save token to database (add reset_token column)
+    await supabase
+        .from("users")
+        .update({ reset_token: resetToken, reset_expires: new Date(Date.now() + 3600000) })
+        .eq("email", email);
+
+    // Send email via Resend
+    const { Resend } = require('resend');
+    const resend = new Resend(process.env.RESEND_API_KEY);
+
+    await resend.emails.send({
+        from: 'onboarding@resend.dev',
+        to: email,
+        subject: 'Reset Your Password',
+        html: `<p>Click <a href="https://websitepro-mu.vercel.app/reset-password?token=${resetToken}&email=${email}">here</a> to reset your password.</p>`
+    });
+
+    res.json({ success: true, message: "Reset email sent!" });
+});
+
+// RESET PASSWORD
+app.post("/reset-password", async (req, res) => {
+    const { email, token, newPassword } = req.body;
+
+    const { data: user } = await supabase
+        .from("users")
+        .select("reset_token, reset_expires")
+        .eq("email", email)
+        .single();
+
+    if (!user || user.reset_token !== token || new Date(user.reset_expires) < new Date()) {
+        return res.status(400).json({ success: false, message: "Invalid or expired token" });
+    }
+
+    await supabase
+        .from("users")
+        .update({ password: newPassword, reset_token: null, reset_expires: null })
+        .eq("email", email);
+
+    res.json({ success: true, message: "Password reset successful!" });
+});
+
 // START SERVER
 const port = process.env.PORT || 5000;
 app.listen(port, "0.0.0.0", () => {
