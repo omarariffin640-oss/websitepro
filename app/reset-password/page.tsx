@@ -3,8 +3,11 @@
 import React, { useState, useEffect, Suspense } from "react";
 import { useRouter, useSearchParams } from "next/navigation";
 import Link from "next/link";
+import { Button } from "@/components/ui/button";
+import { Input } from "@/components/ui/input";
+import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
+import { Label } from "@/components/ui/label";
 
-// Komponen utama yang menggunakan useSearchParams()
 function ResetPasswordForm() {
     const router = useRouter();
     const searchParams = useSearchParams();
@@ -37,7 +40,7 @@ function ResetPasswordForm() {
             const res = await fetch("https://websitepro-d5cu.onrender.com/reset-password", {
                 method: "POST",
                 headers: { "Content-Type": "application/json" },
-                body: JSON.stringify({ email, token, newPassword: password }),
+                body: JSON.stringify({ email, token, newPassword: password })
             });
             const data = await res.json();
 
@@ -55,63 +58,74 @@ function ResetPasswordForm() {
     if (!token || !email) {
         return (
             <div className="flex min-h-screen items-center justify-center">
-                <p className="text-red-600">Invalid reset link. Please request a new one.</p>
+                <Card className="w-full max-w-md">
+                    <CardContent className="pt-6">
+                        <p className="text-red-600 text-center">Invalid reset link. Please request a new one.</p>
+                        <p className="text-center mt-4">
+                            <Link href="/forgot-password" className="text-blue-600 hover:underline">
+                                Request New Link
+                            </Link>
+                        </p>
+                    </CardContent>
+                </Card>
             </div>
         );
     }
 
     return (
         <div className="flex min-h-screen items-center justify-center bg-gray-50">
-            <div className="w-full max-w-md space-y-8 bg-white p-8 rounded-lg shadow">
-                <h1 className="text-2xl font-bold text-center">Reset Password</h1>
+            <Card className="w-full max-w-md">
+                <CardHeader>
+                    <CardTitle className="text-2xl text-center">Reset Password</CardTitle>
+                    <CardDescription className="text-center">
+                        Enter your new password below.
+                    </CardDescription>
+                </CardHeader>
+                <CardContent className="space-y-4">
+                    <form onSubmit={handleSubmit} className="space-y-4">
+                        <div className="space-y-2">
+                            <Label htmlFor="password">New Password</Label>
+                            <Input
+                                id="password"
+                                type="password"
+                                placeholder="Enter new password"
+                                value={password}
+                                onChange={(e) => setPassword(e.target.value)}
+                                required
+                            />
+                        </div>
 
-                <form onSubmit={handleSubmit} className="space-y-6">
-                    <div>
-                        <label className="block text-sm font-medium text-gray-700">New Password</label>
-                        <input
-                            type="password"
-                            required
-                            value={password}
-                            onChange={(e) => setPassword(e.target.value)}
-                            className="mt-1 w-full p-2 border rounded-md"
-                            placeholder="Enter new password"
-                        />
-                    </div>
+                        <div className="space-y-2">
+                            <Label htmlFor="confirmPassword">Confirm Password</Label>
+                            <Input
+                                id="confirmPassword"
+                                type="password"
+                                placeholder="Confirm new password"
+                                value={confirmPassword}
+                                onChange={(e) => setConfirmPassword(e.target.value)}
+                                required
+                            />
+                        </div>
 
-                    <div>
-                        <label className="block text-sm font-medium text-gray-700">Confirm Password</label>
-                        <input
-                            type="password"
-                            required
-                            value={confirmPassword}
-                            onChange={(e) => setConfirmPassword(e.target.value)}
-                            className="mt-1 w-full p-2 border rounded-md"
-                            placeholder="Confirm new password"
-                        />
-                    </div>
+                        {message && <p className="text-green-600 text-center text-sm">{message}</p>}
+                        {error && <p className="text-red-600 text-center text-sm">{error}</p>}
 
-                    {message && <p className="text-green-600 text-center">{message}</p>}
-                    {error && <p className="text-red-600 text-center">{error}</p>}
+                        <Button type="submit" className="w-full">
+                            Reset Password
+                        </Button>
+                    </form>
 
-                    <button
-                        type="submit"
-                        className="w-full bg-blue-500 text-white p-2 rounded-md hover:bg-blue-600"
-                    >
-                        Reset Password
-                    </button>
-                </form>
-
-                <p className="text-center text-sm">
-                    <Link href="/login" className="text-blue-600 hover:underline">
-                        Back to Login
-                    </Link>
-                </p>
-            </div>
+                    <p className="text-center text-sm">
+                        <Link href="/login" className="text-blue-600 hover:underline">
+                            Back to Login
+                        </Link>
+                    </p>
+                </CardContent>
+            </Card>
         </div>
     );
 }
 
-// Halaman utama yang membalut komponen dengan Suspense
 export default function ResetPasswordPage() {
     return (
         <Suspense fallback={<div className="flex min-h-screen items-center justify-center">Loading...</div>}>
