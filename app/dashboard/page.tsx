@@ -49,16 +49,27 @@ export default function DashboardPage() {
 
     return (
         <div className="min-h-screen bg-gray-50 dark:bg-gray-900">
+            {/* ThemeToggle di sudut kanan atas */}
+            <div className="fixed top-4 right-4 z-50">
+                <ThemeToggle />
+            </div>
+
             <div className="container mx-auto p-8">
                 <div className="flex justify-between items-center mb-8">
                     <h1 className="text-3xl font-bold dark:text-white">Dashboard</h1>
-                    <div className="flex gap-2">
-                        <ThemeToggle />
+                </div>
+
+                {/* Logout button dalam card */}
+                <Card className="mb-8">
+                    <CardHeader>
+                        <CardTitle className="dark:text-white">Account</CardTitle>
+                    </CardHeader>
+                    <CardContent>
                         <Button onClick={handleLogout} variant="destructive">
                             Logout
                         </Button>
-                    </div>
-                </div>
+                    </CardContent>
+                </Card>
 
                 <Card className="mb-8">
                     <CardHeader>
