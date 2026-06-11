@@ -127,9 +127,3 @@ const port = process.env.PORT || 5000;
 app.listen(port, "0.0.0.0", () => {
     console.log(`RUN http://localhost:${port}`);
 });
-
-// START SERVER
-const port = process.env.PORT || 5000;
-app.listen(port, "0.0.0.0", () => {
-    console.log(`RUN http://localhost:${port}`);
-});
