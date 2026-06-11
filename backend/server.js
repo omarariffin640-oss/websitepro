@@ -182,6 +182,14 @@ app.post("/reset-password", async (req, res) => {
     res.json({ success: true, message: "Password reset successful!" });
 });
 
+// UPDATE AVATAR
+app.put("/profile/update-avatar", async (req, res) => {
+    const { email, avatarUrl } = req.body;
+    const { error } = await supabase.from("users").update({ avatar_url: avatarUrl }).eq("email", email);
+    if (error) return res.status(500).json({ success: false, message: error.message });
+    res.json({ success: true, message: "Avatar updated" });
+});
+
 // START SERVER
 const port = process.env.PORT || 5000;
 app.listen(port, "0.0.0.0", () => {
