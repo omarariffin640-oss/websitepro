@@ -2,6 +2,7 @@
 
 import { useState } from "react";
 import { useRouter } from "next/navigation";
+import Link from "next/link";  // ← TAMBAH IMPORT NI
 
 export default function LoginPage() {
     const [email, setEmail] = useState("");
@@ -56,6 +57,14 @@ export default function LoginPage() {
             <button onClick={handleLogin} style={{ padding: "8px 16px", cursor: "pointer" }}>
                 Login
             </button>
+
+            {/* TAMBAH LINK FORGOT PASSWORD DI SINI - LUAR BUTTON */}
+            <p className="text-center text-sm mt-4">
+                <Link href="/forgot-password" style={{ color: "blue", textDecoration: "underline" }}>
+                    Forgot Password?
+                </Link>
+            </p>
+
             <p>{message}</p>
         </div>
     );
