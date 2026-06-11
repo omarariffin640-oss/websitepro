@@ -104,6 +104,30 @@ app.post("/login", async (req, res) => {
     res.json({ success: true, message: "Login success" });
 });
 
+// UPDATE PROFILE
+app.put("/profile/update", async (req, res) => {
+    console.log("UPDATE PROFILE HIT:", req.body);
+
+    const { email, name } = req.body;
+
+    const { data, error } = await supabase
+        .from("users")
+        .update({ name: name || null })
+        .eq("email", email);
+
+    if (error) {
+        return res.status(500).json({ success: false, message: error.message });
+    }
+
+    res.json({ success: true, message: "Profile updated" });
+});
+
+// START SERVER
+const port = process.env.PORT || 5000;
+app.listen(port, "0.0.0.0", () => {
+    console.log(`RUN http://localhost:${port}`);
+});
+
 // START SERVER
 const port = process.env.PORT || 5000;
 app.listen(port, "0.0.0.0", () => {
