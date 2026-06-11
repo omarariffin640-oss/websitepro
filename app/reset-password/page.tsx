@@ -1,10 +1,11 @@
 "use client";
 
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, Suspense } from "react";
 import { useRouter, useSearchParams } from "next/navigation";
 import Link from "next/link";
 
-export default function ResetPasswordPage() {
+// Komponen utama yang menggunakan useSearchParams()
+function ResetPasswordForm() {
     const router = useRouter();
     const searchParams = useSearchParams();
     const [password, setPassword] = useState("");
@@ -36,7 +37,7 @@ export default function ResetPasswordPage() {
             const res = await fetch("https://websitepro-d5cu.onrender.com/reset-password", {
                 method: "POST",
                 headers: { "Content-Type": "application/json" },
-                body: JSON.stringify({ email, token, newPassword: password })
+                body: JSON.stringify({ email, token, newPassword: password }),
             });
             const data = await res.json();
 
@@ -107,5 +108,14 @@ export default function ResetPasswordPage() {
                 </p>
             </div>
         </div>
+    );
+}
+
+// Halaman utama yang membalut komponen dengan Suspense
+export default function ResetPasswordPage() {
+    return (
+        <Suspense fallback={<div className="flex min-h-screen items-center justify-center">Loading...</div>}>
+            <ResetPasswordForm />
+        </Suspense>
     );
 }
