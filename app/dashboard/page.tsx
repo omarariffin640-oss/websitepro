@@ -1,5 +1,6 @@
 "use client";
 
+import { motion } from "framer-motion";
 import { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
@@ -71,40 +72,54 @@ export default function DashboardPage() {
                     <h1 className="text-2xl font-bold text-white mb-6">Dashboard</h1>
 
                     <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
-                        {stats.map((stat) => (
-                            <Card key={stat.title} className={`bg-darkcard border-l-4 ${stat.color}`}>
-                                <CardHeader className="pb-2">
-                                    <CardTitle className={`text-sm font-medium ${stat.textColor}`}>
-                                        {stat.title}
-                                    </CardTitle>
-                                </CardHeader>
-                                <CardContent>
-                                    <p className="text-3xl font-bold text-white">{stat.value}</p>
-                                </CardContent>
-                            </Card>
+                        {stats.map((stat, index) => (
+                            <motion.div
+                                key={stat.title}
+                                initial={{ opacity: 0, y: 20 }}
+                                animate={{ opacity: 1, y: 0 }}
+                                transition={{ duration: 0.5, delay: index * 0.1 }}
+                                whileHover={{ scale: 1.02 }}
+                            >
+                                <Card className={`bg-darkcard border-l-4 ${stat.color}`}>
+                                    <CardHeader className="pb-2">
+                                        <CardTitle className={`text-sm font-medium ${stat.textColor}`}>
+                                            {stat.title}
+                                        </CardTitle>
+                                    </CardHeader>
+                                    <CardContent>
+                                        <p className="text-3xl font-bold text-white">{stat.value}</p>
+                                    </CardContent>
+                                </Card>
+                            </motion.div>
                         ))}
                     </div>
 
-                    <Card className="mt-6 bg-darkcard">
-                        <CardHeader>
-                            <CardTitle className="text-white">Recent Users</CardTitle>
-                        </CardHeader>
-                        <CardContent>
-                            <div className="space-y-3">
-                                {users.slice(0, 5).map((user) => (
-                                    <div key={user.id} className="flex items-center gap-3 p-3 rounded-lg bg-darknavy/50">
-                                        <div className="w-8 h-8 rounded-full bg-blue-500 flex items-center justify-center text-white">
-                                            {user.email.charAt(0).toUpperCase()}
+                    <motion.div
+                        initial={{ opacity: 0, y: 20 }}
+                        animate={{ opacity: 1, y: 0 }}
+                        transition={{ duration: 0.5, delay: 0.4 }}
+                    >
+                        <Card className="mt-6 bg-darkcard">
+                            <CardHeader>
+                                <CardTitle className="text-white">Recent Users</CardTitle>
+                            </CardHeader>
+                            <CardContent>
+                                <div className="space-y-3">
+                                    {users.slice(0, 5).map((user) => (
+                                        <div key={user.id} className="flex items-center gap-3 p-3 rounded-lg bg-darknavy/50">
+                                            <div className="w-8 h-8 rounded-full bg-blue-500 flex items-center justify-center text-white">
+                                                {user.email.charAt(0).toUpperCase()}
+                                            </div>
+                                            <div>
+                                                <p className="font-medium text-white">{user.name || user.email}</p>
+                                                <p className="text-sm text-gray-400">{user.email}</p>
+                                            </div>
                                         </div>
-                                        <div>
-                                            <p className="font-medium text-white">{user.name || user.email}</p>
-                                            <p className="text-sm text-gray-400">{user.email}</p>
-                                        </div>
-                                    </div>
-                                ))}
-                            </div>
-                        </CardContent>
-                    </Card>
+                                    ))}
+                                </div>
+                            </CardContent>
+                        </Card>
+                    </motion.div>
                 </div>
             </main>
         </div>
