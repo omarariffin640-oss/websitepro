@@ -190,6 +190,21 @@ app.put("/profile/update-avatar", async (req, res) => {
     res.json({ success: true, message: "Avatar updated" });
 });
 
+// GET ACCOUNTS
+app.get("/accounts", async (req, res) => {
+    console.log("GET ACCOUNTS HIT");
+    const userEmail = req.query.email;
+
+    let query = supabase.from("accounts").select("*");
+    if (userEmail) {
+        query = query.eq("user_email", userEmail);
+    }
+
+    const { data, error } = await query;
+    if (error) return res.status(500).json({ error: error.message });
+    res.json(data);
+});
+
 // START SERVER
 const port = process.env.PORT || 5000;
 app.listen(port, "0.0.0.0", () => {

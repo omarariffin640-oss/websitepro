@@ -8,9 +8,9 @@ import Sidebar from "@/components/Sidebar";
 
 type Account = {
     id: number;
-    name: string;
+    account_name: string;
     balance: number;
-    status: "active" | "pending" | "closed";
+    status: string;
 };
 
 export default function AccountsPage() {
@@ -29,13 +29,14 @@ export default function AccountsPage() {
         }
         setUserEmail(email);
 
-        // Dummy data untuk testing
-        setAccounts([
-            { id: 1, name: "Standard Account", balance: 5000, status: "active" },
-            { id: 2, name: "Premium Account", balance: 15000, status: "active" },
-            { id: 3, name: "Challenge Account", balance: 10000, status: "pending" },
-        ]);
-        setLoading(false);
+        // Fetch REAL data dari backend
+        fetch(`https://websitepro-d5cu.onrender.com/accounts?email=${email}`)
+            .then(res => res.json())
+            .then(data => {
+                setAccounts(data);
+                setLoading(false);
+            })
+            .catch(() => setLoading(false));
     }, [router]);
 
     const getStatusColor = (status: string) => {
@@ -64,21 +65,29 @@ export default function AccountsPage() {
                 <div className="p-6">
                     <h1 className="text-2xl font-bold text-white mb-6">Accounts</h1>
 
-                    <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-                        {accounts.map((account) => (
-                            <Card key={account.id} className="bg-darkcard">
-                                <CardHeader>
-                                    <CardTitle className="text-white">{account.name}</CardTitle>
-                                </CardHeader>
-                                <CardContent>
-                                    <p className="text-2xl font-bold text-white">${account.balance.toLocaleString()}</p>
-                                    <span className={`inline-block px-2 py-1 rounded-full text-xs mt-2 ${getStatusColor(account.status)}`}>
-                                        {account.status.toUpperCase()}
-                                    </span>
-                                </CardContent>
-                            </Card>
-                        ))}
-                    </div>
+                    {accounts.length === 0 ? (
+                        <Card className="bg-darkcard">
+                            <CardContent className="p-6">
+                                <p className="text-gray-400 text-center">No accounts found. Create an account to get started.</p>
+                            </CardContent>
+                        </Card>
+                    ) : (
+                        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+                            {accounts.map((account) => (
+                                <Card key={account.id} className="bg-darkcard">
+                                    <CardHeader>
+                                        <CardTitle className="text-white">{account.account_name}</CardTitle>
+                                    </CardHeader>
+                                    <CardContent>
+                                        <p className="text-2xl font-bold text-white">${account.balance?.toLocaleString() || 0}</p>
+                                        <span className={`inline-block px-2 py-1 rounded-full text-xs mt-2 ${getStatusColor(account.status)}`}>
+                                            {account.status?.toUpperCase() || "ACTIVE"}
+                                        </span>
+                                    </CardContent>
+                                </Card>
+                            ))}
+                        </div>
+                    )}
                 </div>
             </main>
         </div>
