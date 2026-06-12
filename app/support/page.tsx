@@ -58,11 +58,11 @@ export default function SupportPage() {
             id: tickets.length + 1,
             subject,
             message,
-            status: "open",
+            status: "open" as const,
             created_at: new Date().toISOString()
         };
-        setTickets..tickets]); ([newTicket, .
-            setSubject("");
+        setTickets([newTicket, ...tickets]);
+        setSubject("");
         setMessage("");
         setSubmitMessage("Ticket submitted successfully!");
         setTimeout(() => setSubmitMessage(""), 3000);
