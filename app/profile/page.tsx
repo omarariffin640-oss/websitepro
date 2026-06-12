@@ -62,7 +62,7 @@ export default function ProfilePage() {
         const fileName = `${user?.id}-${Date.now()}.${fileExt}`;
 
         const { error } = await supabase.storage
-            .from('avatars')
+            .from('profile-pics')
             .upload(fileName, file);
 
         if (error) {
@@ -72,10 +72,9 @@ export default function ProfilePage() {
         }
 
         const { data: { publicUrl } } = supabase.storage
-            .from('avatars')
+            .from('profile-pics')
             .getPublicUrl(fileName);
 
-        // Save avatar URL to backend
         const res = await fetch("https://websitepro-d5cu.onrender.com/profile/update-avatar", {
             method: "PUT",
             headers: { "Content-Type": "application/json" },
