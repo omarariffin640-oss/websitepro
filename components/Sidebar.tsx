@@ -26,6 +26,7 @@ const menuItems = [
     { name: "Challenges", icon: Trophy, href: "/challenges", color: "text-yellow-500" },
     { name: "Payouts", icon: Wallet, href: "/payouts", color: "text-green-500" },
     { name: "Settings", icon: Settings, href: "/settings", color: "text-gray-400" },
+    { name: "Instant Account", icon: Wallet, href: "/instant-account", color: "text-purple-500" },
 ];
 
 export default function Sidebar({ isOpen, onClose }: SidebarProps) {
