@@ -17,10 +17,22 @@ type Challenge = {
     status?: string;
 };
 
+type ActiveChallenge = {
+    id: number;
+    step: number;
+    target_profit: number;
+    max_daily_loss: number;
+    max_total_loss: number;
+    min_trading_days: number;
+    status: string;
+    started_at: string;
+};
+
 export default function ChallengesPage() {
     const router = useRouter();
     const [sidebarOpen, setSidebarOpen] = useState(false);
     const [challenges, setChallenges] = useState<Challenge[]>([]);
+    const [activeChallenge, setActiveChallenge] = useState<ActiveChallenge | null>(null);
     const [userEmail, setUserEmail] = useState("");
     const [avatarUrl, setAvatarUrl] = useState("");
     const [loading, setLoading] = useState(true);
@@ -39,6 +51,16 @@ export default function ChallengesPage() {
             .then(res => res.json())
             .then(data => {
                 setChallenges(data);
+            })
+            .catch(() => setLoading(false));
+
+        // Get active challenge
+        fetch(`https://websitepro-d5cu.onrender.com/active-challenge?email=${email}`)
+            .then(res => res.json())
+            .then(data => {
+                if (data && data.id) {
+                    setActiveChallenge(data);
+                }
                 setLoading(false);
             })
             .catch(() => setLoading(false));
@@ -54,6 +76,12 @@ export default function ChallengesPage() {
         const data = await res.json();
         if (data.success) {
             setMessage(`Challenge Step ${step} started successfully!`);
+            // Refresh active challenge
+            const refreshRes = await fetch(`https://websitepro-d5cu.onrender.com/active-challenge?email=${userEmail}`);
+            const refreshData = await refreshRes.json();
+            if (refreshData && refreshData.id) {
+                setActiveChallenge(refreshData);
+            }
             setTimeout(() => setMessage(""), 3000);
         } else {
             setMessage(data.error || "Failed to start challenge");
@@ -83,6 +111,35 @@ export default function ChallengesPage() {
                         </div>
                     )}
 
+                    {/* Active Challenge Section */}
+                    {activeChallenge && (
+                        <Card className="mb-6 bg-blue-500/10 border border-blue-500">
+                            <CardHeader>
+                                <CardTitle className="text-white">🔥 Active Challenge</CardTitle>
+                            </CardHeader>
+                            <CardContent>
+                                <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
+                                    <div>
+                                        <p className="text-gray-400 text-sm">Step</p>
+                                        <p className="text-white font-bold text-xl">{activeChallenge.step}</p>
+                                    </div>
+                                    <div>
+                                        <p className="text-gray-400 text-sm">Target Profit</p>
+                                        <p className="text-green-500 font-bold text-xl">{activeChallenge.target_profit}%</p>
+                                    </div>
+                                    <div>
+                                        <p className="text-gray-400 text-sm">Status</p>
+                                        <p className="text-yellow-500 font-bold text-xl capitalize">{activeChallenge.status}</p>
+                                    </div>
+                                    <div>
+                                        <p className="text-gray-400 text-sm">Started</p>
+                                        <p className="text-white text-sm">{new Date(activeChallenge.started_at).toLocaleDateString()}</p>
+                                    </div>
+                                </div>
+                            </CardContent>
+                        </Card>
+                    )}
+
                     <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                         {challenges.map((challenge) => (
                             <Card key={challenge.step} className="bg-darkcard">
@@ -109,8 +166,9 @@ export default function ChallengesPage() {
                                     <Button
                                         onClick={() => startChallenge(challenge.step)}
                                         className="w-full mt-4 bg-orange-500 hover:bg-orange-600"
+                                        disabled={activeChallenge !== null}
                                     >
-                                        Start Step {challenge.step}
+                                        {activeChallenge ? "Challenge in Progress" : `Start Step ${challenge.step}`}
                                     </Button>
                                 </CardContent>
                             </Card>
