@@ -242,6 +242,34 @@ app.post("/start-challenge", async (req, res) => {
     res.json({ success: true, message: "Challenge started!" });
 });
 
+// Create Instant Account
+app.post("/create-instant-account", async (req, res) => {
+    const { user_email } = req.body;
+
+    // Generate random account ID
+    const account_id = "ACC" + Math.random().toString(36).substring(2, 10).toUpperCase();
+
+    const { data, error } = await supabase
+        .from("instant_accounts")
+        .insert([{ user_email, account_id, balance: 10000 }]);
+
+    if (error) return res.status(500).json({ error: error.message });
+    res.json({ success: true, account_id, balance: 10000 });
+});
+
+// Get Instant Account
+app.get("/instant-account", async (req, res) => {
+    const { email } = req.query;
+    const { data, error } = await supabase
+        .from("instant_accounts")
+        .select("*")
+        .eq("user_email", email)
+        .single();
+
+    if (error && error.code !== 'PGRST116') return res.status(500).json({ error: error.message });
+    res.json(data || null);
+});
+
 // START SERVER
 const port = process.env.PORT || 5000;
 app.listen(port, "0.0.0.0", () => {
