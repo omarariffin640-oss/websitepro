@@ -2,111 +2,111 @@
 
 import { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
-import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
-import { Avatar, AvatarFallback } from "@/components/ui/avatar";
-import { ThemeToggle } from "@/components/ThemeToggle";
+import Topbar from "@/components/Topbar";
+import Sidebar from "@/components/Sidebar";
 
 type User = {
     id: number;
     email: string;
     name?: string;
+    avatar_url?: string;
 };
 
 export default function DashboardPage() {
     const router = useRouter();
+    const [sidebarOpen, setSidebarOpen] = useState(false);
     const [users, setUsers] = useState<User[]>([]);
+    const [userEmail, setUserEmail] = useState("");
+    const [avatarUrl, setAvatarUrl] = useState("");
     const [loading, setLoading] = useState(true);
 
     useEffect(() => {
-        const userEmail = localStorage.getItem("userEmail");
-        if (!userEmail) {
+        const email = localStorage.getItem("userEmail");
+        if (!email) {
             router.push("/login");
             return;
         }
+        setUserEmail(email);
 
         fetch("https://websitepro-d5cu.onrender.com/users")
             .then(res => res.json())
             .then(data => {
                 setUsers(data);
+                const currentUser = data.find((u: User) => u.email === email);
+                if (currentUser) {
+                    setAvatarUrl(currentUser.avatar_url || "");
+                }
                 setLoading(false);
             })
             .catch(() => setLoading(false));
     }, [router]);
 
-    const handleLogout = () => {
-        localStorage.removeItem("userEmail");
-        router.push("/login");
-    };
-
     if (loading) {
         return (
-            <div className="flex min-h-screen items-center justify-center">
-                <p className="text-gray-500">Loading dashboard...</p>
+            <div className="flex min-h-screen items-center justify-center bg-darknavy">
+                <p className="text-gray-400">Loading dashboard...</p>
             </div>
         );
     }
 
+    const stats = [
+        { title: "Total Users", value: users.length, color: "border-blue-500", textColor: "text-blue-500" },
+        { title: "Total Accounts", value: 0, color: "border-orange-500", textColor: "text-orange-500" },
+        { title: "Active Challenges", value: 0, color: "border-yellow-500", textColor: "text-yellow-500" },
+        { title: "Pending Payouts", value: 0, color: "border-green-500", textColor: "text-green-500" },
+    ];
+
     return (
-        <div className="min-h-screen bg-gray-50 dark:bg-gray-900">
-            {/* ThemeToggle di sudut kanan atas */}
-            <div className="fixed top-4 right-4 z-50">
-                <ThemeToggle />
-            </div>
+        <div className="min-h-screen bg-darknavy">
+            <Topbar
+                onMenuClick={() => setSidebarOpen(true)}
+                userEmail={userEmail}
+                avatarUrl={avatarUrl}
+            />
+            <Sidebar isOpen={sidebarOpen} onClose={() => setSidebarOpen(false)} />
 
-            <div className="container mx-auto p-8">
-                <div className="flex justify-between items-center mb-8">
-                    <h1 className="text-3xl font-bold dark:text-white">Dashboard</h1>
-                </div>
+            <main className="lg:ml-64 pt-16">
+                <div className="p-6">
+                    <h1 className="text-2xl font-bold text-white mb-6">Dashboard</h1>
 
-                {/* Logout button dalam card */}
-                <Card className="mb-8">
-                    <CardHeader>
-                        <CardTitle className="dark:text-white">Account</CardTitle>
-                    </CardHeader>
-                    <CardContent>
-                        <Button onClick={handleLogout} variant="destructive">
-                            Logout
-                        </Button>
-                    </CardContent>
-                </Card>
+                    <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+                        {stats.map((stat) => (
+                            <Card key={stat.title} className={`bg-darkcard border-l-4 ${stat.color}`}>
+                                <CardHeader className="pb-2">
+                                    <CardTitle className={`text-sm font-medium ${stat.textColor}`}>
+                                        {stat.title}
+                                    </CardTitle>
+                                </CardHeader>
+                                <CardContent>
+                                    <p className="text-3xl font-bold text-white">{stat.value}</p>
+                                </CardContent>
+                            </Card>
+                        ))}
+                    </div>
 
-                <Card className="mb-8">
-                    <CardHeader>
-                        <CardTitle className="dark:text-white">Total Users</CardTitle>
-                    </CardHeader>
-                    <CardContent>
-                        <p className="text-4xl font-bold dark:text-white">{users.length}</p>
-                    </CardContent>
-                </Card>
-
-                <Card>
-                    <CardHeader>
-                        <CardTitle className="dark:text-white">User List</CardTitle>
-                    </CardHeader>
-                    <CardContent>
-                        {users.length === 0 ? (
-                            <p className="text-gray-500 dark:text-gray-400">No users registered yet.</p>
-                        ) : (
+                    <Card className="mt-6 bg-darkcard">
+                        <CardHeader>
+                            <CardTitle className="text-white">Recent Users</CardTitle>
+                        </CardHeader>
+                        <CardContent>
                             <div className="space-y-3">
-                                {users.map((user) => (
-                                    <div key={user.id} className="flex items-center gap-3 p-3 border rounded-lg dark:border-gray-700">
-                                        <Avatar>
-                                            <AvatarFallback>
-                                                {user.email.charAt(0).toUpperCase()}
-                                            </AvatarFallback>
-                                        </Avatar>
+                                {users.slice(0, 5).map((user) => (
+                                    <div key={user.id} className="flex items-center gap-3 p-3 rounded-lg bg-darknavy/50">
+                                        <div className="w-8 h-8 rounded-full bg-blue-500 flex items-center justify-center text-white">
+                                            {user.email.charAt(0).toUpperCase()}
+                                        </div>
                                         <div>
-                                            <p className="font-medium dark:text-white">{user.name || user.email}</p>
-                                            <p className="text-sm text-gray-500 dark:text-gray-400">{user.email}</p>
+                                            <p className="font-medium text-white">{user.name || user.email}</p>
+                                            <p className="text-sm text-gray-400">{user.email}</p>
                                         </div>
                                     </div>
                                 ))}
                             </div>
-                        )}
-                    </CardContent>
-                </Card>
-            </div>
+                        </CardContent>
+                    </Card>
+                </div>
+            </main>
         </div>
     );
 }

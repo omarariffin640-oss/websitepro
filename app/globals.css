@@ -121,10 +121,45 @@
   * {
     @apply border-border outline-ring/50;
   }
+
   body {
     @apply bg-background text-foreground;
   }
+
   html {
     @apply font-sans;
   }
+}
+
+/* Prop Firm Custom Colors */
+.bg-darknavy {
+  background-color: #0a0e27;
+}
+
+.bg-darkcard {
+  background-color: #11152e;
+}
+
+.bg-darkblue {
+  background-color: #1e2a5e;
+}
+
+.text-blue-accent {
+  color: #3b82f6;
+}
+
+.text-orange-accent {
+  color: #f97316;
+}
+
+.text-green-accent {
+  color: #22c55e;
+}
+
+.text-red-accent {
+  color: #ef4444;
+}
+
+.border-blue-accent {
+  border-color: #3b82f6;
 }
