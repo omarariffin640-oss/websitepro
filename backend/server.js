@@ -205,6 +205,43 @@ app.get("/accounts", async (req, res) => {
     res.json(data);
 });
 
+// GET challenge rules
+app.get("/challenge-rules", async (req, res) => {
+    const { data, error } = await supabase.from("challenge_rules").select("*");
+    if (error) return res.status(500).json({ error: error.message });
+    res.json(data);
+});
+
+// Start challenge
+app.post("/start-challenge", async (req, res) => {
+    const { user_email, step } = req.body;
+
+    const { data: rules } = await supabase
+        .from("challenge_rules")
+        .select("*")
+        .eq("step", step)
+        .single();
+
+    if (!rules) {
+        return res.status(400).json({ success: false, message: "Invalid step" });
+    }
+
+    // Create challenge account
+    const { data, error } = await supabase
+        .from("challenges")
+        .insert([{
+            user_email,
+            step,
+            target_profit: rules.target_profit,
+            max_daily_loss: rules.max_daily_loss,
+            max_total_loss: rules.max_total_loss,
+            status: "active"
+        }]);
+
+    if (error) return res.status(500).json({ error: error.message });
+    res.json({ success: true, message: "Challenge started!" });
+});
+
 // START SERVER
 const port = process.env.PORT || 5000;
 app.listen(port, "0.0.0.0", () => {
