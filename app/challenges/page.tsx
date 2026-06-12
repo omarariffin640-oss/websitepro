@@ -26,6 +26,7 @@ type ActiveChallenge = {
     min_trading_days: number;
     status: string;
     started_at: string;
+    current_profit?: number;
 };
 
 export default function ChallengesPage() {
@@ -118,7 +119,7 @@ export default function ChallengesPage() {
                                 <CardTitle className="text-white">🔥 Active Challenge</CardTitle>
                             </CardHeader>
                             <CardContent>
-                                <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
+                                <div className="grid grid-cols-2 md:grid-cols-5 gap-4">
                                     <div>
                                         <p className="text-gray-400 text-sm">Step</p>
                                         <p className="text-white font-bold text-xl">{activeChallenge.step}</p>
@@ -126,6 +127,12 @@ export default function ChallengesPage() {
                                     <div>
                                         <p className="text-gray-400 text-sm">Target Profit</p>
                                         <p className="text-green-500 font-bold text-xl">{activeChallenge.target_profit}%</p>
+                                    </div>
+                                    <div>
+                                        <p className="text-gray-400 text-sm">Current Profit</p>
+                                        <p className={`font-bold text-xl ${(activeChallenge.current_profit || 0) >= 0 ? "text-green-500" : "text-red-500"}`}>
+                                            {(activeChallenge.current_profit || 0).toFixed(2)}%
+                                        </p>
                                     </div>
                                     <div>
                                         <p className="text-gray-400 text-sm">Status</p>
