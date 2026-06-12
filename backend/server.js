@@ -270,33 +270,6 @@ app.get("/instant-account", async (req, res) => {
     res.json(data || null);
 });
 
-// Webhook from manual trade input
-app.post("/webhook/trade", async (req, res) => {
-    const { email, symbol, profit, balance } = req.body;
-
-    // Update challenge progress if active challenge exists
-    const { data: challenge } = await supabase
-        .from("challenges")
-        .select("*")
-        .eq("user_email", email)
-        .eq("status", "active")
-        .single();
-
-    if (challenge) {
-        // Calculate current profit percentage
-        const currentProfit = (balance - 10000) / 10000 * 100;
-
-        await supabase
-            .from("challenges")
-            .update({ current_profit: currentProfit })
-            .eq("id", challenge.id);
-
-        console.log(`Trade updated for ${email}: Profit ${profit}, Balance ${balance}`);
-    }
-
-    res.json({ success: true });
-});
-
 // START SERVER
 const port = process.env.PORT || 5000;
 app.listen(port, "0.0.0.0", () => {
