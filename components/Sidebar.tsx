@@ -11,7 +11,8 @@ import {
     Wallet,
     Settings,
     LogOut,
-    X
+    X,
+    HelpCircle
 } from "lucide-react";
 
 interface SidebarProps {
@@ -27,6 +28,7 @@ const menuItems = [
     { name: "Payouts", icon: Wallet, href: "/payouts", color: "text-green-500" },
     { name: "Settings", icon: Settings, href: "/settings", color: "text-gray-400" },
     { name: "Instant Account", icon: Wallet, href: "/instant-account", color: "text-purple-500" },
+    { name: "Support", icon: HelpCircle, href: "/support", color: "text-purple-500" },
 ];
 
 export default function Sidebar({ isOpen, onClose }: SidebarProps) {
