@@ -163,14 +163,3 @@
 .border-blue-accent {
   border-color: #3b82f6;
 }
-
-/* Fix for fixed header with banner */
-main {
-  padding-top: 5rem;
-}
-
-@media (min-width: 768px) {
-  main {
-    padding-top: 5.5rem;
-  }
-}
