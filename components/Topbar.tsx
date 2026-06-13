@@ -43,7 +43,11 @@ export default function Topbar({ onMenuClick, userEmail, avatarUrl }: TopbarProp
                             {userEmail?.charAt(0).toUpperCase() || "U"}
                         </AvatarFallback>
                     </Avatar>
+
+                    {/* Notification - berdiri sendiri */}
                     <NotificationBell />
+
+                    {/* Dark Mode - berdiri sendiri */}
                     <ThemeToggle />
                 </div>
             </div>
