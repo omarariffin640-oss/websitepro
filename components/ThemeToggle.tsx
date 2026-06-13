@@ -19,7 +19,7 @@ export function ThemeToggle() {
             variant="outline"
             size="icon"
             onClick={() => setTheme(theme === "dark" ? "light" : "dark")}
-            className="fixed top-4 right-4 z-50"
+            className="h-8 w-8"
         >
             {theme === "dark" ? "☀️" : "🌙"}
         </Button>

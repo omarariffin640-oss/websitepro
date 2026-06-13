@@ -1,6 +1,5 @@
 "use client";
 
-import { useState } from "react";
 import { Button } from "@/components/ui/button";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { ThemeToggle } from "@/components/ThemeToggle";
@@ -35,7 +34,7 @@ export default function Topbar({ onMenuClick, userEmail, avatarUrl }: TopbarProp
                     </div>
                 </div>
 
-                {/* Kanan - Profile, Notif, Dark Mode - semua berasingan dengan gap-4 */}
+                {/* Kanan - Profile, Notif, Dark Mode - semua berasingan */}
                 <div className="flex items-center gap-4">
                     <Avatar className="h-10 w-10 cursor-pointer hover:ring-2 hover:ring-blue-500">
                         <AvatarImage src={avatarUrl} />
@@ -43,11 +42,7 @@ export default function Topbar({ onMenuClick, userEmail, avatarUrl }: TopbarProp
                             {userEmail?.charAt(0).toUpperCase() || "U"}
                         </AvatarFallback>
                     </Avatar>
-
-                    {/* Notification - berdiri sendiri */}
                     <NotificationBell />
-
-                    {/* Dark Mode - berdiri sendiri */}
                     <ThemeToggle />
                 </div>
             </div>
