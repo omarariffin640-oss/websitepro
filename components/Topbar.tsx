@@ -20,7 +20,7 @@ export default function Topbar({ onMenuClick, userEmail, avatarUrl }: TopbarProp
             <AnnouncementBanner />
 
             {/* Header di bawah banner */}
-            <header className="fixed top-10 left-0 right-0 z-40 bg-darknavy border-b border-gray-800">
+            <header className="fixed top-8 left-0 right-0 z-40 bg-darknavy border-b border-gray-800">
                 <div className="flex items-center justify-between px-4 h-16">
                     {/* Kiri - Menu & Logo */}
                     <div className="flex items-center gap-3">
