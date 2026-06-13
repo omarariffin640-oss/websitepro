@@ -43,14 +43,8 @@ export default function Topbar({ onMenuClick, userEmail, avatarUrl }: TopbarProp
                             {userEmail?.charAt(0).toUpperCase() || "U"}
                         </AvatarFallback>
                     </Avatar>
-
-                    {/* Separator line */}
-                    <div className="w-px h-6 bg-gray-700"></div>
-
-                    <div className="flex items-center gap-2">
-                        <NotificationBell />
-                        <ThemeToggle />
-                    </div>
+                    <NotificationBell />
+                    <ThemeToggle />
                 </div>
             </div>
         </header>
