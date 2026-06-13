@@ -35,7 +35,7 @@ export default function Topbar({ onMenuClick, userEmail, avatarUrl }: TopbarProp
                     </div>
                 </div>
 
-                {/* Kanan - Profile (besar), Notif, Dark Mode - jarak sama rata */}
+                {/* Kanan - Profile, Notif, Dark Mode - semua berasingan dengan gap-4 */}
                 <div className="flex items-center gap-4">
                     <Avatar className="h-10 w-10 cursor-pointer hover:ring-2 hover:ring-blue-500">
                         <AvatarImage src={avatarUrl} />
