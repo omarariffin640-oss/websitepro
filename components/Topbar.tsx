@@ -35,16 +35,16 @@ export default function Topbar({ onMenuClick, userEmail, avatarUrl }: TopbarProp
                     </div>
                 </div>
 
-                {/* Kanan - Notif, Dark Mode, Profile */}
+                {/* Kanan - Profile, Notif, Dark Mode */}
                 <div className="flex items-center gap-2">
-                    <NotificationBell />
-                    <ThemeToggle />
                     <Avatar className="h-8 w-8 cursor-pointer hover:ring-2 hover:ring-blue-500">
                         <AvatarImage src={avatarUrl} />
                         <AvatarFallback className="bg-blue-500 text-white">
                             {userEmail?.charAt(0).toUpperCase() || "U"}
                         </AvatarFallback>
                     </Avatar>
+                    <NotificationBell />
+                    <ThemeToggle />
                 </div>
             </div>
         </header>
