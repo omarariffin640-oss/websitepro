@@ -4,8 +4,11 @@ import { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
+import { Button } from "@/components/ui/button";
 import Topbar from "@/components/Topbar";
 import Sidebar from "@/components/Sidebar";
+import Papa from "papaparse";
+import { Download } from "lucide-react";
 
 type User = {
     id: number;
@@ -60,6 +63,23 @@ export default function UsersPage() {
         }
     }, [search, users]);
 
+    const exportToCSV = () => {
+        const csvData = filteredUsers.map(user => ({
+            Email: user.email,
+            Name: user.name || "-",
+            "Joined Date": user.created_at ? new Date(user.created_at).toLocaleDateString() : "-"
+        }));
+
+        const csv = Papa.unparse(csvData);
+        const blob = new Blob([csv], { type: "text/csv" });
+        const url = URL.createObjectURL(blob);
+        const a = document.createElement("a");
+        a.href = url;
+        a.download = `users_${new Date().toISOString().split("T")[0]}.csv`;
+        a.click();
+        URL.revokeObjectURL(url);
+    };
+
     if (loading) {
         return (
             <div className="flex min-h-screen items-center justify-center bg-darknavy">
@@ -77,14 +97,20 @@ export default function UsersPage() {
                 <div className="p-6">
                     <div className="flex justify-between items-center mb-6">
                         <h1 className="text-2xl font-bold text-white">Users</h1>
-                        <div className="w-64">
-                            <Input
-                                type="text"
-                                placeholder="Search users..."
-                                value={search}
-                                onChange={(e) => setSearch(e.target.value)}
-                                className="bg-darkcard border-gray-700 text-white"
-                            />
+                        <div className="flex gap-3">
+                            <Button onClick={exportToCSV} className="bg-green-500 hover:bg-green-600">
+                                <Download className="w-4 h-4 mr-2" />
+                                Export CSV
+                            </Button>
+                            <div className="w-64">
+                                <Input
+                                    type="text"
+                                    placeholder="Search users..."
+                                    value={search}
+                                    onChange={(e) => setSearch(e.target.value)}
+                                    className="bg-darkcard border-gray-700 text-white"
+                                />
+                            </div>
                         </div>
                     </div>
 
