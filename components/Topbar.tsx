@@ -35,21 +35,23 @@ export default function Topbar({ onMenuClick, userEmail, avatarUrl }: TopbarProp
                     </div>
                 </div>
 
-                {/* Kanan - Profile, Notif, Dark Mode dengan jarak lebih besar */}
-                <div className="flex items-center gap-4">
-                    {/* Profile Avatar - lebih besar sikit */}
-                    <Avatar className="h-9 w-9 cursor-pointer hover:ring-2 hover:ring-blue-500 transition-all">
-                        <AvatarImage src={avatarUrl} />
-                        <AvatarFallback className="bg-blue-500 text-white text-base">
-                            {userEmail?.charAt(0).toUpperCase() || "U"}
-                        </AvatarFallback>
-                    </Avatar>
+                {/* Kanan - Profile (jarak), Notif & Dark (rapat) */}
+                <div className="flex items-center">
+                    {/* Profile Avatar - jarak dari yang lain */}
+                    <div className="mr-6">
+                        <Avatar className="h-9 w-9 cursor-pointer hover:ring-2 hover:ring-blue-500 transition-all">
+                            <AvatarImage src={avatarUrl} />
+                            <AvatarFallback className="bg-blue-500 text-white text-base">
+                                {userEmail?.charAt(0).toUpperCase() || "U"}
+                            </AvatarFallback>
+                        </Avatar>
+                    </div>
 
-                    {/* Notification Bell */}
-                    <NotificationBell />
-
-                    {/* Dark Mode Toggle */}
-                    <ThemeToggle />
+                    {/* Notification & Dark Mode - rapat sebelah */}
+                    <div className="flex items-center gap-1">
+                        <NotificationBell />
+                        <ThemeToggle />
+                    </div>
                 </div>
             </div>
         </header>
