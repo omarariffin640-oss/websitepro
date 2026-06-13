@@ -12,7 +12,8 @@ import {
     Settings,
     LogOut,
     X,
-    HelpCircle
+    HelpCircle,
+    Megaphone
 } from "lucide-react";
 
 interface SidebarProps {
@@ -29,6 +30,14 @@ const menuItems = [
     { name: "Settings", icon: Settings, href: "/settings", color: "text-gray-400" },
     { name: "Instant Account", icon: Wallet, href: "/instant-account", color: "text-purple-500" },
     { name: "Support", icon: HelpCircle, href: "/support", color: "text-purple-500" },
+];
+
+// Announcements for sidebar banner
+const announcements = [
+    { text: "🎉 Step 1 & 2 Live!", bg: "bg-orange-500/20", border: "border-orange-500", textColor: "text-orange-500" },
+    { text: "💰 10K Account $99 → $89", bg: "bg-green-500/20", border: "border-green-500", textColor: "text-green-500" },
+    { text: "⚡ Instant Account Added!", bg: "bg-blue-500/20", border: "border-blue-500", textColor: "text-blue-500" },
+    { text: "🚀 Payout: 24 hours", bg: "bg-purple-500/20", border: "border-purple-500", textColor: "text-purple-500" },
 ];
 
 export default function Sidebar({ isOpen, onClose }: SidebarProps) {
@@ -81,7 +90,20 @@ export default function Sidebar({ isOpen, onClose }: SidebarProps) {
                         </Link>
                     ))}
 
-                    <div className="pt-4 mt-4 border-t border-gray-800">
+                    {/* Announcement Banner in Sidebar */}
+                    <div className="mt-4 pt-4 border-t border-gray-800">
+                        <div className="p-3 rounded-lg bg-blue-500/20 border border-blue-500">
+                            <div className="flex items-start gap-2">
+                                <Megaphone className="h-4 w-4 text-blue-500 shrink-0 mt-0.5" />
+                                <div className="flex-1">
+                                    <p className="text-xs text-blue-500 font-medium">Special Offer!</p>
+                                    <p className="text-xs text-gray-300 mt-1">10K Account $99 → $89</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div className="pt-2">
                         <button
                             onClick={handleLogout}
                             className="flex items-center gap-3 px-3 py-2 w-full rounded-lg text-red-400 hover:bg-red-500/10 hover:text-red-300 transition-colors"
