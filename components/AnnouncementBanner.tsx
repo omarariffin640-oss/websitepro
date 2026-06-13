@@ -32,8 +32,8 @@ export default function AnnouncementBanner() {
     const announcement = announcements[currentIndex];
 
     return (
-        <div className={`${announcement.bgColor} text-white py-2 px-4 relative z-10`}>
-            <div className="w-full max-w-7xl mx-auto flex items-center justify-between gap-3">
+        <div className={`${announcement.bgColor} text-white py-2 px-4 w-full`}>
+            <div className="flex items-center justify-between gap-3">
                 <div className="flex items-center gap-2 flex-1 min-w-0">
                     <Megaphone className="h-4 w-4 shrink-0" />
                     <p className="text-sm font-medium truncate">{announcement.text}</p>

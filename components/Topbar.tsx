@@ -16,7 +16,9 @@ interface TopbarProps {
 export default function Topbar({ onMenuClick, userEmail, avatarUrl }: TopbarProps) {
     return (
         <>
-            <AnnouncementBanner />
+            <div className="w-full">
+                <AnnouncementBanner />
+            </div>
             <header className="sticky top-0 z-40 bg-darknavy border-b border-gray-800">
                 <div className="flex items-center justify-between px-4 h-16">
                     {/* Kiri - Menu & Logo */}
