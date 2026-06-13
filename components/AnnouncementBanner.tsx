@@ -32,18 +32,18 @@ export default function AnnouncementBanner() {
     const announcement = announcements[currentIndex];
 
     return (
-        <div className={`${announcement.bgColor} text-white py-2 px-4 w-full`}>
-            <div className="flex items-center justify-between gap-3">
-                <div className="flex items-center gap-2 flex-1 min-w-0">
-                    <Megaphone className="h-4 w-4 shrink-0" />
-                    <p className="text-sm font-medium truncate">{announcement.text}</p>
-                </div>
+        <div className="fixed inset-0 flex items-center justify-center z-50 bg-black/50">
+            <div className={`${announcement.bgColor} text-white p-6 rounded-xl shadow-xl max-w-md w-full mx-4 relative`}>
                 <button
                     onClick={() => setIsVisible(false)}
-                    className="shrink-0 hover:text-gray-200 transition-colors"
+                    className="absolute top-2 right-2 text-white hover:text-gray-200"
                 >
-                    <X className="h-4 w-4" />
+                    <X className="h-5 w-5" />
                 </button>
+                <div className="flex items-center gap-3">
+                    <Megaphone className="h-6 w-6 shrink-0" />
+                    <p className="text-base font-medium">{announcement.text}</p>
+                </div>
             </div>
         </div>
     );
