@@ -4,7 +4,8 @@ import { useState } from "react";
 import { Button } from "@/components/ui/button";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { ThemeToggle } from "@/components/ThemeToggle";
-import { Menu, Bell } from "lucide-react";
+import NotificationBell from "./NotificationBell";
+import { Menu } from "lucide-react";
 
 interface TopbarProps {
     onMenuClick: () => void;
@@ -34,12 +35,10 @@ export default function Topbar({ onMenuClick, userEmail, avatarUrl }: TopbarProp
                     </div>
                 </div>
 
-                {/* Kanan - Dark Mode, Notif, Profile */}
+                {/* Kanan - Notif, Dark Mode, Profile */}
                 <div className="flex items-center gap-2">
+                    <NotificationBell />
                     <ThemeToggle />
-                    <Button variant="ghost" size="icon" className="text-gray-400 hover:text-white">
-                        <Bell className="h-5 w-5" />
-                    </Button>
                     <Avatar className="h-8 w-8 cursor-pointer hover:ring-2 hover:ring-blue-500">
                         <AvatarImage src={avatarUrl} />
                         <AvatarFallback className="bg-blue-500 text-white">
