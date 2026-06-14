@@ -12,6 +12,8 @@ interface TopbarProps {
 }
 
 export default function Topbar({ onMenuClick, userEmail, avatarUrl }: TopbarProps) {
+    console.log("Topbar received avatarUrl:", avatarUrl); // ← check console
+
     return (
         <header className="sticky top-0 z-40 bg-darknavy border-b border-gray-800">
             <div className="flex items-center justify-between px-4 h-16">
@@ -35,7 +37,7 @@ export default function Topbar({ onMenuClick, userEmail, avatarUrl }: TopbarProp
 
                 {/* Kanan - Profile, Notif, Dark Mode */}
                 <div className="flex items-center gap-4">
-                    {/* Profile Avatar - guna img biasa */}
+                    {/* Profile - guna img biasa */}
                     {avatarUrl ? (
                         <img
                             src={avatarUrl}

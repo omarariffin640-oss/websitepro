@@ -37,6 +37,7 @@ export default function DashboardPage() {
                 const currentUser = data.find((u: User) => u.email === email);
                 if (currentUser) {
                     setAvatarUrl(currentUser.avatar_url || "");
+                    console.log("Avatar URL from API:", currentUser.avatar_url);
                 }
                 setLoading(false);
             })
