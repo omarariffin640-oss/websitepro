@@ -270,6 +270,68 @@ app.get("/instant-account", async (req, res) => {
     res.json(data || null);
 });
 
+// Check Trading Rules
+app.post("/check-rules", async (req, res) => {
+    const { email, newBalance } = req.body;
+
+    // Get active challenge
+    const { data: challenge } = await supabase
+        .from("challenges")
+        .select("*")
+        .eq("user_email", email)
+        .eq("status", "active")
+        .single();
+
+    if (!challenge) {
+        return res.json({ success: false, message: "No active challenge" });
+    }
+
+    const startingBalance = challenge.starting_balance || 10000;
+    const currentBalance = newBalance;
+    const profitPercent = (currentBalance - startingBalance) / startingBalance * 100;
+    const dailyLoss = (challenge.current_balance - currentBalance) / startingBalance * 100;
+    const totalLoss = (startingBalance - currentBalance) / startingBalance * 100;
+
+    let status = "active";
+    let message = "";
+
+    // Check Daily Loss Rule (max 5%)
+    if (dailyLoss > challenge.max_daily_loss) {
+        status = "failed";
+        message = "Daily loss limit exceeded (max 5%)";
+    }
+
+    // Check Total Loss Rule (max 10%)
+    else if (totalLoss > challenge.max_total_loss) {
+        status = "failed";
+        message = "Total loss limit exceeded (max 10%)";
+    }
+
+    // Check Target Profit
+    else if (profitPercent >= challenge.target_profit) {
+        if (challenge.step === 1) {
+            status = "completed_step1";
+            message = "Step 1 completed! Proceed to Step 2";
+        } else if (challenge.step === 2) {
+            status = "completed";
+            message = "Challenge completed! You are now funded!";
+        }
+    }
+
+    // Update challenge
+    await supabase
+        .from("challenges")
+        .update({
+            current_balance: currentBalance,
+            current_profit: profitPercent,
+            status: status,
+            trading_days: challenge.trading_days + 1
+        })
+        .eq("id", challenge.id);
+
+    res.json({ success: true, status, message, profitPercent });
+});
+
 // START SERVER
 const port = process.env.PORT || 5000;
 app.listen(port, "0.0.0.0", () => {
