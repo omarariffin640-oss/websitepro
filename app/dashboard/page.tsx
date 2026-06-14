@@ -1,15 +1,12 @@
 "use client";
 
-import dynamic from 'next/dynamic';
+import { LineChart, Line, BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer } from 'recharts';
 import { motion } from "framer-motion";
 import { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import Topbar from "@/components/Topbar";
 import Sidebar from "@/components/Sidebar";
-
-// Import ApexCharts dynamically (no SSR)
-const Chart = dynamic(() => import('react-apexcharts'), { ssr: false });
 
 type User = {
     id: number;
@@ -62,72 +59,24 @@ export default function DashboardPage() {
         { title: "Pending Payouts", value: 0, color: "border-green-500", textColor: "text-green-500" },
     ];
 
-    // Line Chart Options (User Growth)
-    const lineChartOptions = {
-        chart: {
-            type: 'line',
-            background: 'transparent',
-            toolbar: { show: false },
-            zoom: { enabled: false }
-        },
-        xaxis: {
-            categories: ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun'],
-            labels: { style: { colors: '#9CA3AF', fontSize: '12px' } }
-        },
-        yaxis: {
-            labels: { style: { colors: '#9CA3AF', fontSize: '12px' } }
-        },
-        stroke: {
-            curve: 'smooth',
-            width: 2,
-            colors: ['#3B82F6']
-        },
-        grid: {
-            borderColor: '#374151',
-            strokeDashArray: 5
-        },
-        tooltip: { theme: 'dark' },
-        legend: { show: false }
-    };
-
-    const lineChartSeries = [
-        { name: 'Users', data: [10, 25, 45, 70, 100, users.length] }
+    // Sample data untuk chart
+    const userGrowthData = [
+        { month: 'Jan', users: 10 },
+        { month: 'Feb', users: 25 },
+        { month: 'Mar', users: 45 },
+        { month: 'Apr', users: 70 },
+        { month: 'May', users: 100 },
+        { month: 'Jun', users: users.length },
     ];
 
-    // Bar Chart Options (Weekly Profit)
-    const barChartOptions = {
-        chart: {
-            type: 'bar',
-            background: 'transparent',
-            toolbar: { show: false },
-            zoom: { enabled: false }
-        },
-        xaxis: {
-            categories: ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun'],
-            labels: { style: { colors: '#9CA3AF', fontSize: '12px' } }
-        },
-        yaxis: {
-            labels: { style: { colors: '#9CA3AF', fontSize: '12px' } },
-            title: { text: 'USD', style: { color: '#9CA3AF' } }
-        },
-        colors: ['#10B981'],
-        grid: {
-            borderColor: '#374151',
-            strokeDashArray: 5
-        },
-        tooltip: { theme: 'dark' },
-        legend: { show: false },
-        plotOptions: {
-            bar: {
-                borderRadius: 6,
-                horizontal: false,
-                columnWidth: '60%'
-            }
-        }
-    };
-
-    const barChartSeries = [
-        { name: 'Profit', data: [500, 750, 600, 900, 1200, 800, 450] }
+    const profitData = [
+        { day: 'Mon', profit: 500 },
+        { day: 'Tue', profit: 750 },
+        { day: 'Wed', profit: 600 },
+        { day: 'Thu', profit: 900 },
+        { day: 'Fri', profit: 1200 },
+        { day: 'Sat', profit: 800 },
+        { day: 'Sun', profit: 450 },
     ];
 
     return (
@@ -169,7 +118,7 @@ export default function DashboardPage() {
 
                     {/* Charts Section */}
                     <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 mt-6">
-                        {/* User Growth Chart - Line Chart */}
+                        {/* User Growth Chart */}
                         <motion.div
                             initial={{ opacity: 0, y: 20 }}
                             animate={{ opacity: 1, y: 0 }}
@@ -180,18 +129,20 @@ export default function DashboardPage() {
                                     <CardTitle className="text-white">User Growth</CardTitle>
                                 </CardHeader>
                                 <CardContent>
-                                    {/* @ts-ignore */}
-                                    <Chart
-                                        options={lineChartOptions}
-                                        series={lineChartSeries}
-                                        type="line"
-                                        height={300}
-                                    />
+                                    <ResponsiveContainer width="100%" height={300}>
+                                        <LineChart data={userGrowthData}>
+                                            <CartesianGrid strokeDasharray="3 3" stroke="#374151" />
+                                            <XAxis dataKey="month" stroke="#9CA3AF" />
+                                            <YAxis stroke="#9CA3AF" />
+                                            <Tooltip contentStyle={{ backgroundColor: '#1F2937', borderColor: '#374151' }} />
+                                            <Line type="monotone" dataKey="users" stroke="#3B82F6" strokeWidth={2} dot={{ fill: '#3B82F6' }} />
+                                        </LineChart>
+                                    </ResponsiveContainer>
                                 </CardContent>
                             </Card>
                         </motion.div>
 
-                        {/* Weekly Profit Chart - Bar Chart */}
+                        {/* Weekly Profit Chart */}
                         <motion.div
                             initial={{ opacity: 0, y: 20 }}
                             animate={{ opacity: 1, y: 0 }}
@@ -202,13 +153,15 @@ export default function DashboardPage() {
                                     <CardTitle className="text-white">Weekly Profit ($)</CardTitle>
                                 </CardHeader>
                                 <CardContent>
-                                    {/* @ts-ignore */}
-                                    <Chart
-                                        options={barChartOptions}
-                                        series={barChartSeries}
-                                        type="bar"
-                                        height={300}
-                                    />
+                                    <ResponsiveContainer width="100%" height={300}>
+                                        <BarChart data={profitData}>
+                                            <CartesianGrid strokeDasharray="3 3" stroke="#374151" />
+                                            <XAxis dataKey="day" stroke="#9CA3AF" />
+                                            <YAxis stroke="#9CA3AF" />
+                                            <Tooltip contentStyle={{ backgroundColor: '#1F2937', borderColor: '#374151' }} />
+                                            <Bar dataKey="profit" fill="#10B981" radius={[4, 4, 0, 0]} />
+                                        </BarChart>
+                                    </ResponsiveContainer>
                                 </CardContent>
                             </Card>
                         </motion.div>
