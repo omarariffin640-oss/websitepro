@@ -1,5 +1,6 @@
 "use client";
 
+import { LineChart, Line, BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer } from 'recharts';
 import { motion } from "framer-motion";
 import { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
@@ -58,6 +59,26 @@ export default function DashboardPage() {
         { title: "Pending Payouts", value: 0, color: "border-green-500", textColor: "text-green-500" },
     ];
 
+    // Sample data untuk chart
+    const userGrowthData = [
+        { month: 'Jan', users: 10 },
+        { month: 'Feb', users: 25 },
+        { month: 'Mar', users: 45 },
+        { month: 'Apr', users: 70 },
+        { month: 'May', users: 100 },
+        { month: 'Jun', users: users.length },
+    ];
+
+    const profitData = [
+        { day: 'Mon', profit: 500 },
+        { day: 'Tue', profit: 750 },
+        { day: 'Wed', profit: 600 },
+        { day: 'Thu', profit: 900 },
+        { day: 'Fri', profit: 1200 },
+        { day: 'Sat', profit: 800 },
+        { day: 'Sun', profit: 450 },
+    ];
+
     return (
         <div className="min-h-screen bg-darknavy">
             <Topbar
@@ -71,6 +92,7 @@ export default function DashboardPage() {
                 <div className="p-6">
                     <h1 className="text-2xl font-bold text-white mb-6">Dashboard</h1>
 
+                    {/* Stats Cards */}
                     <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
                         {stats.map((stat, index) => (
                             <motion.div
@@ -94,10 +116,62 @@ export default function DashboardPage() {
                         ))}
                     </div>
 
+                    {/* Charts Section */}
+                    <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 mt-6">
+                        {/* User Growth Chart */}
+                        <motion.div
+                            initial={{ opacity: 0, y: 20 }}
+                            animate={{ opacity: 1, y: 0 }}
+                            transition={{ duration: 0.5, delay: 0.5 }}
+                        >
+                            <Card className="bg-darkcard">
+                                <CardHeader>
+                                    <CardTitle className="text-white">User Growth</CardTitle>
+                                </CardHeader>
+                                <CardContent>
+                                    <ResponsiveContainer width="100%" height={300}>
+                                        <LineChart data={userGrowthData}>
+                                            <CartesianGrid strokeDasharray="3 3" stroke="#374151" />
+                                            <XAxis dataKey="month" stroke="#9CA3AF" />
+                                            <YAxis stroke="#9CA3AF" />
+                                            <Tooltip contentStyle={{ backgroundColor: '#1F2937', borderColor: '#374151' }} />
+                                            <Line type="monotone" dataKey="users" stroke="#3B82F6" strokeWidth={2} dot={{ fill: '#3B82F6' }} />
+                                        </LineChart>
+                                    </ResponsiveContainer>
+                                </CardContent>
+                            </Card>
+                        </motion.div>
+
+                        {/* Weekly Profit Chart */}
+                        <motion.div
+                            initial={{ opacity: 0, y: 20 }}
+                            animate={{ opacity: 1, y: 0 }}
+                            transition={{ duration: 0.5, delay: 0.6 }}
+                        >
+                            <Card className="bg-darkcard">
+                                <CardHeader>
+                                    <CardTitle className="text-white">Weekly Profit ($)</CardTitle>
+                                </CardHeader>
+                                <CardContent>
+                                    <ResponsiveContainer width="100%" height={300}>
+                                        <BarChart data={profitData}>
+                                            <CartesianGrid strokeDasharray="3 3" stroke="#374151" />
+                                            <XAxis dataKey="day" stroke="#9CA3AF" />
+                                            <YAxis stroke="#9CA3AF" />
+                                            <Tooltip contentStyle={{ backgroundColor: '#1F2937', borderColor: '#374151' }} />
+                                            <Bar dataKey="profit" fill="#10B981" radius={[4, 4, 0, 0]} />
+                                        </BarChart>
+                                    </ResponsiveContainer>
+                                </CardContent>
+                            </Card>
+                        </motion.div>
+                    </div>
+
+                    {/* Recent Users */}
                     <motion.div
                         initial={{ opacity: 0, y: 20 }}
                         animate={{ opacity: 1, y: 0 }}
-                        transition={{ duration: 0.5, delay: 0.4 }}
+                        transition={{ duration: 0.5, delay: 0.7 }}
                     >
                         <Card className="mt-6 bg-darkcard">
                             <CardHeader>
