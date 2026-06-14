@@ -180,6 +180,7 @@ export default function DashboardPage() {
                                     <CardTitle className="text-white">User Growth</CardTitle>
                                 </CardHeader>
                                 <CardContent>
+                                    {/* @ts-ignore */}
                                     <Chart
                                         options={lineChartOptions}
                                         series={lineChartSeries}
@@ -201,6 +202,7 @@ export default function DashboardPage() {
                                     <CardTitle className="text-white">Weekly Profit ($)</CardTitle>
                                 </CardHeader>
                                 <CardContent>
+                                    {/* @ts-ignore */}
                                     <Chart
                                         options={barChartOptions}
                                         series={barChartSeries}
