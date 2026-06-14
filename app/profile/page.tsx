@@ -38,6 +38,7 @@ export default function ProfilePage() {
             router.push("/login");
             return;
         }
+        setEmail(userEmail);
 
         fetch("https://websitepro-d5cu.onrender.com/users")
             .then(res => res.json())
@@ -61,20 +62,23 @@ export default function ProfilePage() {
         const fileExt = file.name.split('.').pop();
         const fileName = `${user?.id}-${Date.now()}.${fileExt}`;
 
-        const { error } = await supabase.storage
-            .from('profile-pics')
+        // Upload ke Supabase Storage bucket 'avatars'
+        const { error: uploadError } = await supabase.storage
+            .from('avatars')
             .upload(fileName, file);
 
-        if (error) {
-            setMessage("Upload failed");
+        if (uploadError) {
+            setMessage("Upload failed: " + uploadError.message);
             setUploading(false);
             return;
         }
 
+        // Get public URL
         const { data: { publicUrl } } = supabase.storage
-            .from('profile-pics')
+            .from('avatars')
             .getPublicUrl(fileName);
 
+        // Save avatar URL to backend
         const res = await fetch("https://websitepro-d5cu.onrender.com/profile/update-avatar", {
             method: "PUT",
             headers: { "Content-Type": "application/json" },
@@ -89,6 +93,7 @@ export default function ProfilePage() {
             setMessage("Failed to save avatar URL");
         }
         setUploading(false);
+        setTimeout(() => setMessage(""), 3000);
     };
 
     const handleUpdate = async () => {
@@ -125,7 +130,7 @@ export default function ProfilePage() {
                         <div className="flex justify-center mb-4">
                             <Avatar className="w-24 h-24">
                                 <AvatarImage src={user.avatar_url} />
-                                <AvatarFallback className="text-3xl">
+                                <AvatarFallback className="text-3xl bg-blue-500 text-white">
                                     {email.charAt(0).toUpperCase()}
                                 </AvatarFallback>
                             </Avatar>
