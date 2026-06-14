@@ -1,7 +1,6 @@
 "use client";
 
 import { Button } from "@/components/ui/button";
-import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { ThemeToggle } from "@/components/ThemeToggle";
 import NotificationBell from "./NotificationBell";
 import { Menu } from "lucide-react";
@@ -36,12 +35,22 @@ export default function Topbar({ onMenuClick, userEmail, avatarUrl }: TopbarProp
 
                 {/* Kanan - Profile, Notif, Dark Mode */}
                 <div className="flex items-center gap-4">
-                    <Avatar className="h-10 w-10 cursor-pointer hover:ring-2 hover:ring-blue-500">
-                        <AvatarImage src={avatarUrl} />
-                        <AvatarFallback className="bg-blue-500 text-white text-base">
+                    {/* Profile Avatar - guna img biasa */}
+                    {avatarUrl ? (
+                        <img
+                            src={avatarUrl}
+                            alt="Profile"
+                            className="h-10 w-10 rounded-full object-cover cursor-pointer hover:ring-2 hover:ring-blue-500"
+                            onClick={() => window.location.href = '/profile'}
+                        />
+                    ) : (
+                        <div
+                            className="h-10 w-10 rounded-full bg-blue-500 flex items-center justify-center text-white text-base cursor-pointer hover:ring-2 hover:ring-blue-500"
+                            onClick={() => window.location.href = '/profile'}
+                        >
                             {userEmail?.charAt(0).toUpperCase() || "U"}
-                        </AvatarFallback>
-                    </Avatar>
+                        </div>
+                    )}
                     <NotificationBell />
                     <ThemeToggle />
                 </div>
