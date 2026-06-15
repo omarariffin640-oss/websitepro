@@ -104,6 +104,7 @@ export default function LivePricePage() {
                                 <p className="text-sm text-gray-400">Last update: {new Date().toLocaleTimeString()}</p>
                             </div>
                             <div style={{ height: '400px' }}>
+                                {/* @ts-ignore */}
                                 <Chart options={chartOptions} series={chartSeries} type="line" height={350} />
                             </div>
                             <div className="flex justify-center gap-4 mt-4">
