@@ -13,7 +13,7 @@ import {
     LogOut,
     X,
     HelpCircle,
-    Megaphone
+    Megaphone,
     TrendingUp
 } from "lucide-react";
 
