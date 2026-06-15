@@ -62,7 +62,6 @@ export default function ProfilePage() {
         const fileExt = file.name.split('.').pop();
         const fileName = `${user?.id}-${Date.now()}.${fileExt}`;
 
-        // Upload ke Supabase Storage bucket 'avatars'
         const { error: uploadError } = await supabase.storage
             .from('avatars')
             .upload(fileName, file);
@@ -73,12 +72,10 @@ export default function ProfilePage() {
             return;
         }
 
-        // Get public URL
         const { data: { publicUrl } } = supabase.storage
             .from('avatars')
             .getPublicUrl(fileName);
 
-        // Save avatar URL to backend
         const res = await fetch("https://websitepro-d5cu.onrender.com/profile/update-avatar", {
             method: "PUT",
             headers: { "Content-Type": "application/json" },
@@ -89,9 +86,9 @@ export default function ProfilePage() {
         if (data.success) {
             setUser({ ...user!, avatar_url: publicUrl });
             setMessage("Avatar updated successfully!");
-            // Refresh dashboard Topbar
+            // Auto redirect ke dashboard lepas 1 saat
             setTimeout(() => {
-                window.location.reload();
+                router.push("/dashboard");
             }, 1000);
         } else {
             setMessage("Failed to save avatar URL");
