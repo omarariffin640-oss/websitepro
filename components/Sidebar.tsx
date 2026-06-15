@@ -31,7 +31,7 @@ const menuItems = [
     { name: "Payouts", icon: Wallet, href: "/payouts", color: "text-emerald-500" },
     { name: "Settings", icon: Settings, href: "/settings", color: "text-gray-400" },
     { name: "Instant Account", icon: Wallet, href: "/instant-account", color: "text-purple-500" },
-    { name: "Support", icon: HelpCircle, href: "/support", color: "text-cyan-500" },
+    { name: "Support", icon: HelpCircle, href: "/support", color: "text-blue-400" },
     { name: "FAQ", icon: FileQuestion, href: "/faq", color: "text-cyan-500" },  // ← TUKAR
     { name: "Trade Dashboard", icon: Wallet, href: "/trade-dashboard", color: "text-orange-500" },
     { name: "Live Price", icon: TrendingUp, href: "/live-price", color: "text-blue-500" },

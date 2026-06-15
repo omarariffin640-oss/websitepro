@@ -4,6 +4,7 @@ import { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
+import { Label } from "@/components/ui/label";
 import Topbar from "@/components/Topbar";
 import Sidebar from "@/components/Sidebar";
 import dynamic from 'next/dynamic';
@@ -16,9 +17,17 @@ export default function LivePricePage() {
     const [userEmail, setUserEmail] = useState("");
     const [avatarUrl, setAvatarUrl] = useState("");
     const [loading, setLoading] = useState(true);
+    const [symbol, setSymbol] = useState("EURUSD");
     const [price, setPrice] = useState(1.0850);
     const [prices, setPrices] = useState<number[]>([1.0850, 1.0852, 1.0848, 1.0855, 1.0853]);
     const [isRunning, setIsRunning] = useState(false);
+
+    // Price data for different symbols
+    const symbolConfig = {
+        EURUSD: { basePrice: 1.0850, volatility: 0.0005, prefix: "$", decimals: 5 },
+        GBPUSD: { basePrice: 1.2650, volatility: 0.0005, prefix: "$", decimals: 5 },
+        XAUUSD: { basePrice: 2325.50, volatility: 2.5, prefix: "$", decimals: 2 }
+    };
 
     useEffect(() => {
         const email = localStorage.getItem("userEmail");
@@ -32,34 +41,31 @@ export default function LivePricePage() {
 
     const startSimulation = () => {
         setIsRunning(true);
+    };
+
+    useEffect(() => {
+        if (!isRunning) return;
+
         const interval = setInterval(() => {
-            const change = (Math.random() - 0.5) * 0.0005;
+            const config = symbolConfig[symbol as keyof typeof symbolConfig];
+            const change = (Math.random() - 0.5) * config.volatility;
             setPrice(prev => {
-                const newPrice = +(prev + change).toFixed(5);
-                setPrices(prevPrices => {
-                    const newPrices = [...prevPrices.slice(-20), newPrice];
-                    return newPrices;
-                });
+                const newPrice = +(prev + change).toFixed(config.decimals);
+                setPrices(prevPrices => [...prevPrices.slice(-50), newPrice]);
                 return newPrice;
             });
         }, 1000);
 
         return () => clearInterval(interval);
-    };
+    }, [isRunning, symbol]);
 
-    useEffect(() => {
-        if (isRunning) {
-            const interval = setInterval(() => {
-                const change = (Math.random() - 0.5) * 0.0005;
-                setPrice(prev => {
-                    const newPrice = +(prev + change).toFixed(5);
-                    setPrices(prevPrices => [...prevPrices.slice(-20), newPrice]);
-                    return newPrice;
-                });
-            }, 1000);
-            return () => clearInterval(interval);
-        }
-    }, [isRunning]);
+    const handleSymbolChange = (newSymbol: string) => {
+        setSymbol(newSymbol);
+        const config = symbolConfig[newSymbol as keyof typeof symbolConfig];
+        setPrice(config.basePrice);
+        setPrices([config.basePrice]);
+        setIsRunning(false);
+    };
 
     const chartOptions = {
         chart: {
@@ -71,11 +77,17 @@ export default function LivePricePage() {
         stroke: { curve: 'smooth', width: 2, colors: ['#3B82F6'] },
         grid: { borderColor: '#374151' },
         xaxis: { labels: { show: false } },
-        yaxis: { labels: { style: { colors: '#9CA3AF' } } },
+        yaxis: {
+            labels: {
+                style: { colors: '#9CA3AF' },
+                formatter: (value: number) => symbol === 'XAUUSD' ? value.toFixed(2) : value.toFixed(5)
+            }
+        },
         tooltip: { theme: 'dark' }
     };
 
-    const chartSeries = [{ name: 'EURUSD', data: prices }];
+    const chartSeries = [{ name: symbol, data: prices }];
+    const config = symbolConfig[symbol as keyof typeof symbolConfig];
 
     if (loading) {
         return (
@@ -96,17 +108,34 @@ export default function LivePricePage() {
 
                     <Card className="bg-darkcard mb-6">
                         <CardHeader>
-                            <CardTitle className="text-white">EURUSD Live Price</CardTitle>
+                            <CardTitle className="text-white">Price Chart</CardTitle>
                         </CardHeader>
                         <CardContent>
-                            <div className="text-center mb-4">
-                                <p className="text-4xl font-bold text-white">${price.toFixed(5)}</p>
-                                <p className="text-sm text-gray-400">Last update: {new Date().toLocaleTimeString()}</p>
+                            <div className="mb-4">
+                                <Label className="text-gray-300">Select Symbol</Label>
+                                <select
+                                    value={symbol}
+                                    onChange={(e) => handleSymbolChange(e.target.value)}
+                                    className="w-full mt-1 p-2 rounded-lg bg-darknavy border border-gray-700 text-white"
+                                >
+                                    <option value="EURUSD">EURUSD - Euro/US Dollar</option>
+                                    <option value="GBPUSD">GBPUSD - British Pound/US Dollar</option>
+                                    <option value="XAUUSD">XAUUSD - Gold</option>
+                                </select>
                             </div>
+
+                            <div className="text-center mb-4">
+                                <p className="text-4xl font-bold text-white">
+                                    {config.prefix}{price.toFixed(config.decimals)}
+                                </p>
+                                <p className="text-sm text-gray-400">{symbol} - Last update: {new Date().toLocaleTimeString()}</p>
+                            </div>
+
                             <div style={{ height: '400px' }}>
                                 {/* @ts-ignore */}
                                 <Chart options={chartOptions} series={chartSeries} type="line" height={350} />
                             </div>
+
                             <div className="flex justify-center gap-4 mt-4">
                                 <Button
                                     onClick={startSimulation}
@@ -132,9 +161,9 @@ export default function LivePricePage() {
                         </CardHeader>
                         <CardContent>
                             <ul className="space-y-2 text-gray-300">
-                                <li>1. Click "Start Live" to begin price simulation</li>
-                                <li>2. Price updates every second (for testing)</li>
-                                <li>3. For real MT5 price, connect via WebSocket</li>
+                                <li>1. Select symbol: EURUSD, GBPUSD, or XAUUSD (Gold)</li>
+                                <li>2. Click "Start Live" to begin price simulation</li>
+                                <li>3. Price updates every second (for testing)</li>
                                 <li>4. Use Trade Dashboard to add actual trade profits</li>
                             </ul>
                         </CardContent>
