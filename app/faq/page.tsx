@@ -1,9 +1,8 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { useRouter } from "next/navigation";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
-import { Button } from "@/components/ui/button";
 import { ChevronDown, ChevronUp } from "lucide-react";
 import Topbar from "@/components/Topbar";
 import Sidebar from "@/components/Sidebar";
@@ -55,8 +54,10 @@ export default function FAQPage() {
     const [avatarUrl, setAvatarUrl] = useState("");
     const [loading, setLoading] = useState(true);
     const [openIndex, setOpenIndex] = useState<number | null>(null);
+    const [mounted, setMounted] = useState(false);
 
-    useState(() => {
+    useEffect(() => {
+        setMounted(true);
         const email = localStorage.getItem("userEmail");
         if (!email) {
             router.push("/login");
@@ -64,13 +65,13 @@ export default function FAQPage() {
         }
         setUserEmail(email);
         setLoading(false);
-    });
+    }, [router]);
 
     const toggleFAQ = (index: number) => {
         setOpenIndex(openIndex === index ? null : index);
     };
 
-    if (loading) {
+    if (!mounted || loading) {
         return (
             <div className="flex min-h-screen items-center justify-center bg-darknavy">
                 <p className="text-gray-400">Loading...</p>
