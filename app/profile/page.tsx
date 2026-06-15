@@ -89,6 +89,10 @@ export default function ProfilePage() {
         if (data.success) {
             setUser({ ...user!, avatar_url: publicUrl });
             setMessage("Avatar updated successfully!");
+            // Refresh dashboard Topbar
+            setTimeout(() => {
+                window.location.reload();
+            }, 1000);
         } else {
             setMessage("Failed to save avatar URL");
         }
