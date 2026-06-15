@@ -379,6 +379,44 @@ app.post("/add-trade", async (req, res) => {
     res.json({ success: true, message: "Trade added" });
 });
 
+// Webhook untuk MT5 (auto update)
+app.post("/webhook/mt5", async (req, res) => {
+    const { email, symbol, profit, balance } = req.body;
+
+    if (!email || profit === undefined) {
+        return res.status(400).json({ success: false, message: "Missing data" });
+    }
+
+    // Save trade
+    await supabase
+        .from("trades")
+        .insert([{ user_email: email, symbol, profit, balance_after: balance }]);
+
+    // Update challenge
+    const { data: challenge } = await supabase
+        .from("challenges")
+        .select("*")
+        .eq("user_email", email)
+        .eq("status", "active")
+        .single();
+
+    if (challenge) {
+        const startingBalance = challenge.starting_balance || 10000;
+        const newBalance = balance || (challenge.current_balance + profit);
+        const currentProfitPercent = (newBalance - startingBalance) / startingBalance * 100;
+
+        await supabase
+            .from("challenges")
+            .update({
+                current_balance: newBalance,
+                current_profit: currentProfitPercent
+            })
+            .eq("id", challenge.id);
+    }
+
+    res.json({ success: true, message: "Trade synced from MT5" });
+});
+
 // START SERVER
 const port = process.env.PORT || 5000;
 app.listen(port, "0.0.0.0", () => {
