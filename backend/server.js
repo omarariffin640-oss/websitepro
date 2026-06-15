@@ -363,9 +363,10 @@ app.post("/add-trade", async (req, res) => {
         .eq("status", "active")
         .single();
 
+    let currentProfitPercent = 0;
     if (challenge) {
         const startingBalance = challenge.starting_balance || 10000;
-        const currentProfitPercent = (newBalance - startingBalance) / startingBalance * 100;
+        currentProfitPercent = (newBalance - startingBalance) / startingBalance * 100;
 
         await supabase
             .from("challenges")
@@ -374,6 +375,28 @@ app.post("/add-trade", async (req, res) => {
                 current_profit: currentProfitPercent
             })
             .eq("id", challenge.id);
+    }
+
+    // Send email notification
+    try {
+        const { Resend } = require('resend');
+        const resend = new Resend(process.env.RESEND_API_KEY);
+
+        await resend.emails.send({
+            from: 'onboarding@resend.dev',
+            to: email,
+            subject: `Trade ${profit >= 0 ? 'Profit' : 'Loss'} - ${symbol}`,
+            html: `
+                <h2>Trade Update</h2>
+                <p>Symbol: ${symbol}</p>
+                <p>Profit/Loss: ${profit >= 0 ? '+' : ''}${profit} USD</p>
+                <p>New Balance: ${newBalance} USD</p>
+                <p>Current Profit: ${currentProfitPercent.toFixed(2)}%</p>
+                <p>Time: ${new Date().toLocaleString()}</p>
+            `
+        });
+    } catch (emailError) {
+        console.log("Email not sent:", emailError.message);
     }
 
     res.json({ success: true, message: "Trade added" });
@@ -400,10 +423,11 @@ app.post("/webhook/mt5", async (req, res) => {
         .eq("status", "active")
         .single();
 
+    let currentProfitPercent = 0;
     if (challenge) {
         const startingBalance = challenge.starting_balance || 10000;
         const newBalance = balance || (challenge.current_balance + profit);
-        const currentProfitPercent = (newBalance - startingBalance) / startingBalance * 100;
+        currentProfitPercent = (newBalance - startingBalance) / startingBalance * 100;
 
         await supabase
             .from("challenges")
@@ -412,6 +436,27 @@ app.post("/webhook/mt5", async (req, res) => {
                 current_profit: currentProfitPercent
             })
             .eq("id", challenge.id);
+    }
+
+    // Send email notification
+    try {
+        const { Resend } = require('resend');
+        const resend = new Resend(process.env.RESEND_API_KEY);
+
+        await resend.emails.send({
+            from: 'onboarding@resend.dev',
+            to: email,
+            subject: `Trade ${profit >= 0 ? 'Profit' : 'Loss'} - ${symbol}`,
+            html: `
+                <h2>Trade Update (MT5)</h2>
+                <p>Symbol: ${symbol}</p>
+                <p>Profit/Loss: ${profit >= 0 ? '+' : ''}${profit} USD</p>
+                <p>Current Profit: ${currentProfitPercent.toFixed(2)}%</p>
+                <p>Time: ${new Date().toLocaleString()}</p>
+            `
+        });
+    } catch (emailError) {
+        console.log("Email not sent:", emailError.message);
     }
 
     res.json({ success: true, message: "Trade synced from MT5" });
