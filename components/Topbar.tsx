@@ -12,8 +12,6 @@ interface TopbarProps {
 }
 
 export default function Topbar({ onMenuClick, userEmail, avatarUrl }: TopbarProps) {
-    console.log("Topbar received avatarUrl:", avatarUrl); // ← check console
-
     return (
         <header className="sticky top-0 z-40 bg-darknavy border-b border-gray-800">
             <div className="flex items-center justify-between px-4 h-16">
@@ -37,13 +35,24 @@ export default function Topbar({ onMenuClick, userEmail, avatarUrl }: TopbarProp
 
                 {/* Kanan - Profile, Notif, Dark Mode */}
                 <div className="flex items-center gap-4">
-                    {/* Profile - guna img biasa */}
+                    {/* Profile - guna img dengan fallback */}
                     {avatarUrl ? (
                         <img
                             src={avatarUrl}
                             alt="Profile"
                             className="h-10 w-10 rounded-full object-cover cursor-pointer hover:ring-2 hover:ring-blue-500"
                             onClick={() => window.location.href = '/profile'}
+                            onError={(e) => {
+                                e.currentTarget.style.display = 'none';
+                                const parent = e.currentTarget.parentElement;
+                                if (parent) {
+                                    const div = document.createElement('div');
+                                    div.className = 'h-10 w-10 rounded-full bg-blue-500 flex items-center justify-center text-white text-base cursor-pointer hover:ring-2 hover:ring-blue-500';
+                                    div.textContent = userEmail?.charAt(0).toUpperCase() || 'U';
+                                    parent.appendChild(div);
+                                    e.currentTarget.remove();
+                                }
+                            }}
                         />
                     ) : (
                         <div
