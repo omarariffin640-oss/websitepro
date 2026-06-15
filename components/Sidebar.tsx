@@ -31,6 +31,7 @@ const menuItems = [
     { name: "Instant Account", icon: Wallet, href: "/instant-account", color: "text-purple-500" },
     { name: "Support", icon: HelpCircle, href: "/support", color: "text-cyan-500" },
     { name: "FAQ", icon: HelpCircle, href: "/faq", color: "text-cyan-500" },
+    { name: "Trade Dashboard", icon: Wallet, href: "/trade-dashboard", color: "text-orange-500" },
 ];
 
 export default function Sidebar({ isOpen, onClose }: SidebarProps) {

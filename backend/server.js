@@ -332,6 +332,53 @@ app.post("/check-rules", async (req, res) => {
     res.json({ success: true, status, message, profitPercent });
 });
 
+// Get trades
+app.get("/trades", async (req, res) => {
+    const { email } = req.query;
+    const { data, error } = await supabase
+        .from("trades")
+        .select("*")
+        .eq("user_email", email)
+        .order("created_at", { ascending: false });
+    if (error) return res.status(500).json({ error: error.message });
+    res.json(data);
+});
+
+// Add trade
+app.post("/add-trade", async (req, res) => {
+    const { email, symbol, profit, newBalance } = req.body;
+
+    // Save trade
+    const { error: tradeError } = await supabase
+        .from("trades")
+        .insert([{ user_email: email, symbol, profit, balance_after: newBalance }]);
+
+    if (tradeError) return res.status(500).json({ success: false, message: tradeError.message });
+
+    // Update challenge
+    const { data: challenge } = await supabase
+        .from("challenges")
+        .select("*")
+        .eq("user_email", email)
+        .eq("status", "active")
+        .single();
+
+    if (challenge) {
+        const startingBalance = challenge.starting_balance || 10000;
+        const currentProfitPercent = (newBalance - startingBalance) / startingBalance * 100;
+
+        await supabase
+            .from("challenges")
+            .update({
+                current_balance: newBalance,
+                current_profit: currentProfitPercent
+            })
+            .eq("id", challenge.id);
+    }
+
+    res.json({ success: true, message: "Trade added" });
+});
+
 // START SERVER
 const port = process.env.PORT || 5000;
 app.listen(port, "0.0.0.0", () => {
