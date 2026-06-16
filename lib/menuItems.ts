@@ -29,10 +29,13 @@ export type MenuItem = {
     adminOnly?: boolean;
 };
 
-// Admin menus
+// ============ ADMIN MENUS ============
 const adminMenus: MenuItem[] = [
     {
-        name: "User Management", icon: Users, color: "text-green-500", adminOnly: true,
+        name: "User Management",
+        icon: Users,
+        color: "text-green-500",
+        adminOnly: true,
         children: [
             { name: "All Users", icon: Users, href: "/admin/users", color: "text-green-500" },
             { name: "KYC Verification", icon: ShieldCheck, href: "/admin/kyc", color: "text-yellow-500" },
@@ -47,9 +50,10 @@ const adminMenus: MenuItem[] = [
     { name: "Admin Logs", icon: ClipboardList, href: "/admin/logs", color: "text-gray-500", adminOnly: true },
 ];
 
-// Trader menus
+// ============ TRADER MENUS ============
 const traderMenus: MenuItem[] = [
     { name: "Dashboard", icon: LayoutDashboard, href: "/dashboard", color: "text-blue-500" },
+    { name: "Users", icon: Users, href: "/users", color: "text-green-500" },  // ← TAMBAH USERS
     { name: "Accounts", icon: FolderKanban, href: "/accounts", color: "text-orange-500" },
     { name: "Challenges", icon: Trophy, href: "/challenges", color: "text-yellow-500" },
     { name: "Instant Account", icon: Zap, href: "/instant-account", color: "text-purple-500" },
@@ -61,6 +65,7 @@ const traderMenus: MenuItem[] = [
     { name: "Settings", icon: Settings, href: "/settings", color: "text-gray-400" },
 ];
 
+// ============ GET MENU BY ROLE ============
 export const getMenuItems = (role: string) => {
     if (role === 'admin') {
         return [...traderMenus, ...adminMenus];
