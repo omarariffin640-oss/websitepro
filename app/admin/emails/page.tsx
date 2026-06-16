@@ -43,28 +43,28 @@ export default function EmailTemplatesPage() {
                             <CardHeader><CardTitle className="text-white">Welcome Email</CardTitle></CardHeader>
                             <CardContent>
                                 <p className="text-gray-400 text-sm">Sent to new users upon registration.</p>
-                                <Button variant="outline" className="mt-4 text-white border-gray-700">Edit Template</Button>
+                                <button className="mt-4 px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700">Edit Template</button>
                             </CardContent>
                         </Card>
                         <Card className="bg-darkcard">
                             <CardHeader><CardTitle className="text-white">KYC Approved</CardTitle></CardHeader>
                             <CardContent>
                                 <p className="text-gray-400 text-sm">Sent when KYC is approved.</p>
-                                <Button variant="outline" className="mt-4 text-white border-gray-700">Edit Template</Button>
+                                <button className="mt-4 px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700">Edit Template</button>
                             </CardContent>
                         </Card>
                         <Card className="bg-darkcard">
                             <CardHeader><CardTitle className="text-white">Payout Confirmation</CardTitle></CardHeader>
                             <CardContent>
                                 <p className="text-gray-400 text-sm">Sent after payout is processed.</p>
-                                <Button variant="outline" className="mt-4 text-white border-gray-700">Edit Template</Button>
+                                <button className="mt-4 px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700">Edit Template</button>
                             </CardContent>
                         </Card>
                         <Card className="bg-darkcard">
                             <CardHeader><CardTitle className="text-white">Challenge Started</CardTitle></CardHeader>
                             <CardContent>
                                 <p className="text-gray-400 text-sm">Sent when user starts a challenge.</p>
-                                <Button variant="outline" className="mt-4 text-white border-gray-700">Edit Template</Button>
+                                <button className="mt-4 px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700">Edit Template</button>
                             </CardContent>
                         </Card>
                     </div>
