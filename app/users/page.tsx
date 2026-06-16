@@ -5,10 +5,11 @@ import { useRouter } from "next/navigation";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
+import { Badge } from "@/components/ui/badge";
 import Topbar from "@/components/Topbar";
 import Sidebar from "@/components/Sidebar";
 import Papa from "papaparse";
-import { Download } from "lucide-react";
+import { Download, Eye, Edit, UserCog } from "lucide-react";
 
 type User = {
     id: number;
@@ -16,12 +17,23 @@ type User = {
     name?: string;
     avatar_url?: string;
     created_at?: string;
+    role?: string;
+};
+
+type Account = {
+    id: number;
+    user_id: number;
+    account_name: string;
+    balance: number;
+    status: string;
+    created_at: string;
 };
 
 export default function UsersPage() {
     const router = useRouter();
     const [sidebarOpen, setSidebarOpen] = useState(false);
     const [users, setUsers] = useState<User[]>([]);
+    const [accounts, setAccounts] = useState<Account[]>([]);
     const [filteredUsers, setFilteredUsers] = useState<User[]>([]);
     const [userEmail, setUserEmail] = useState("");
     const [avatarUrl, setAvatarUrl] = useState("");
@@ -36,6 +48,7 @@ export default function UsersPage() {
         }
         setUserEmail(email);
 
+        // Fetch users
         fetch("https://websitepro-d5cu.onrender.com/users")
             .then(res => res.json())
             .then(data => {
@@ -48,6 +61,12 @@ export default function UsersPage() {
                 setLoading(false);
             })
             .catch(() => setLoading(false));
+
+        // Fetch accounts
+        fetch("https://websitepro-d5cu.onrender.com/accounts")
+            .then(res => res.json())
+            .then(data => setAccounts(data))
+            .catch(() => console.log("No accounts data"));
     }, [router]);
 
     useEffect(() => {
@@ -63,13 +82,30 @@ export default function UsersPage() {
         }
     }, [search, users]);
 
+    const getUserAccount = (userId: number) => {
+        return accounts.find(acc => acc.user_id === userId);
+    };
+
+    const getStatusBadge = (status: string) => {
+        switch (status) {
+            case "active":
+                return <Badge className="bg-green-500">Active</Badge>;
+            case "banned":
+                return <Badge className="bg-red-500">Banned</Badge>;
+            case "pending":
+                return <Badge className="bg-yellow-500">Pending</Badge>;
+            default:
+                return <Badge className="bg-gray-500">Inactive</Badge>;
+        }
+    };
+
     const exportToCSV = () => {
         const csvData = filteredUsers.map(user => ({
             Email: user.email,
             Name: user.name || "-",
+            Role: user.role || "trader",
             "Joined Date": user.created_at ? new Date(user.created_at).toLocaleDateString() : "-"
         }));
-
         const csv = Papa.unparse(csvData);
         const blob = new Blob([csv], { type: "text/csv" });
         const url = URL.createObjectURL(blob);
@@ -115,28 +151,75 @@ export default function UsersPage() {
                     </div>
 
                     <Card className="bg-darkcard">
-                        <CardContent className="p-6">
-                            <div className="space-y-3">
-                                {filteredUsers.length === 0 ? (
-                                    <p className="text-gray-400 text-center">No users found</p>
-                                ) : (
-                                    filteredUsers.map((user) => (
-                                        <div key={user.id} className="flex items-center gap-4 p-3 rounded-lg bg-darknavy/50 hover:bg-darknavy transition-colors">
-                                            <div className="w-10 h-10 rounded-full bg-blue-500 flex items-center justify-center text-white font-bold">
-                                                {user.email.charAt(0).toUpperCase()}
-                                            </div>
-                                            <div className="flex-1">
-                                                <p className="font-medium text-white">{user.name || user.email}</p>
-                                                <p className="text-sm text-gray-400">{user.email}</p>
-                                            </div>
-                                            <div className="text-right">
-                                                <p className="text-xs text-gray-500">
-                                                    {user.created_at ? new Date(user.created_at).toLocaleDateString() : "New"}
-                                                </p>
-                                            </div>
-                                        </div>
-                                    ))
-                                )}
+                        <CardHeader>
+                            <CardTitle className="text-white">User List</CardTitle>
+                        </CardHeader>
+                        <CardContent>
+                            <div className="overflow-x-auto">
+                                <table className="w-full text-left">
+                                    <thead className="border-b border-gray-700">
+                                        <tr>
+                                            <th className="pb-3 text-gray-400 font-medium">User</th>
+                                            <th className="pb-3 text-gray-400 font-medium">Account Type</th>
+                                            <th className="pb-3 text-gray-400 font-medium">Balance</th>
+                                            <th className="pb-3 text-gray-400 font-medium">Profit</th>
+                                            <th className="pb-3 text-gray-400 font-medium">Status</th>
+                                            <th className="pb-3 text-gray-400 font-medium">Action</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        {filteredUsers.length === 0 ? (
+                                            <tr>
+                                                <td colSpan={6} className="py-4 text-center text-gray-400">No users found</td>
+                                            </tr>
+                                        ) : (
+                                            filteredUsers.map((user) => {
+                                                const account = getUserAccount(user.id);
+                                                const balance = account?.balance || 0;
+                                                const profit = 0; // Placeholder - nanti connect ke challenge profit
+
+                                                return (
+                                                    <tr key={user.id} className="border-b border-gray-800 hover:bg-gray-800/30 transition-colors">
+                                                        <td className="py-3">
+                                                            <div className="flex items-center gap-3">
+                                                                <div className="w-8 h-8 rounded-full bg-blue-500 flex items-center justify-center text-white text-xs font-bold">
+                                                                    {user.email.charAt(0).toUpperCase()}
+                                                                </div>
+                                                                <div>
+                                                                    <p className="text-white font-medium">{user.name || user.email}</p>
+                                                                    <p className="text-xs text-gray-400">{user.email}</p>
+                                                                </div>
+                                                            </div>
+                                                        </td>
+                                                        <td className="py-3">
+                                                            <Badge variant="outline" className="text-blue-400 border-blue-400">
+                                                                {account?.account_name || "Standard"}
+                                                            </Badge>
+                                                        </td>
+                                                        <td className="py-3 text-white">${balance.toLocaleString()}</td>
+                                                        <td className={`py-3 ${profit >= 0 ? "text-green-500" : "text-red-500"}`}>
+                                                            {profit >= 0 ? "+" : ""}{profit}
+                                                        </td>
+                                                        <td className="py-3">{getStatusBadge(account?.status || "active")}</td>
+                                                        <td className="py-3">
+                                                            <div className="flex gap-1">
+                                                                <Button variant="ghost" size="icon" className="h-8 w-8 text-blue-400 hover:text-blue-300">
+                                                                    <Eye className="h-4 w-4" />
+                                                                </Button>
+                                                                <Button variant="ghost" size="icon" className="h-8 w-8 text-green-400 hover:text-green-300">
+                                                                    <Edit className="h-4 w-4" />
+                                                                </Button>
+                                                                <Button variant="ghost" size="icon" className="h-8 w-8 text-purple-400 hover:text-purple-300">
+                                                                    <UserCog className="h-4 w-4" />
+                                                                </Button>
+                                                            </div>
+                                                        </td>
+                                                    </tr>
+                                                );
+                                            })
+                                        )}
+                                    </tbody>
+                                </table>
                             </div>
                         </CardContent>
                     </Card>
