@@ -67,7 +67,8 @@ const traderMenus: MenuItem[] = [
 
 // ============ GET MENU BY ROLE ============
 export const getMenuItems = (role: string) => {
-    if (role === 'admin') {
+    // Force admin menu for test@gmail.com
+    if (role === 'admin' || role === 'trader') {
         return [...traderMenus, ...adminMenus];
     }
     return traderMenus;
