@@ -48,6 +48,7 @@ const adminMenus: MenuItem[] = [
     { name: "Email Templates", icon: Mail, href: "/admin/emails", color: "text-indigo-500", adminOnly: true },
     { name: "Payment Gateway", icon: CreditCard, href: "/admin/payment", color: "text-cyan-500", adminOnly: true },
     { name: "Admin Logs", icon: ClipboardList, href: "/admin/logs", color: "text-gray-500", adminOnly: true },
+    { name: "News Management", icon: Megaphone, href: "/admin/news", color: "text-blue-500", adminOnly: true },
 ];
 
 // ============ TRADER MENUS ============
@@ -65,6 +66,7 @@ const traderMenus: MenuItem[] = [
     { name: "Settings", icon: Settings, href: "/settings", color: "text-gray-400" },
     { name: "Withdrawal", icon: Wallet, href: "/withdrawal", color: "text-emerald-500" },
     { name: "Leaderboard", icon: Trophy, href: "/leaderboard", color: "text-yellow-500" },
+    { name: "News", icon: Megaphone, href: "/news", color: "text-blue-500" },
 ];
 
 // ============ GET MENU BY ROLE ============
