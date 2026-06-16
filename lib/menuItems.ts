@@ -17,7 +17,8 @@ import {
     BarChart3,
     CreditCard,
     AlertTriangle,
-    ClipboardList
+    ClipboardList,
+    Megaphone
 } from "lucide-react";
 
 export type MenuItem = {
@@ -54,7 +55,7 @@ const adminMenus: MenuItem[] = [
 // ============ TRADER MENUS ============
 const traderMenus: MenuItem[] = [
     { name: "Dashboard", icon: LayoutDashboard, href: "/dashboard", color: "text-blue-500" },
-    { name: "Users", icon: Users, href: "/users", color: "text-green-500" },  // ← TAMBAH USERS
+    { name: "Users", icon: Users, href: "/users", color: "text-green-500" },
     { name: "Accounts", icon: FolderKanban, href: "/accounts", color: "text-orange-500" },
     { name: "Challenges", icon: Trophy, href: "/challenges", color: "text-yellow-500" },
     { name: "Instant Account", icon: Zap, href: "/instant-account", color: "text-purple-500" },
@@ -71,8 +72,7 @@ const traderMenus: MenuItem[] = [
 
 // ============ GET MENU BY ROLE ============
 export const getMenuItems = (role: string) => {
-    // Force admin menu for test@gmail.com
-    if (role === 'admin' || role === 'trader') {
+    if (role === 'admin') {
         return [...traderMenus, ...adminMenus];
     }
     return traderMenus;
