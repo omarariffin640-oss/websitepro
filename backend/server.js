@@ -462,6 +462,43 @@ app.post("/webhook/mt5", async (req, res) => {
     res.json({ success: true, message: "Trade synced from MT5" });
 });
 
+// GET withdrawals
+app.get("/withdrawals", async (req, res) => {
+    const { email } = req.query;
+    const { data, error } = await supabase
+        .from("withdrawals")
+        .select("*")
+        .eq("user_email", email)
+        .order("created_at", { ascending: false });
+    if (error) return res.status(500).json({ error: error.message });
+    res.json(data);
+});
+
+// REQUEST withdrawal
+app.post("/request-withdrawal", async (req, res) => {
+    const { email, amount, payment_method, account_details } = req.body;
+
+    // Check balance
+    const { data: challenge } = await supabase
+        .from("challenges")
+        .select("current_balance")
+        .eq("user_email", email)
+        .eq("status", "active")
+        .single();
+
+    const balance = challenge?.current_balance || 0;
+    if (amount > balance) {
+        return res.status(400).json({ success: false, message: "Insufficient balance" });
+    }
+
+    const { error } = await supabase
+        .from("withdrawals")
+        .insert([{ user_email: email, amount, payment_method, account_details }]);
+
+    if (error) return res.status(500).json({ success: false, message: error.message });
+    res.json({ success: true, message: "Withdrawal request submitted" });
+});
+
 // START SERVER
 const port = process.env.PORT || 5000;
 app.listen(port, "0.0.0.0", () => {

@@ -63,6 +63,7 @@ const traderMenus: MenuItem[] = [
     { name: "FAQ", icon: FileQuestion, href: "/faq", color: "text-cyan-500" },
     { name: "Support", icon: HelpCircle, href: "/support", color: "text-blue-400" },
     { name: "Settings", icon: Settings, href: "/settings", color: "text-gray-400" },
+    { name: "Withdrawal", icon: Wallet, href: "/withdrawal", color: "text-emerald-500" },
 ];
 
 // ============ GET MENU BY ROLE ============
