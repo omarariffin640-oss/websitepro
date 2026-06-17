@@ -101,7 +101,7 @@ export default function NewsPage() {
         <div className="min-h-screen bg-darknavy">
             <Topbar onMenuClick={() => setSidebarOpen(true)} userEmail={userEmail} avatarUrl={avatarUrl} />
             <Sidebar isOpen={sidebarOpen} onClose={() => setSidebarOpen(false)} />
-            <main className="lg:ml-64 pt-16">
+            <main className="lg:ml-64 pt-2">
                 <div className="p-6 max-w-4xl mx-auto">
                     <div className="flex items-center gap-3 mb-6">
                         <h1 className="text-2xl font-bold text-white">📢 News & Announcements</h1>
