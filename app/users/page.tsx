@@ -129,9 +129,9 @@ export default function UsersPage() {
             <Topbar onMenuClick={() => setSidebarOpen(true)} userEmail={userEmail} avatarUrl={avatarUrl} />
             <Sidebar isOpen={sidebarOpen} onClose={() => setSidebarOpen(false)} />
 
-            <main className="lg:ml-64 pt-16">
-                <div className="p-6">
-                    <div className="flex justify-between items-center mb-6">
+            <main className="lg:ml-64 pt-2">
+                <div className="p-3">
+                    <div className="flex justify-between items-center mb-3">
                         <h1 className="text-2xl font-bold text-white">Users</h1>
                         <div className="flex gap-3">
                             <Button onClick={exportToCSV} className="bg-green-500 hover:bg-green-600">
