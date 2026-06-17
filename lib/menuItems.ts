@@ -1,24 +1,29 @@
 import {
     LayoutDashboard,
     FolderKanban,
-    Users,
+    ClipboardList,
     Trophy,
-    Wallet,
-    Settings,
-    HelpCircle,
-    FileQuestion,
-    TrendingUp,
     Zap,
+    TrendingUp,
+    Wallet,
+    Award,
+    Share2,
+    Store,
+    Megaphone,
+    PenSquare,
+    FileQuestion,
+    HelpCircle,
+    Settings,
+    LogOut,
+    Users,
     ShieldCheck,
     CheckCircle,
-    Gift,
     Tag,
     Mail,
     BarChart3,
     CreditCard,
     AlertTriangle,
-    ClipboardList,
-    Megaphone
+    ClipboardList as ClipboardListIcon
 } from "lucide-react";
 
 export type MenuItem = {
@@ -29,6 +34,46 @@ export type MenuItem = {
     children?: MenuItem[];
     adminOnly?: boolean;
 };
+
+// ============ TRADER MENUS ============
+const traderMenus: MenuItem[] = [
+    // Main
+    { name: "Dashboard", icon: LayoutDashboard, href: "/dashboard", color: "text-blue-500" },
+    { name: "Accounts", icon: FolderKanban, href: "/accounts", color: "text-orange-500" },
+    { name: "Orders", icon: ClipboardList, href: "/orders", color: "text-blue-500" },
+    { name: "Challenges", icon: Trophy, href: "/challenges", color: "text-yellow-500" },
+    { name: "Instant Account", icon: Zap, href: "/instant-account", color: "text-purple-500" },
+    // Separator
+    { name: "separator", icon: null, href: "", color: "" },
+    // Trading
+    { name: "Trade Dashboard", icon: TrendingUp, href: "/trade-dashboard", color: "text-orange-500" },
+    { name: "Live Prices", icon: TrendingUp, href: "/live-price", color: "text-sky-500" },
+    // Separator
+    { name: "separator", icon: null, href: "", color: "" },
+    // Finance
+    { name: "Payouts", icon: Wallet, href: "/payouts", color: "text-emerald-500" },
+    { name: "Withdrawal", icon: Wallet, href: "/withdrawal", color: "text-emerald-500" },
+    { name: "Certificates", icon: Award, href: "/certificates", color: "text-yellow-500" },
+    // Separator
+    { name: "separator", icon: null, href: "", color: "" },
+    // Community
+    { name: "Leaderboard", icon: Trophy, href: "/leaderboard", color: "text-yellow-500" },
+    { name: "Affiliate Program", icon: Share2, href: "/affiliate", color: "text-purple-500" },
+    // Separator
+    { name: "separator", icon: null, href: "", color: "" },
+    // Content
+    { name: "News", icon: Megaphone, href: "/news", color: "text-blue-500" },
+    { name: "Blog", icon: PenSquare, href: "/blog", color: "text-pink-500" },
+    { name: "Marketplace", icon: Store, href: "/marketplace", color: "text-emerald-500" },
+    // Separator
+    { name: "separator", icon: null, href: "", color: "" },
+    // Support
+    { name: "FAQ", icon: FileQuestion, href: "/faq", color: "text-cyan-500" },
+    { name: "Support", icon: HelpCircle, href: "/support", color: "text-blue-400" },
+    { name: "Settings", icon: Settings, href: "/settings", color: "text-gray-400" },
+    { name: "Upgrade Plan", icon: Zap, href: "/upgrade", color: "text-yellow-500" },
+    { name: "Logout", icon: LogOut, href: "/logout", color: "text-red-400" },
+];
 
 // ============ ADMIN MENUS ============
 const adminMenus: MenuItem[] = [
@@ -46,35 +91,20 @@ const adminMenus: MenuItem[] = [
     { name: "Payout Approval", icon: Wallet, href: "/admin/payout-approval", color: "text-emerald-500", adminOnly: true },
     { name: "Revenue Reports", icon: BarChart3, href: "/admin/revenue", color: "text-purple-500", adminOnly: true },
     { name: "Coupons", icon: Tag, href: "/admin/coupons", color: "text-pink-500", adminOnly: true },
+    { name: "Affiliate Management", icon: Share2, href: "/admin/affiliate", color: "text-purple-500", adminOnly: true },
     { name: "Email Templates", icon: Mail, href: "/admin/emails", color: "text-indigo-500", adminOnly: true },
     { name: "Payment Gateway", icon: CreditCard, href: "/admin/payment", color: "text-cyan-500", adminOnly: true },
-    { name: "Admin Logs", icon: ClipboardList, href: "/admin/logs", color: "text-gray-500", adminOnly: true },
+    { name: "Blog Management", icon: PenSquare, href: "/admin/blog", color: "text-pink-500", adminOnly: true },
+    { name: "Marketplace Management", icon: Store, href: "/admin/marketplace", color: "text-emerald-500", adminOnly: true },
     { name: "News Management", icon: Megaphone, href: "/admin/news", color: "text-blue-500", adminOnly: true },
-];
-
-// ============ TRADER MENUS ============
-const traderMenus: MenuItem[] = [
-    { name: "Dashboard", icon: LayoutDashboard, href: "/dashboard", color: "text-blue-500" },
-    { name: "Users", icon: Users, href: "/users", color: "text-green-500" },
-    { name: "Accounts", icon: FolderKanban, href: "/accounts", color: "text-orange-500" },
-    { name: "Challenges", icon: Trophy, href: "/challenges", color: "text-yellow-500" },
-    { name: "Instant Account", icon: Zap, href: "/instant-account", color: "text-purple-500" },
-    { name: "Trade Dashboard", icon: TrendingUp, href: "/trade-dashboard", color: "text-orange-500" },
-    { name: "Live Price", icon: TrendingUp, href: "/live-price", color: "text-sky-500" },
-    { name: "Payouts", icon: Wallet, href: "/payouts", color: "text-emerald-500" },
-    { name: "FAQ", icon: FileQuestion, href: "/faq", color: "text-cyan-500" },
-    { name: "Support", icon: HelpCircle, href: "/support", color: "text-blue-400" },
-    { name: "Settings", icon: Settings, href: "/settings", color: "text-gray-400" },
-    { name: "Withdrawal", icon: Wallet, href: "/withdrawal", color: "text-emerald-500" },
-    { name: "Leaderboard", icon: Trophy, href: "/leaderboard", color: "text-yellow-500" },
-    { name: "News", icon: Megaphone, href: "/news", color: "text-blue-500" },
+    { name: "Admin Logs", icon: ClipboardListIcon, href: "/admin/logs", color: "text-gray-500", adminOnly: true },
 ];
 
 // ============ GET MENU BY ROLE ============
 export const getMenuItems = (role: string) => {
-    // Show admin menus for both admin and trader (for testing)
-    if (role === 'admin' || role === 'trader') {
+    if (role === 'admin') {
         return [...traderMenus, ...adminMenus];
     }
-    return traderMenus;
+    // Filter out adminOnly menus for traders
+    return traderMenus.filter(item => !item.adminOnly);
 };
