@@ -35,9 +35,9 @@ export default function RevenueReportsPage() {
         <div className="min-h-screen bg-darknavy">
             <Topbar onMenuClick={() => setSidebarOpen(true)} userEmail={userEmail} avatarUrl={avatarUrl} />
             <Sidebar isOpen={sidebarOpen} onClose={() => setSidebarOpen(false)} />
-            <main className="lg:ml-64 pt-16">
-                <div className="p-6">
-                    <h1 className="text-2xl font-bold text-white mb-6">Revenue Reports</h1>
+            <main className="lg:ml-64 pt-2">
+                <div className="p-3">
+                    <h1 className="text-2xl font-bold text-white mb-3">Revenue Reports</h1>
                     <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
                         <Card className="bg-darkcard">
                             <CardHeader>
