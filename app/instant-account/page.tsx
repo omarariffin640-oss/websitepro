@@ -84,9 +84,9 @@ export default function InstantAccountPage() {
             <Topbar onMenuClick={() => setSidebarOpen(true)} userEmail={userEmail} avatarUrl={avatarUrl} />
             <Sidebar isOpen={sidebarOpen} onClose={() => setSidebarOpen(false)} />
 
-            <main className="lg:ml-64 pt-16">
-                <div className="p-6">
-                    <h1 className="text-2xl font-bold text-white mb-6">Instant Account</h1>
+            <main className="lg:ml-64 pt-2">
+                <div className="p-3">
+                    <h1 className="text-2xl font-bold text-white mb-3">Instant Account</h1>
 
                     {message && (
                         <div className={`mb-4 p-3 rounded-lg ${message.includes("✅") ? "bg-green-500/20 border border-green-500" : "bg-red-500/20 border border-red-500"}`}>
