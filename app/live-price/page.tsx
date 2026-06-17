@@ -102,9 +102,9 @@ export default function LivePricePage() {
             <Topbar onMenuClick={() => setSidebarOpen(true)} userEmail={userEmail} avatarUrl={avatarUrl} />
             <Sidebar isOpen={sidebarOpen} onClose={() => setSidebarOpen(false)} />
 
-            <main className="lg:ml-64 pt-16">
-                <div className="p-6">
-                    <h1 className="text-2xl font-bold text-white mb-6">Live Price Chart</h1>
+            <main className="lg:ml-64 pt-2">
+                <div className="p-3">
+                    <h1 className="text-2xl font-bold text-white mb-3">Live Price Chart</h1>
 
                     <Card className="bg-darkcard mb-6">
                         <CardHeader>
