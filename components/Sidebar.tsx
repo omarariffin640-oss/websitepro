@@ -4,7 +4,7 @@ import Link from "next/link";
 import { usePathname, useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
 import { Button } from "@/components/ui/button";
-import { ChevronDown, ChevronRight, LogOut, X, Megaphone } from "lucide-react";
+import { ChevronDown, ChevronRight, LogOut, X, Megaphone, Zap } from "lucide-react";
 import { getMenuItems, MenuItem } from "@/lib/menuItems";
 
 interface SidebarProps {
@@ -160,6 +160,21 @@ export default function Sidebar({ isOpen, onClose }: SidebarProps) {
                     </div>
                 </div>
 
+                {/* Upgrade Plan */}
+                <div className="p-3 border-t border-gray-800 bg-darknavy/95">
+                    <div className="p-3 rounded-xl bg-gradient-to-r from-blue-500/20 to-purple-500/20 border border-blue-500/30">
+                        <div className="flex items-center gap-2">
+                            <Zap className="h-4 w-4 text-yellow-400" />
+                            <div className="flex-1">
+                                <p className="text-xs text-white font-semibold">Upgrade Plan</p>
+                                <p className="text-xs text-gray-400">Unlock more features</p>
+                            </div>
+                            <Button variant="ghost" size="sm" className="text-blue-400 hover:text-blue-300 text-xs px-2 h-7">
+                                Upgrade
+                            </Button>
+                        </div>
+                    </div>
+                </div>
                 {/* Logout Button */}
                 <div className="absolute bottom-0 left-0 right-0 p-3 border-t border-gray-800 bg-darknavy/95">
                     <button
