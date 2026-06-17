@@ -207,9 +207,9 @@ export default function DashboardPage() {
             <Topbar onMenuClick={() => setSidebarOpen(true)} userEmail={userEmail} avatarUrl={avatarUrl} />
             <Sidebar isOpen={sidebarOpen} onClose={() => setSidebarOpen(false)} />
 
-            <main className="lg:ml-64 pt-16">
-                <div className="p-6">
-                    <h1 className="text-2xl font-bold text-white mb-6">Dashboard</h1>
+            <main className="lg:ml-64 pt-3">
+                <div className="p-3">
+                    <h1 className="text-2xl font-bold text-white mb-3">Dashboard</h1>
 
                     {/* Active Challenge Status */}
                     {activeChallenge && (
