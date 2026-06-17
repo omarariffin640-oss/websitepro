@@ -49,7 +49,7 @@ export default function AdminNewsPage() {
         <div className="min-h-screen bg-darknavy">
             <Topbar onMenuClick={() => setSidebarOpen(true)} userEmail={userEmail} avatarUrl={avatarUrl} />
             <Sidebar isOpen={sidebarOpen} onClose={() => setSidebarOpen(false)} />
-            <main className="lg:ml-64 pt-16">
+            <main className="lg:ml-64 pt-2">
                 <div className="p-6 max-w-3xl mx-auto">
                     <h1 className="text-2xl font-bold text-white mb-6">📝 Post News</h1>
 
