@@ -128,10 +128,10 @@ export default function UsersPage() {
             <Topbar onMenuClick={() => setSidebarOpen(true)} userEmail={userEmail} avatarUrl={avatarUrl} />
             <Sidebar isOpen={sidebarOpen} onClose={() => setSidebarOpen(false)} />
 
-            <main className="lg:ml-64 pt-16">
-                <div className="p-4 md:p-6">
+            <main className="lg:ml-64 pt-2">
+                <div className="p-3 md:p-4">
                     {/* Header */}
-                    <div className="flex flex-col md:flex-row justify-between items-start md:items-center gap-4 mb-4">
+                    <div className="flex flex-col md:flex-row justify-between items-start md:items-center gap-3 mb-3">
                         <div>
                             <h1 className="text-2xl font-bold text-white">Users</h1>
                             <p className="text-sm text-gray-400">Manage all registered users</p>
