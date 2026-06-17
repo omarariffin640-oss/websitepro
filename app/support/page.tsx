@@ -90,9 +90,9 @@ export default function SupportPage() {
             <Topbar onMenuClick={() => setSidebarOpen(true)} userEmail={userEmail} avatarUrl={avatarUrl} />
             <Sidebar isOpen={sidebarOpen} onClose={() => setSidebarOpen(false)} />
 
-            <main className="lg:ml-64 pt-16">
-                <div className="p-6">
-                    <h1 className="text-2xl font-bold text-white mb-6">Support</h1>
+            <main className="lg:ml-64 pt-2">
+                <div className="p-3">
+                    <h1 className="text-2xl font-bold text-white mb-3">Support</h1>
 
                     {submitMessage && (
                         <div className={`mb-4 p-3 rounded-lg ${submitMessage.includes("successfully") ? "bg-green-500/20 border border-green-500" : "bg-yellow-500/20 border border-yellow-500"}`}>
