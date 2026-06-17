@@ -72,7 +72,8 @@ const traderMenus: MenuItem[] = [
 
 // ============ GET MENU BY ROLE ============
 export const getMenuItems = (role: string) => {
-    if (role === 'admin') {
+    // Show admin menus for both admin and trader (for testing)
+    if (role === 'admin' || role === 'trader') {
         return [...traderMenus, ...adminMenus];
     }
     return traderMenus;
