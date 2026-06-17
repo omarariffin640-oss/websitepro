@@ -34,9 +34,9 @@ export default function AccountApprovalPage() {
         <div className="min-h-screen bg-darknavy">
             <Topbar onMenuClick={() => setSidebarOpen(true)} userEmail={userEmail} avatarUrl={avatarUrl} />
             <Sidebar isOpen={sidebarOpen} onClose={() => setSidebarOpen(false)} />
-            <main className="lg:ml-64 pt-16">
-                <div className="p-6">
-                    <h1 className="text-2xl font-bold text-white mb-6">Account Approval</h1>
+            <main className="lg:ml-64 pt-2">
+                <div className="p-3">
+                    <h1 className="text-2xl font-bold text-white mb-3">Account Approval</h1>
                     <Card className="bg-darkcard">
                         <CardHeader><CardTitle className="text-white">Pending Accounts</CardTitle></CardHeader>
                         <CardContent>
