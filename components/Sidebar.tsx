@@ -26,7 +26,6 @@ export default function Sidebar({ isOpen, onClose }: SidebarProps) {
             return;
         }
 
-        // Fetch user role from backend
         fetch("https://websitepro-d5cu.onrender.com/users")
             .then(res => res.json())
             .then(users => {
@@ -142,27 +141,15 @@ export default function Sidebar({ isOpen, onClose }: SidebarProps) {
                     </Button>
                 </div>
 
-                {/* Menu Items */}
-                <nav className="p-3 space-y-1 overflow-y-auto" style={{ height: "calc(100% - 140px)" }}>
+                {/* Menu Items + Upgrade + Special Offer */}
+                <nav className="p-3 space-y-1 overflow-y-auto" style={{ height: "calc(100% - 100px)" }}>
                     {menuItems.map(item => renderMenuItem(item))}
-                </nav>
 
-                {/* Promotion Banner */}
-                <div className="absolute bottom-16 left-0 right-0 p-3 border-t border-gray-800">
-                    <div className="p-3 rounded-xl bg-gradient-to-r from-blue-500/20 to-purple-500/20 border border-blue-500/30">
-                        <div className="flex items-start gap-2">
-                            <Megaphone className="h-4 w-4 text-blue-400 shrink-0 mt-0.5" />
-                            <div className="flex-1">
-                                <p className="text-xs text-blue-400 font-semibold">🎉 Special Offer!</p>
-                                <p className="text-xs text-gray-300 mt-1">10K Account <span className="line-through text-gray-500">$99</span> → <span className="text-green-400">$89</span></p>
-                            </div>
-                        </div>
-                    </div>
-                </div>
+                    {/* Divider */}
+                    <div className="pt-2 mt-2 border-t border-gray-800"></div>
 
-                {/* Upgrade Plan */}
-                <div className="p-3 border-t border-gray-800 bg-darknavy/95">
-                    <div className="p-3 rounded-xl bg-gradient-to-r from-blue-500/20 to-purple-500/20 border border-blue-500/30">
+                    {/* Upgrade Plan - dalam nav */}
+                    <div className="p-3 rounded-xl bg-gradient-to-r from-blue-500/20 to-purple-500/20 border border-blue-500/30 mt-2">
                         <div className="flex items-center gap-2">
                             <Zap className="h-4 w-4 text-yellow-400" />
                             <div className="flex-1">
@@ -174,8 +161,20 @@ export default function Sidebar({ isOpen, onClose }: SidebarProps) {
                             </Button>
                         </div>
                     </div>
-                </div>
-                {/* Logout Button */}
+
+                    {/* Special Offer Banner - dalam nav */}
+                    <div className="p-3 rounded-xl bg-gradient-to-r from-orange-500/20 to-red-500/20 border border-orange-500/30">
+                        <div className="flex items-start gap-2">
+                            <Megaphone className="h-4 w-4 text-orange-400 shrink-0 mt-0.5" />
+                            <div className="flex-1">
+                                <p className="text-xs text-orange-400 font-semibold">🎉 Special Offer!</p>
+                                <p className="text-xs text-gray-300 mt-1">10K Account <span className="line-through text-gray-500">$99</span> → <span className="text-green-400">$89</span></p>
+                            </div>
+                        </div>
+                    </div>
+                </nav>
+
+                {/* Logout Button - absolute bottom */}
                 <div className="absolute bottom-0 left-0 right-0 p-3 border-t border-gray-800 bg-darknavy/95">
                     <button
                         onClick={handleLogout}
