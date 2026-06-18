@@ -34,11 +34,12 @@ export default function HomePage() {
     setLoading(false);
   }, [router]);
 
+  // Stats Cards - Warna Lime & Teal
   const stats = [
-    { title: "Total Balance", subtitle: "All accounts combined", value: "$104,230", icon: Wallet, color: "text-blue-500", bg: "bg-blue-500/10" },
-    { title: "Total Profit", subtitle: "All time profit", value: "+$8,450", icon: TrendingUp, color: "text-green-500", bg: "bg-green-500/10" },
-    { title: "Total Accounts", subtitle: "All user accounts", value: "3,718", icon: FolderKanban, color: "text-purple-500", bg: "bg-purple-500/10" },
-    { title: "Active Accounts", subtitle: "Currently active traders", value: "1,807", icon: Users, color: "text-orange-500", bg: "bg-orange-500/10" },
+    { title: "Total Balance", subtitle: "All accounts combined", value: "$104,230", icon: Wallet, color: "text-lime-400", bg: "bg-lime-500/10" },
+    { title: "Total Profit", subtitle: "All time profit", value: "+$8,450", icon: TrendingUp, color: "text-teal-400", bg: "bg-teal-500/10" },
+    { title: "Total Accounts", subtitle: "All user accounts", value: "3,718", icon: FolderKanban, color: "text-lime-400", bg: "bg-lime-500/10" },
+    { title: "Active Accounts", subtitle: "Currently active traders", value: "1,807", icon: Users, color: "text-teal-400", bg: "bg-teal-500/10" },
   ];
 
   const myAccounts = [
@@ -56,23 +57,24 @@ export default function HomePage() {
     { user: "Ravi Kumar", action: "Passed KYC Verification", time: "3 days ago" },
   ];
 
+  // Account Overview - Warna Lime, Amber, Red
   const overview = [
-    { label: "Active", value: 3, percent: 60, color: "text-blue-500", bg: "bg-blue-500/20", dot: "bg-blue-500" },
-    { label: "Pause", value: 1, percent: 20, color: "text-orange-500", bg: "bg-orange-500/20", dot: "bg-orange-500" },
-    { label: "Failed", value: 1, percent: 20, color: "text-red-500", bg: "bg-red-500/20", dot: "bg-red-500" },
+    { label: "Active", value: 3, percent: 60, color: "text-lime-400", bg: "bg-lime-500/20", dot: "bg-lime-400" },
+    { label: "Pause", value: 1, percent: 20, color: "text-amber-400", bg: "bg-amber-500/20", dot: "bg-amber-400" },
+    { label: "Failed", value: 1, percent: 20, color: "text-red-400", bg: "bg-red-500/20", dot: "bg-red-400" },
   ];
 
   const news = [
-    { title: "New Trading Rules Update", date: "May 15, 2025", icon: Megaphone, color: "text-blue-400" },
-    { title: "Memorial Day Payout Schedule", date: "May 29, 2024", icon: Calendar, color: "text-yellow-400" },
-    { title: "New Affiliate Program Launched", date: "May 10, 2024", icon: Share2, color: "text-purple-400" },
+    { title: "New Trading Rules Update", date: "May 15, 2025", icon: Megaphone, color: "text-lime-400" },
+    { title: "Memorial Day Payout Schedule", date: "May 29, 2024", icon: Calendar, color: "text-teal-400" },
+    { title: "New Affiliate Program Launched", date: "May 10, 2024", icon: Share2, color: "text-lime-400" },
   ];
 
   const getStatusBadge = (status: string) => {
     switch (status) {
-      case "Active": return <Badge className="bg-green-500/20 text-green-500 border-green-500/30">Active</Badge>;
-      case "Pause": return <Badge className="bg-orange-500/20 text-orange-500 border-orange-500/30">Pause</Badge>;
-      case "Failed": return <Badge className="bg-red-500/20 text-red-500 border-red-500/30">Failed</Badge>;
+      case "Active": return <Badge className="bg-lime-500/20 text-lime-400 border-lime-500/30">Active</Badge>;
+      case "Pause": return <Badge className="bg-amber-500/20 text-amber-400 border-amber-500/30">Pause</Badge>;
+      case "Failed": return <Badge className="bg-red-500/20 text-red-400 border-red-500/30">Failed</Badge>;
       default: return <Badge className="bg-gray-500/20 text-gray-400">Unknown</Badge>;
     }
   };
@@ -93,27 +95,27 @@ export default function HomePage() {
       <main className="lg:ml-64 pt-2">
         <div className="p-3 max-w-7xl mx-auto">
 
-          {/* 1. Special Offer Banner */}
+          {/* 1. Special Offer Banner - Lime & Teal */}
           <motion.div
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.5 }}
             className="mb-4"
           >
-            <Card className="bg-gradient-to-r from-orange-500/40 to-red-500/40 border-2 border-orange-500/50">
+            <Card className="bg-gradient-to-r from-lime-500/30 to-teal-500/30 border-2 border-lime-500/40">
               <CardContent className="py-10 px-8">
                 <div className="flex flex-col md:flex-row items-center justify-between gap-6">
                   <div className="flex items-center gap-8">
-                    <div className="p-6 rounded-full bg-orange-500/50">
-                      <Gift className="h-16 w-16 text-orange-300" />
+                    <div className="p-6 rounded-full bg-lime-500/50">
+                      <Gift className="h-16 w-16 text-lime-300" />
                     </div>
                     <div>
                       <h3 className="text-3xl font-bold text-white">🎉 Special Offer!</h3>
                       <p className="text-gray-200 text-lg">Get 20% OFF on all Instant Accounts</p>
-                      <p className="text-gray-300 text-base mt-1">Use code <Badge className="bg-orange-500/30 text-orange-300 border-orange-500/40 text-base px-4 py-1.5">INSTANT20</Badge></p>
+                      <p className="text-gray-300 text-base mt-1">Use code <Badge className="bg-lime-500/30 text-lime-300 border-lime-500/40 text-base px-4 py-1.5">INSTANT20</Badge></p>
                     </div>
                   </div>
-                  <Button className="bg-orange-500 hover:bg-orange-600 shrink-0 text-base px-10 py-6">
+                  <Button className="bg-lime-500 hover:bg-lime-600 text-white shrink-0 text-base px-10 py-6">
                     Claim Now
                   </Button>
                 </div>
@@ -160,7 +162,7 @@ export default function HomePage() {
                 <CardHeader className="pb-2">
                   <div className="flex justify-between items-center">
                     <CardTitle className="text-white text-lg">📁 My Accounts</CardTitle>
-                    <Button variant="ghost" className="text-blue-400 hover:text-blue-300 text-sm p-0">
+                    <Button variant="ghost" className="text-lime-400 hover:text-lime-300 text-sm p-0">
                       View All <ArrowUpRight className="h-4 w-4 ml-1" />
                     </Button>
                   </div>
@@ -184,14 +186,14 @@ export default function HomePage() {
                             <td className="py-2 text-white text-sm font-mono">{acc.id}</td>
                             <td className="py-2 text-gray-300 text-sm">{acc.name}</td>
                             <td className="py-2 text-white text-sm">${acc.balance.toLocaleString()}</td>
-                            <td className={`py-2 text-sm ${acc.equity >= acc.balance ? "text-green-500" : "text-red-500"}`}>
+                            <td className={`py-2 text-sm ${acc.equity >= acc.balance ? "text-lime-400" : "text-red-400"}`}>
                               ${acc.equity.toLocaleString()}
                             </td>
                             <td className="py-2">{getStatusBadge(acc.status)}</td>
                             <td className="py-2">
                               <div className="flex items-center gap-2">
                                 <div className="w-16 h-1.5 bg-gray-700 rounded-full overflow-hidden">
-                                  <div className={`h-full rounded-full ${acc.progress >= 70 ? "bg-green-500" : acc.progress >= 40 ? "bg-yellow-500" : "bg-red-500"}`}
+                                  <div className={`h-full rounded-full ${acc.progress >= 70 ? "bg-lime-500" : acc.progress >= 40 ? "bg-amber-500" : "bg-red-500"}`}
                                     style={{ width: `${acc.progress}%` }} />
                                 </div>
                                 <span className="text-xs text-gray-400">{acc.progress}%</span>
@@ -216,7 +218,7 @@ export default function HomePage() {
                 <CardHeader className="pb-2">
                   <div className="flex justify-between items-center">
                     <CardTitle className="text-white text-lg">🔄 Recent Activity</CardTitle>
-                    <Button variant="ghost" className="text-blue-400 hover:text-blue-300 text-sm p-0">
+                    <Button variant="ghost" className="text-lime-400 hover:text-lime-300 text-sm p-0">
                       View All <ArrowUpRight className="h-4 w-4 ml-1" />
                     </Button>
                   </div>
@@ -225,7 +227,7 @@ export default function HomePage() {
                   <div className="space-y-1">
                     {activities.map((activity, index) => (
                       <div key={index} className="flex items-center gap-3 p-1.5 rounded-lg bg-darknavy/50">
-                        <div className="w-7 h-7 rounded-full bg-blue-500 flex items-center justify-center text-white text-xs font-bold">
+                        <div className="w-7 h-7 rounded-full bg-lime-500/80 flex items-center justify-center text-white text-xs font-bold">
                           {activity.user.charAt(0)}
                         </div>
                         <div className="flex-1">
@@ -268,7 +270,7 @@ export default function HomePage() {
               <CardHeader className="pb-2">
                 <div className="flex justify-between items-center">
                   <CardTitle className="text-white text-lg">🤝 Affiliate Summary</CardTitle>
-                  <Button variant="ghost" className="text-blue-400 hover:text-blue-300 text-xs p-0">
+                  <Button variant="ghost" className="text-lime-400 hover:text-lime-300 text-xs p-0">
                     View <ArrowUpRight className="h-3 w-3 ml-1" />
                   </Button>
                 </div>
@@ -277,7 +279,7 @@ export default function HomePage() {
                 <div className="space-y-2">
                   <div className="flex justify-between items-center p-2 rounded-lg bg-darknavy/50">
                     <div className="flex items-center gap-2">
-                      <div className="w-7 h-7 rounded-full bg-purple-500 flex items-center justify-center">
+                      <div className="w-7 h-7 rounded-full bg-lime-500 flex items-center justify-center">
                         <Users className="h-3 w-3 text-white" />
                       </div>
                       <div>
@@ -287,12 +289,12 @@ export default function HomePage() {
                     </div>
                     <div className="text-right">
                       <p className="text-gray-400 text-xs">Earnings</p>
-                      <p className="text-green-500 font-bold">$1,250.75</p>
+                      <p className="text-lime-400 font-bold">$1,250.75</p>
                     </div>
                   </div>
                   <div className="flex justify-between items-center p-2 rounded-lg bg-darknavy/50">
                     <div className="flex items-center gap-2">
-                      <div className="w-7 h-7 rounded-full bg-yellow-500 flex items-center justify-center">
+                      <div className="w-7 h-7 rounded-full bg-amber-500 flex items-center justify-center">
                         <Clock className="h-3 w-3 text-white" />
                       </div>
                       <div>
@@ -302,7 +304,7 @@ export default function HomePage() {
                     </div>
                     <div className="text-right">
                       <p className="text-gray-400 text-xs">Total</p>
-                      <p className="text-blue-500 font-bold">$1,571.25</p>
+                      <p className="text-teal-400 font-bold">$1,571.25</p>
                     </div>
                   </div>
                 </div>
@@ -314,7 +316,7 @@ export default function HomePage() {
               <CardHeader className="pb-2">
                 <div className="flex justify-between items-center">
                   <CardTitle className="text-white text-lg">📢 Latest News</CardTitle>
-                  <Button variant="ghost" className="text-blue-400 hover:text-blue-300 text-xs p-0">
+                  <Button variant="ghost" className="text-lime-400 hover:text-lime-300 text-xs p-0">
                     View <ArrowUpRight className="h-3 w-3 ml-1" />
                   </Button>
                 </div>
@@ -323,7 +325,7 @@ export default function HomePage() {
                 <div className="space-y-2">
                   {news.map((item, index) => (
                     <div key={index} className="flex items-start gap-2 p-2 rounded-lg bg-darknavy/50">
-                      <div className="p-1.5 rounded-lg bg-blue-500/20 shrink-0">
+                      <div className="p-1.5 rounded-lg bg-lime-500/20 shrink-0">
                         <item.icon className={`h-3 w-3 ${item.color}`} />
                       </div>
                       <div>
@@ -337,7 +339,7 @@ export default function HomePage() {
             </Card>
           </div>
 
-          {/* 5. Color Palette */}
+          {/* 5. Color Palette - Lime & Teal */}
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4 mt-4">
             {/* Color Palette */}
             <Card className="bg-darkcard border-gray-800">
@@ -349,20 +351,20 @@ export default function HomePage() {
                     <span className="text-gray-300 text-xs">#0F172A - Background</span>
                   </div>
                   <div className="flex items-center gap-2">
+                    <div className="w-6 h-6 rounded bg-[#84CC16] border border-gray-700"></div>
+                    <span className="text-gray-300 text-xs">#84CC16 - Lime</span>
+                  </div>
+                  <div className="flex items-center gap-2">
+                    <div className="w-6 h-6 rounded bg-[#14B8A6] border border-gray-700"></div>
+                    <span className="text-gray-300 text-xs">#14B8A6 - Teal</span>
+                  </div>
+                  <div className="flex items-center gap-2">
                     <div className="w-6 h-6 rounded bg-[#F59E0B] border border-gray-700"></div>
-                    <span className="text-gray-300 text-xs">#F59E0B - Accent</span>
-                  </div>
-                  <div className="flex items-center gap-2">
-                    <div className="w-6 h-6 rounded bg-[#3B82F6] border border-gray-700"></div>
-                    <span className="text-gray-300 text-xs">#3B82F6 - Primary Blue</span>
-                  </div>
-                  <div className="flex items-center gap-2">
-                    <div className="w-6 h-6 rounded bg-[#22C55E] border border-gray-700"></div>
-                    <span className="text-gray-300 text-xs">#22C55E - Success Green</span>
+                    <span className="text-gray-300 text-xs">#F59E0B - Amber</span>
                   </div>
                   <div className="flex items-center gap-2">
                     <div className="w-6 h-6 rounded bg-[#EF4444] border border-gray-700"></div>
-                    <span className="text-gray-300 text-xs">#EF4444 - Danger Red</span>
+                    <span className="text-gray-300 text-xs">#EF4444 - Red</span>
                   </div>
                 </div>
               </CardContent>
@@ -375,7 +377,7 @@ export default function HomePage() {
                 <div className="space-y-2">
                   {["Easy on the eyes for long trading hours", "Professional & modern look", "Clean and minimal layout", "Trustworthy and reliable", "High contrast for readability"].map((text, i) => (
                     <div key={i} className="flex items-start gap-2">
-                      <CheckCircle className="h-4 w-4 text-green-500 shrink-0 mt-0.5" />
+                      <CheckCircle className="h-4 w-4 text-lime-400 shrink-0 mt-0.5" />
                       <span className="text-gray-300 text-xs">{text}</span>
                     </div>
                   ))}
@@ -390,7 +392,7 @@ export default function HomePage() {
                 <div className="grid grid-cols-2 gap-1">
                   {["Real-time monitor", "Certificates", "Secure payouts", "Market prices", "KYC Verification", "Multiple Challenges", "Affiliate Program", "Instant Funding", "News & Updates", "And more..."].map((feature, i) => (
                     <div key={i} className="flex items-center gap-1.5">
-                      <Activity className="h-3 w-3 text-blue-400" />
+                      <Activity className="h-3 w-3 text-lime-400" />
                       <span className="text-gray-300 text-xs">{feature}</span>
                     </div>
                   ))}
@@ -403,25 +405,25 @@ export default function HomePage() {
               <CardContent className="pt-4">
                 <h4 className="text-white font-semibold text-sm mb-3">🤝 Affiliate Program</h4>
                 <div className="space-y-3">
-                  <div className="p-3 rounded-lg bg-gradient-to-r from-purple-500/20 to-blue-500/20 border border-purple-500/30 text-center">
-                    <p className="text-purple-400 font-bold text-lg">15%</p>
+                  <div className="p-3 rounded-lg bg-gradient-to-r from-lime-500/20 to-teal-500/20 border border-lime-500/30 text-center">
+                    <p className="text-lime-400 font-bold text-lg">15%</p>
                     <p className="text-gray-300 text-xs">Commission for every referral</p>
                   </div>
                   <div className="flex justify-between items-center p-2 rounded-lg bg-darknavy/50">
                     <div className="flex items-center gap-2">
-                      <Users className="h-4 w-4 text-purple-400" />
+                      <Users className="h-4 w-4 text-lime-400" />
                       <span className="text-gray-300 text-xs">Total Referrals</span>
                     </div>
                     <span className="text-white font-bold text-sm">128</span>
                   </div>
                   <div className="flex justify-between items-center p-2 rounded-lg bg-darknavy/50">
                     <div className="flex items-center gap-2">
-                      <Wallet className="h-4 w-4 text-green-400" />
+                      <Wallet className="h-4 w-4 text-teal-400" />
                       <span className="text-gray-300 text-xs">Commission Earned</span>
                     </div>
-                    <span className="text-green-500 font-bold text-sm">$1,250.75</span>
+                    <span className="text-teal-400 font-bold text-sm">$1,250.75</span>
                   </div>
-                  <Button className="w-full bg-blue-500 hover:bg-blue-600 text-sm py-2">
+                  <Button className="w-full bg-lime-500 hover:bg-lime-600 text-white text-sm py-2">
                     Go to Affiliate Dashboard <ArrowUpRight className="h-4 w-4 ml-1" />
                   </Button>
                 </div>
