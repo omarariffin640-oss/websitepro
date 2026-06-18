@@ -4,7 +4,7 @@ import Link from "next/link";
 import { usePathname, useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
 import { Button } from "@/components/ui/button";
-import { ChevronDown, ChevronRight, LogOut, X, Megaphone, Zap } from "lucide-react";
+import { ChevronDown, ChevronRight, LogOut, X } from "lucide-react";
 import { getMenuItems, MenuItem } from "@/lib/menuItems";
 
 interface SidebarProps {
@@ -52,7 +52,6 @@ export default function Sidebar({ isOpen, onClose }: SidebarProps) {
     const menuItems = getMenuItems(userRole);
 
     const renderMenuItem = (item: MenuItem, depth = 0) => {
-        // Handle separator
         if (item.name === 'separator') {
             return <div key="separator" className="my-2 border-t border-gray-700" />;
         }
@@ -76,11 +75,7 @@ export default function Sidebar({ isOpen, onClose }: SidebarProps) {
                                 <item.icon className={`h-5 w-5 ${item.color}`} />
                                 <span className="text-sm font-medium">{item.name}</span>
                             </div>
-                            {isOpen ? (
-                                <ChevronDown className="h-4 w-4" />
-                            ) : (
-                                <ChevronRight className="h-4 w-4" />
-                            )}
+                            {isOpen ? <ChevronDown className="h-4 w-4" /> : <ChevronRight className="h-4 w-4" />}
                         </button>
                         {isOpen && (
                             <div className="ml-6 mt-1 space-y-1">
@@ -111,9 +106,7 @@ export default function Sidebar({ isOpen, onClose }: SidebarProps) {
     if (loading) {
         return (
             <aside className="fixed top-0 left-0 z-50 h-full w-56 bg-darknavy/95 backdrop-blur-sm border-r border-gray-800">
-                <div className="p-4">
-                    <p className="text-gray-400">Loading...</p>
-                </div>
+                <div className="p-4"><p className="text-gray-400">Loading...</p></div>
             </aside>
         );
     }
@@ -133,7 +126,6 @@ export default function Sidebar({ isOpen, onClose }: SidebarProps) {
                 lg:translate-x-0
                 ${isOpen ? "translate-x-0" : "-translate-x-full"}
             `}>
-                {/* Logo Area */}
                 <div className="flex items-center justify-between p-4 border-b border-gray-800">
                     <div className="flex items-center gap-2">
                         <div className="w-8 h-8 bg-gradient-to-br from-blue-500 to-blue-600 rounded-xl flex items-center justify-center shadow-lg">
@@ -146,12 +138,10 @@ export default function Sidebar({ isOpen, onClose }: SidebarProps) {
                     </Button>
                 </div>
 
-                {/* Menu Items */}
                 <nav className="p-3 space-y-1 overflow-y-auto" style={{ height: "calc(100% - 100px)" }}>
                     {menuItems.map(item => renderMenuItem(item))}
                 </nav>
 
-                {/* Logout Button - absolute bottom */}
                 <div className="absolute bottom-0 left-0 right-0 p-3 border-t border-gray-800 bg-darknavy/95">
                     <button
                         onClick={handleLogout}
