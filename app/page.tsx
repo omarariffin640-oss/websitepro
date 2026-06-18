@@ -120,7 +120,7 @@ export default function HomePage() {
             className="mb-4"
           >
             <Card className="bg-gradient-to-r from-orange-500/30 to-red-500/30 border border-orange-500/40">
-              <CardContent className="py-6 px-6">
+              <CardContent className="py-6 px-12">
                 <div className="flex flex-col md:flex-row items-center justify-between gap-4">
                   <div className="flex items-center gap-5">
                     <div className="p-3 rounded-full bg-orange-500/40">
