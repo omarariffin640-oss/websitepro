@@ -35,7 +35,7 @@ export default function HomePage() {
 
   // Stats Cards Data (4 cards)
   const stats = [
-    { title: "Total Balance", value: "$104,230", icon: Wallet, color: "text-blue-500", bg: "bg-blue-500/10" },
+    { title: "Total Balance", subtitle: "All accounts combined", value: "$104,230", icon: Wallet, color: "text-blue-500", bg: "bg-blue-500/10" },
     { title: "Total Profit", value: "+$8,450", icon: TrendingUp, color: "text-green-500", bg: "bg-green-500/10" },
     { title: "Total Accounts", value: "3,718", icon: FolderKanban, color: "text-purple-500", bg: "bg-purple-500/10" },
     { title: "Active Accounts", value: "1,807", icon: Users, color: "text-orange-500", bg: "bg-orange-500/10" },
@@ -149,15 +149,16 @@ export default function HomePage() {
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ duration: 0.5, delay: index * 0.05 }}
               >
-                <Card className="bg-darkcard border-gray-800 hover:border-gray-700 transition-colors">
-                  <CardContent className="pt-3">
+                <Card className="bg-darkcard border-gray-700 hover:border-gray-700 transition-colors">
+                  <CardContent className="pt-3 px-4">
                     <div className="flex items-center gap-3">
-                      <div className={`p-2 rounded-lg ${stat.bg}`}>
-                        <stat.icon className={`h-4 w-4 ${stat.color}`} />
+                      <div className={`p-2.5 rounded-lg ${stat.bg}`}>
+                        <stat.icon className={`h-5 w-5 ${stat.color}`} />
                       </div>
                       <div>
                         <p className="text-gray-400 text-xs">{stat.title}</p>
                         <p className="text-base font-bold text-white">{stat.value}</p>
+                        {stat.subtitle && <p className="text-xs text-gray-500">{stat.subtitle}</p>}
                       </div>
                     </div>
                   </CardContent>
