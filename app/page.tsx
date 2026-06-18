@@ -179,12 +179,15 @@ export default function HomePage() {
             </motion.div>
           </div>
 
-          {/* Account Overview + Reviews + News - 3 cards sama level */}
+          {/* 3 Cards - Sama Saiz */}
           <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-            {/* Account Overview */}
-            <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.5, delay: 0.2 }} className="h-full">
-              <Card className="bg-darkcard border-gray-800 h-full">
-                <CardHeader className="pb-2"><CardTitle className="text-white text-lg">📊 Account Overview</CardTitle></CardHeader>
+
+            {/* Card 1: Account Overview */}
+            <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.5, delay: 0.2 }}>
+              <Card className="bg-darkcard border-gray-800 h-full min-h-[280px]">
+                <CardHeader className="pb-2">
+                  <CardTitle className="text-white text-lg">📊 Account Overview</CardTitle>
+                </CardHeader>
                 <CardContent>
                   <div className="space-y-2">
                     {overview.map((item) => (
@@ -198,9 +201,9 @@ export default function HomePage() {
               </Card>
             </motion.div>
 
-            {/* Reviews */}
-            <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.5, delay: 0.25 }} className="h-full">
-              <Card className="bg-darkcard border-gray-800 h-full">
+            {/* Card 2: Reviews */}
+            <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.5, delay: 0.25 }}>
+              <Card className="bg-darkcard border-gray-800 h-full min-h-[280px]">
                 <CardHeader className="pb-2">
                   <div className="flex justify-between items-center">
                     <CardTitle className="text-white text-lg">⭐ Reviews</CardTitle>
@@ -210,9 +213,9 @@ export default function HomePage() {
                 <CardContent>
                   <div className="space-y-2">
                     {reviews.map((review, i) => (
-                      <div key={i} className="p-3 rounded-lg bg-darknavy/50 border border-gray-700">
-                        <div className="flex items-center gap-3 mb-1">
-                          <div className="w-8 h-8 rounded-full bg-emerald-500/20 flex items-center justify-center text-emerald-400 text-xs font-bold">
+                      <div key={i} className="p-2 rounded-lg bg-darknavy/50 border border-gray-700">
+                        <div className="flex items-center gap-2">
+                          <div className="w-7 h-7 rounded-full bg-emerald-500/20 flex items-center justify-center text-emerald-400 text-xs font-bold">
                             {review.name.split(' ').map(n => n[0]).join('')}
                           </div>
                           <div>
@@ -224,8 +227,8 @@ export default function HomePage() {
                             </div>
                           </div>
                         </div>
-                        <p className="text-sm text-gray-400">"{review.text}"</p>
-                        <p className="text-xs text-gray-500 mt-1">{review.time}</p>
+                        <p className="text-xs text-gray-400 mt-1">"{review.text}"</p>
+                        <p className="text-xs text-gray-500">{review.time}</p>
                       </div>
                     ))}
                   </div>
@@ -233,9 +236,9 @@ export default function HomePage() {
               </Card>
             </motion.div>
 
-            {/* News */}
-            <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.5, delay: 0.3 }} className="h-full">
-              <Card className="bg-darkcard border-gray-800 h-full">
+            {/* Card 3: News */}
+            <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.5, delay: 0.3 }}>
+              <Card className="bg-darkcard border-gray-800 h-full min-h-[280px]">
                 <CardHeader className="pb-2">
                   <div className="flex justify-between items-center">
                     <CardTitle className="text-white text-lg">📢 News</CardTitle>
@@ -257,6 +260,7 @@ export default function HomePage() {
                 </CardContent>
               </Card>
             </motion.div>
+
           </div>
 
         </div>
