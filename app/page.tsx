@@ -119,19 +119,19 @@ export default function HomePage() {
             transition={{ duration: 0.5 }}
             className="mb-4"
           >
-            <Card className="bg-gradient-to-r from-orange-500/30 to-red-500/30 border border-orange-500/40">
-              <CardContent className="py-6 px-12">
+            <Card className="bg-gradient-to-r from-orange-500/40 to-red-500/40 border-2 border-orange-500/40">
+              <CardContent className="py-6 px-6">
                 <div className="flex flex-col md:flex-row items-center justify-between gap-4">
-                  <div className="flex items-center gap-5">
-                    <div className="p-3 rounded-full bg-orange-500/40">
-                      <Gift className="h-8 w-8 text-orange-400" />
+                  <div className="flex items-center gap-6">
+                    <div className="p-4 rounded-full bg-orange-500/50">
+                      <Gift className="h-10 w-10 text-orange-300" />
                     </div>
                     <div>
                       <h3 className="text-lg font-bold text-white">🎉 Special Offer!</h3>
-                      <p className="text-gray-300 text-sm">Get 20% OFF on all Instant Accounts. Use code <Badge className="bg-orange-500/20 text-orange-400 border-orange-500/30">INSTANT20</Badge></p>
+                      <p className="text-gray-200 text-lg">Get 20% OFF on all Instant Accounts. Use code <Badge className="bg-orange-500/30 text-orange-300 border-orange-500/40 text-base px-3 py-1">INSTANT20</Badge></p>
                     </div>
                   </div>
-                  <Button className="bg-orange-500 hover:bg-orange-600 shrink-0 text-base px-6 py-3">
+                  <Button className="bg-orange-500 hover:bg-orange-600 shrink-0 text-base px-8 py-4">
                     Claim Now
                   </Button>
                 </div>
