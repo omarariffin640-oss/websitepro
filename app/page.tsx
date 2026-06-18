@@ -179,10 +179,11 @@ export default function HomePage() {
             </motion.div>
           </div>
 
-          {/* Account Overview + Reviews + News */}
+          {/* Account Overview + Reviews + News - 3 cards sama level */}
           <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-            <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.5, delay: 0.2 }}>
-              <Card className="bg-darkcard border-gray-800">
+            {/* Account Overview */}
+            <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.5, delay: 0.2 }} className="h-full">
+              <Card className="bg-darkcard border-gray-800 h-full">
                 <CardHeader className="pb-2"><CardTitle className="text-white text-lg">📊 Account Overview</CardTitle></CardHeader>
                 <CardContent>
                   <div className="space-y-2">
@@ -197,8 +198,9 @@ export default function HomePage() {
               </Card>
             </motion.div>
 
-            <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.5, delay: 0.25 }}>
-              <Card className="bg-darkcard border-gray-800">
+            {/* Reviews */}
+            <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.5, delay: 0.25 }} className="h-full">
+              <Card className="bg-darkcard border-gray-800 h-full">
                 <CardHeader className="pb-2">
                   <div className="flex justify-between items-center">
                     <CardTitle className="text-white text-lg">⭐ Reviews</CardTitle>
@@ -231,8 +233,9 @@ export default function HomePage() {
               </Card>
             </motion.div>
 
-            <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.5, delay: 0.3 }}>
-              <Card className="bg-darkcard border-gray-800">
+            {/* News */}
+            <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.5, delay: 0.3 }} className="h-full">
+              <Card className="bg-darkcard border-gray-800 h-full">
                 <CardHeader className="pb-2">
                   <div className="flex justify-between items-center">
                     <CardTitle className="text-white text-lg">📢 News</CardTitle>
