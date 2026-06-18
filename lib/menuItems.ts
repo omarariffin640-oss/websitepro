@@ -1,6 +1,7 @@
 import {
     LayoutDashboard,
     FolderKanban,
+    Users,
     Trophy,
     Zap,
     TrendingUp,
@@ -8,10 +9,11 @@ import {
     Award,
     Share2,
     Megaphone,
+    PenSquare,
+    Store,
     HelpCircle,
     Settings,
     LogOut,
-    Users,
     ShieldCheck,
     CheckCircle,
     Tag,
@@ -35,7 +37,9 @@ export type MenuItem = {
 const traderMenus: MenuItem[] = [
     // Main
     { name: "Dashboard", icon: LayoutDashboard, href: "/dashboard", color: "text-blue-500" },
+    { name: "Users", icon: Users, href: "/users", color: "text-green-500" },
     { name: "Accounts", icon: FolderKanban, href: "/accounts", color: "text-orange-500" },
+    { name: "Orders", icon: ClipboardList, href: "/orders", color: "text-blue-500" },
     { name: "Challenges", icon: Trophy, href: "/challenges", color: "text-yellow-500" },
     { name: "Instant Account", icon: Zap, href: "/instant-account", color: "text-purple-500" },
     // Separator
@@ -64,6 +68,8 @@ const traderMenus: MenuItem[] = [
     { name: "separator", icon: null, href: "", color: "" },
     // Content
     { name: "News", icon: Megaphone, href: "/news", color: "text-blue-500" },
+    { name: "Blog", icon: PenSquare, href: "/blog", color: "text-pink-500" },
+    { name: "Marketplace", icon: Store, href: "/marketplace", color: "text-emerald-500" },
     // Separator
     { name: "separator", icon: null, href: "", color: "" },
     // Support
