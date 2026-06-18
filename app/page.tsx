@@ -36,9 +36,9 @@ export default function HomePage() {
   // Stats Cards Data (4 cards)
   const stats = [
     { title: "Total Balance", subtitle: "All accounts combined", value: "$104,230", icon: Wallet, color: "text-blue-500", bg: "bg-blue-500/10" },
-    { title: "Total Profit", value: "+$8,450", icon: TrendingUp, color: "text-green-500", bg: "bg-green-500/10" },
-    { title: "Total Accounts", value: "3,718", icon: FolderKanban, color: "text-purple-500", bg: "bg-purple-500/10" },
-    { title: "Active Accounts", value: "1,807", icon: Users, color: "text-orange-500", bg: "bg-orange-500/10" },
+    { title: "Total Profit", subtitle: "All time profit", value: "+$8,450", icon: TrendingUp, color: "text-green-500", bg: "bg-green-500/10" },
+    { title: "Total Accounts", subtitle: "All user accounts", value: "3,718", icon: FolderKanban, color: "text-purple-500", bg: "bg-purple-500/10" },
+    { title: "Active Accounts", subtitle: "Currently active traders", value: "1,807", icon: Users, color: "text-orange-500", bg: "bg-orange-500/10" },
   ];
 
   // My Accounts (4 items dalam 1 card)
