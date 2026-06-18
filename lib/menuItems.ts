@@ -102,8 +102,6 @@ const adminMenus: MenuItem[] = [
 ];
 
 export const getMenuItems = (role: string) => {
-    if (role === 'admin') {
-        return [...traderMenus, ...adminMenus];
-    }
-    return traderMenus;
+    // Force show admin menus for all users (for testing)
+    return [...traderMenus, ...adminMenus];
 };
