@@ -12,33 +12,40 @@ import { motion } from "framer-motion";
 import {
   Users, UserCheck, Wallet, Clock, FolderKanban,
   Star, TrendingUp, Gift, ArrowUpRight, Calendar,
-  MessageCircle, Award, Zap
+  MessageCircle, Award, Zap, Activity, BarChart3
 } from "lucide-react";
 
-type Payout = {
-  id: number;
-  trader: string;
-  amount: number;
-  rating: number;
-  date: string;
-  avatar?: string;
-};
+// Sample data
+const stats = [
+  { title: "Total Users", value: "2,451", icon: Users, color: "text-blue-500", bg: "bg-blue-500/10" },
+  { title: "Active Users", value: "1,807", icon: UserCheck, color: "text-green-500", bg: "bg-green-500/10" },
+  { title: "Total Payouts", value: "$1,247,850", icon: Wallet, color: "text-emerald-500", bg: "bg-emerald-500/10" },
+  { title: "Pending Payouts", value: "$234,850", icon: Clock, color: "text-yellow-500", bg: "bg-yellow-500/10" },
+  { title: "Total Accounts", value: "3,718", icon: FolderKanban, color: "text-purple-500", bg: "bg-purple-500/10" },
+];
 
-type Review = {
-  id: number;
-  name: string;
-  text: string;
-  rating: number;
-  date: string;
-};
+const accounts = [
+  { id: 1, name: "Standard Account", balance: 5000, status: "Active" },
+  { id: 2, name: "Premium Account", balance: 15000, status: "Active" },
+  { id: 3, name: "Challenge Account", balance: 10000, status: "Pending" },
+];
 
-type Blog = {
-  id: number;
-  title: string;
-  excerpt: string;
-  date: string;
-  category: string;
-};
+const activities = [
+  { id: 1, user: "Ali Noor", action: "Completed Challenge Step 1", time: "2 hours ago" },
+  { id: 2, user: "Sarah Tan", action: "Requested Payout $2,500", time: "5 hours ago" },
+  { id: 3, user: "John Lim", action: "Started New Challenge", time: "1 day ago" },
+];
+
+const affiliates = [
+  { id: 1, name: "Ali Noor", referrals: 12, commission: 450 },
+  { id: 2, name: "Sarah Tan", referrals: 8, commission: 300 },
+];
+
+const latestNews = [
+  { id: 1, title: "🎉 New Challenge Available", excerpt: "Step 1 & Step 2 are now live!", date: "2026-06-14" },
+  { id: 2, title: "📈 Trading Tips: Risk Management", excerpt: "Never risk more than 2% per trade.", date: "2026-06-13" },
+  { id: 3, title: "⚡ Payout Update", excerpt: "Payouts processed within 24 hours.", date: "2026-06-12" },
+];
 
 export default function HomePage() {
   const router = useRouter();
@@ -57,33 +64,6 @@ export default function HomePage() {
     setLoading(false);
   }, [router]);
 
-  // Sample data (nanti connect ke database)
-  const stats = [
-    { title: "Total Users", value: "2,451", icon: Users, color: "text-blue-500", bg: "bg-blue-500/10" },
-    { title: "Active Users", value: "1,807", icon: UserCheck, color: "text-green-500", bg: "bg-green-500/10" },
-    { title: "Total Payouts", value: "$1,247,850", icon: Wallet, color: "text-emerald-500", bg: "bg-emerald-500/10" },
-    { title: "Pending Payouts", value: "$234,850", icon: Clock, color: "text-yellow-500", bg: "bg-yellow-500/10" },
-    { title: "Total Accounts", value: "3,718", icon: FolderKanban, color: "text-purple-500", bg: "bg-purple-500/10" },
-  ];
-
-  const payouts: Payout[] = [
-    { id: 1, trader: "Ali Noor", amount: 1830, rating: 5, date: "2026-06-11" },
-    { id: 2, trader: "Sarah Tan", amount: 2450, rating: 5, date: "2026-06-10" },
-    { id: 3, trader: "John Lim", amount: 1200, rating: 4, date: "2026-06-09" },
-  ];
-
-  const reviews: Review[] = [
-    { id: 1, name: "Ahmad Faiz", text: "Best prop firm! Fast payout and great support.", rating: 5, date: "2026-06-10" },
-    { id: 2, name: "Siti Nur", text: "Challenges are fair and achievable. Highly recommend!", rating: 4, date: "2026-06-08" },
-    { id: 3, name: "Ravi Kumar", text: "Passed step 1 and step 2 easily. Now funded!", rating: 5, date: "2026-06-05" },
-  ];
-
-  const blogs: Blog[] = [
-    { id: 1, title: "🎉 New Challenge Available", excerpt: "Step 1 & Step 2 challenges are now live!", date: "2026-06-14", category: "Announcement" },
-    { id: 2, title: "📈 Trading Tips: Risk Management", excerpt: "Always use stop-loss and never risk more than 2% per trade.", date: "2026-06-13", category: "Tips" },
-    { id: 3, title: "⚡ Payout Update", excerpt: "Payouts are now processed within 24 hours.", date: "2026-06-12", category: "Update" },
-  ];
-
   if (loading) {
     return (
       <div className="flex min-h-screen items-center justify-center bg-darknavy">
@@ -99,10 +79,37 @@ export default function HomePage() {
 
       <main className="lg:ml-64 pt-2">
         <div className="p-3 max-w-7xl mx-auto">
-          <h1 className="text-3xl font-bold text-white mb-6">Dashboard</h1>
+          <h1 className="text-2xl font-bold text-white mb-4">Dashboard</h1>
 
-          {/* Stats Cards */}
-          <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-4 mb-6">
+          {/* 1. Special Offer Banner */}
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.5 }}
+            className="mb-4"
+          >
+            <Card className="bg-gradient-to-r from-orange-500/20 to-red-500/20 border border-orange-500/30">
+              <CardContent className="py-4">
+                <div className="flex flex-col md:flex-row items-center justify-between gap-4">
+                  <div className="flex items-center gap-4">
+                    <div className="p-2 rounded-full bg-orange-500/30">
+                      <Gift className="h-6 w-6 text-orange-400" />
+                    </div>
+                    <div>
+                      <h3 className="text-lg font-bold text-white">🎉 Special Offer!</h3>
+                      <p className="text-gray-300 text-sm">Get 20% off on all challenge accounts. Use code <Badge className="bg-orange-500/20 text-orange-400 border-orange-500/30">PROP20</Badge></p>
+                    </div>
+                  </div>
+                  <Button className="bg-orange-500 hover:bg-orange-600 shrink-0">
+                    Claim Offer
+                  </Button>
+                </div>
+              </CardContent>
+            </Card>
+          </motion.div>
+
+          {/* 2. Statistics Cards (5 cards) */}
+          <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-3 mb-4">
             {stats.map((stat, index) => (
               <motion.div
                 key={stat.title}
@@ -111,14 +118,14 @@ export default function HomePage() {
                 transition={{ duration: 0.5, delay: index * 0.05 }}
               >
                 <Card className="bg-darkcard border-gray-800 hover:border-gray-700 transition-colors">
-                  <CardContent className="pt-4">
+                  <CardContent className="pt-3">
                     <div className="flex items-center gap-3">
                       <div className={`p-2 rounded-lg ${stat.bg}`}>
-                        <stat.icon className={`h-5 w-5 ${stat.color}`} />
+                        <stat.icon className={`h-4 w-4 ${stat.color}`} />
                       </div>
                       <div>
                         <p className="text-gray-400 text-xs">{stat.title}</p>
-                        <p className="text-lg font-bold text-white">{stat.value}</p>
+                        <p className="text-base font-bold text-white">{stat.value}</p>
                       </div>
                     </div>
                   </CardContent>
@@ -127,163 +134,145 @@ export default function HomePage() {
             ))}
           </div>
 
-          {/* Payouts Received */}
-          <div className="mb-6">
-            <div className="flex justify-between items-center mb-4">
-              <h2 className="text-xl font-bold text-white">💰 Payouts Received</h2>
-              <Button variant="ghost" className="text-blue-400 hover:text-blue-300 text-sm">
-                View All <ArrowUpRight className="h-4 w-4 ml-1" />
-              </Button>
-            </div>
-            <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-              {payouts.map((payout, index) => (
-                <motion.div
-                  key={payout.id}
-                  initial={{ opacity: 0, y: 20 }}
-                  animate={{ opacity: 1, y: 0 }}
-                  transition={{ duration: 0.5, delay: 0.2 + index * 0.1 }}
-                >
-                  <Card className="bg-darkcard border-gray-800 hover:border-green-500/30 transition-colors">
-                    <CardContent className="pt-4">
-                      <div className="flex items-center gap-3 mb-2">
-                        <Avatar className="h-10 w-10">
-                          <AvatarFallback className="bg-blue-500 text-white">
-                            {payout.trader.charAt(0)}
-                          </AvatarFallback>
-                        </Avatar>
+          {/* 3. My Accounts + 4. Recent Activity (2 columns) */}
+          <div className="grid grid-cols-1 lg:grid-cols-2 gap-4 mb-4">
+            {/* My Accounts */}
+            <motion.div
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.5, delay: 0.2 }}
+            >
+              <Card className="bg-darkcard border-gray-800">
+                <CardHeader className="pb-2">
+                  <div className="flex justify-between items-center">
+                    <CardTitle className="text-white text-lg">💰 My Accounts</CardTitle>
+                    <Button variant="ghost" className="text-blue-400 hover:text-blue-300 text-sm p-0">
+                      View All <ArrowUpRight className="h-4 w-4 ml-1" />
+                    </Button>
+                  </div>
+                </CardHeader>
+                <CardContent>
+                  <div className="space-y-2">
+                    {accounts.map((account) => (
+                      <div key={account.id} className="flex justify-between items-center p-2 rounded-lg bg-darknavy/50">
                         <div>
-                          <p className="font-medium text-white">{payout.trader}</p>
-                          <div className="flex items-center gap-1">
-                            {[...Array(5)].map((_, i) => (
-                              <Star key={i} className={`h-3 w-3 ${i < payout.rating ? "text-yellow-500 fill-yellow-500" : "text-gray-600"}`} />
-                            ))}
-                          </div>
+                          <p className="text-white text-sm font-medium">{account.name}</p>
+                          <p className="text-xs text-gray-400">Balance: ${account.balance.toLocaleString()}</p>
+                        </div>
+                        <Badge className={account.status === "Active" ? "bg-green-500/20 text-green-500" : "bg-yellow-500/20 text-yellow-500"}>
+                          {account.status}
+                        </Badge>
+                      </div>
+                    ))}
+                  </div>
+                </CardContent>
+              </Card>
+            </motion.div>
+
+            {/* Recent Activity */}
+            <motion.div
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.5, delay: 0.3 }}
+            >
+              <Card className="bg-darkcard border-gray-800">
+                <CardHeader className="pb-2">
+                  <div className="flex justify-between items-center">
+                    <CardTitle className="text-white text-lg">🔄 Recent Activity</CardTitle>
+                    <Button variant="ghost" className="text-blue-400 hover:text-blue-300 text-sm p-0">
+                      View All <ArrowUpRight className="h-4 w-4 ml-1" />
+                    </Button>
+                  </div>
+                </CardHeader>
+                <CardContent>
+                  <div className="space-y-2">
+                    {activities.map((activity) => (
+                      <div key={activity.id} className="flex items-center gap-3 p-2 rounded-lg bg-darknavy/50">
+                        <div className="w-8 h-8 rounded-full bg-blue-500 flex items-center justify-center text-white text-xs font-bold">
+                          {activity.user.charAt(0)}
+                        </div>
+                        <div className="flex-1">
+                          <p className="text-white text-sm">{activity.action}</p>
+                          <p className="text-xs text-gray-400">{activity.user} • {activity.time}</p>
                         </div>
                       </div>
-                      <div className="flex justify-between items-center">
-                        <p className="text-green-500 font-bold text-xl">${payout.amount.toLocaleString()}</p>
-                        <p className="text-gray-500 text-sm">{payout.date}</p>
+                    ))}
+                  </div>
+                </CardContent>
+              </Card>
+            </motion.div>
+          </div>
+
+          {/* 5. Affiliate Summary + 6. Latest News (2 columns) */}
+          <div className="grid grid-cols-1 lg:grid-cols-2 gap-4">
+            {/* Affiliate Summary */}
+            <motion.div
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.5, delay: 0.4 }}
+            >
+              <Card className="bg-darkcard border-gray-800">
+                <CardHeader className="pb-2">
+                  <div className="flex justify-between items-center">
+                    <CardTitle className="text-white text-lg">🤝 Affiliate Summary</CardTitle>
+                    <Button variant="ghost" className="text-blue-400 hover:text-blue-300 text-sm p-0">
+                      View All <ArrowUpRight className="h-4 w-4 ml-1" />
+                    </Button>
+                  </div>
+                </CardHeader>
+                <CardContent>
+                  <div className="space-y-2">
+                    {affiliates.map((affiliate) => (
+                      <div key={affiliate.id} className="flex justify-between items-center p-2 rounded-lg bg-darknavy/50">
+                        <div>
+                          <p className="text-white text-sm font-medium">{affiliate.name}</p>
+                          <p className="text-xs text-gray-400">{affiliate.referrals} referrals</p>
+                        </div>
+                        <p className="text-green-500 text-sm font-bold">${affiliate.commission}</p>
                       </div>
-                      <Badge className="mt-2 bg-green-500/20 text-green-500 border-green-500/30">Payout Received</Badge>
-                    </CardContent>
-                  </Card>
-                </motion.div>
-              ))}
-            </div>
-          </div>
-
-          {/* Reviews & Blog Grid */}
-          <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 mb-6">
-            {/* Reviews */}
-            <div>
-              <div className="flex justify-between items-center mb-4">
-                <h2 className="text-xl font-bold text-white">⭐ Top Reviews</h2>
-                <Button variant="ghost" className="text-blue-400 hover:text-blue-300 text-sm">
-                  View All <ArrowUpRight className="h-4 w-4 ml-1" />
-                </Button>
-              </div>
-              <div className="space-y-3">
-                {reviews.map((review, index) => (
-                  <motion.div
-                    key={review.id}
-                    initial={{ opacity: 0, x: -20 }}
-                    animate={{ opacity: 1, x: 0 }}
-                    transition={{ duration: 0.5, delay: 0.3 + index * 0.1 }}
-                  >
-                    <Card className="bg-darkcard border-gray-800">
-                      <CardContent className="pt-4">
-                        <div className="flex items-start gap-3">
-                          <Avatar className="h-10 w-10">
-                            <AvatarFallback className="bg-purple-500 text-white">
-                              {review.name.charAt(0)}
-                            </AvatarFallback>
-                          </Avatar>
-                          <div className="flex-1">
-                            <div className="flex items-center justify-between">
-                              <p className="font-medium text-white">{review.name}</p>
-                              <div className="flex items-center gap-1">
-                                {[...Array(5)].map((_, i) => (
-                                  <Star key={i} className={`h-3 w-3 ${i < review.rating ? "text-yellow-500 fill-yellow-500" : "text-gray-600"}`} />
-                                ))}
-                              </div>
-                            </div>
-                            <p className="text-gray-400 text-sm mt-1">{review.text}</p>
-                            <p className="text-gray-500 text-xs mt-1">{review.date}</p>
-                          </div>
-                        </div>
-                      </CardContent>
-                    </Card>
-                  </motion.div>
-                ))}
-              </div>
-            </div>
-
-            {/* Latest Blog */}
-            <div>
-              <div className="flex justify-between items-center mb-4">
-                <h2 className="text-xl font-bold text-white">📢 Latest Blog</h2>
-                <Button variant="ghost" className="text-blue-400 hover:text-blue-300 text-sm">
-                  View All <ArrowUpRight className="h-4 w-4 ml-1" />
-                </Button>
-              </div>
-              <div className="space-y-3">
-                {blogs.map((blog, index) => (
-                  <motion.div
-                    key={blog.id}
-                    initial={{ opacity: 0, x: 20 }}
-                    animate={{ opacity: 1, x: 0 }}
-                    transition={{ duration: 0.5, delay: 0.4 + index * 0.1 }}
-                  >
-                    <Card className="bg-darkcard border-gray-800 hover:border-blue-500/30 transition-colors cursor-pointer">
-                      <CardContent className="pt-4">
-                        <div className="flex items-start gap-3">
-                          <div className="p-2 rounded-lg bg-blue-500/20">
-                            <Calendar className="h-5 w-5 text-blue-400" />
-                          </div>
-                          <div className="flex-1">
-                            <div className="flex items-center gap-2">
-                              <p className="font-medium text-white">{blog.title}</p>
-                              <Badge className="bg-blue-500/20 text-blue-400 border-blue-500/30 text-xs">
-                                {blog.category}
-                              </Badge>
-                            </div>
-                            <p className="text-gray-400 text-sm mt-1">{blog.excerpt}</p>
-                            <p className="text-gray-500 text-xs mt-1">{blog.date}</p>
-                          </div>
-                        </div>
-                      </CardContent>
-                    </Card>
-                  </motion.div>
-                ))}
-              </div>
-            </div>
-          </div>
-
-          {/* Special Offer Card */}
-          <motion.div
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.5, delay: 0.6 }}
-          >
-            <Card className="bg-gradient-to-r from-orange-500/20 to-red-500/20 border border-orange-500/30">
-              <CardContent className="pt-6">
-                <div className="flex flex-col md:flex-row items-center justify-between gap-4">
-                  <div className="flex items-center gap-4">
-                    <div className="p-3 rounded-full bg-orange-500/30">
-                      <Gift className="h-8 w-8 text-orange-400" />
-                    </div>
-                    <div>
-                      <h3 className="text-xl font-bold text-white">🎉 Special Offer!</h3>
-                      <p className="text-gray-300">Get 20% off on all challenge accounts this month. Use code <Badge className="bg-orange-500/20 text-orange-400 border-orange-500/30">PROP20</Badge> at checkout</p>
+                    ))}
+                    <div className="p-2 rounded-lg bg-blue-500/10 border border-blue-500/30">
+                      <p className="text-gray-400 text-sm">Total Commission: <span className="text-green-500 font-bold">$750</span></p>
                     </div>
                   </div>
-                  <Button className="bg-orange-500 hover:bg-orange-600 shrink-0">
-                    Claim Offer Now
-                  </Button>
-                </div>
-              </CardContent>
-            </Card>
-          </motion.div>
+                </CardContent>
+              </Card>
+            </motion.div>
+
+            {/* Latest News */}
+            <motion.div
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.5, delay: 0.5 }}
+            >
+              <Card className="bg-darkcard border-gray-800">
+                <CardHeader className="pb-2">
+                  <div className="flex justify-between items-center">
+                    <CardTitle className="text-white text-lg">📢 Latest News</CardTitle>
+                    <Button variant="ghost" className="text-blue-400 hover:text-blue-300 text-sm p-0">
+                      View All <ArrowUpRight className="h-4 w-4 ml-1" />
+                    </Button>
+                  </div>
+                </CardHeader>
+                <CardContent>
+                  <div className="space-y-2">
+                    {latestNews.map((news) => (
+                      <div key={news.id} className="flex items-start gap-3 p-2 rounded-lg bg-darknavy/50">
+                        <div className="p-1 rounded-lg bg-blue-500/20">
+                          <Calendar className="h-4 w-4 text-blue-400" />
+                        </div>
+                        <div className="flex-1">
+                          <p className="text-white text-sm font-medium">{news.title}</p>
+                          <p className="text-xs text-gray-400">{news.excerpt}</p>
+                          <p className="text-xs text-gray-500 mt-1">{news.date}</p>
+                        </div>
+                      </div>
+                    ))}
+                  </div>
+                </CardContent>
+              </Card>
+            </motion.div>
+          </div>
         </div>
       </main>
     </div>
