@@ -119,19 +119,20 @@ export default function HomePage() {
             transition={{ duration: 0.5 }}
             className="mb-4"
           >
-            <Card className="bg-gradient-to-r from-orange-500/40 to-red-500/40 border-2 border-orange-500/40">
-              <CardContent className="py-6 px-6">
-                <div className="flex flex-col md:flex-row items-center justify-between gap-4">
-                  <div className="flex items-center gap-6">
-                    <div className="p-4 rounded-full bg-orange-500/50">
-                      <Gift className="h-10 w-10 text-orange-300" />
+            <Card className="bg-gradient-to-r from-orange-500/40 to-red-500/40 border-2 border-orange-500/50">
+              <CardContent className="py-12 px-8">
+                <div className="flex flex-col md:flex-row items-center justify-between gap-6">
+                  <div className="flex items-center gap-8">
+                    <div className="p-6 rounded-full bg-orange-500/50">
+                      <Gift className="h-16 w-16 text-orange-300" />
                     </div>
                     <div>
                       <h3 className="text-lg font-bold text-white">🎉 Special Offer!</h3>
-                      <p className="text-gray-200 text-lg">Get 20% OFF on all Instant Accounts. Use code <Badge className="bg-orange-500/30 text-orange-300 border-orange-500/40 text-base px-3 py-1">INSTANT20</Badge></p>
+                      <p className="text-gray-200 text-lg">Get 20% OFF on all Instant Accounts</p>
+                      <p className="text-gray-300 text-base mt-1"> Use code <Badge className="bg-orange-500/30 text-orange-300 border-orange-500/40 text-base px-4 py-1.5">INSTANT20</Badge></p>
                     </div>
                   </div>
-                  <Button className="bg-orange-500 hover:bg-orange-600 shrink-0 text-base px-8 py-4">
+                  <Button className="bg-orange-500 hover:bg-orange-600 shrink-0 text-base px-10 py-6">
                     Claim Now
                   </Button>
                 </div>
