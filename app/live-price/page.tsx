@@ -14,15 +14,12 @@ const Chart = dynamic(() => import('react-apexcharts'), { ssr: false });
 export default function LivePricePage() {
     const router = useRouter();
     const [sidebarOpen, setSidebarOpen] = useState(false);
-    const [userEmail, setUserEmail] = useState("");
-    const [avatarUrl, setAvatarUrl] = useState("");
     const [loading, setLoading] = useState(true);
     const [symbol, setSymbol] = useState("EURUSD");
     const [price, setPrice] = useState(1.0850);
     const [prices, setPrices] = useState<number[]>([1.0850, 1.0852, 1.0848, 1.0855, 1.0853]);
     const [isRunning, setIsRunning] = useState(false);
 
-    // Price data for different symbols
     const symbolConfig = {
         EURUSD: { basePrice: 1.0850, volatility: 0.0005, prefix: "$", decimals: 5 },
         GBPUSD: { basePrice: 1.2650, volatility: 0.0005, prefix: "$", decimals: 5 },
@@ -35,7 +32,6 @@ export default function LivePricePage() {
             router.push("/login");
             return;
         }
-        setUserEmail(email);
         setLoading(false);
     }, [router]);
 
@@ -74,8 +70,8 @@ export default function LivePricePage() {
             toolbar: { show: false },
             animations: { enabled: true }
         },
-        stroke: { curve: 'smooth', width: 2, colors: ['#3B82F6'] },
-        grid: { borderColor: '#374151' },
+        stroke: { curve: 'smooth', width: 2, colors: ['#8B5CF6'] }, // Purple
+        grid: { borderColor: '#2A2A2A' },
         xaxis: { labels: { show: false } },
         yaxis: {
             labels: {
@@ -91,22 +87,22 @@ export default function LivePricePage() {
 
     if (loading) {
         return (
-            <div className="flex min-h-screen items-center justify-center bg-darknavy">
+            <div className="flex min-h-screen items-center justify-center bg-black">
                 <p className="text-gray-400">Loading...</p>
             </div>
         );
     }
 
     return (
-        <div className="min-h-screen bg-darknavy">
-            <Topbar onMenuClick={() => setSidebarOpen(true)} userEmail={userEmail} avatarUrl={avatarUrl} />
+        <div className="min-h-screen bg-black">
+            <Topbar onMenuClick={() => setSidebarOpen(true)} />
             <Sidebar isOpen={sidebarOpen} onClose={() => setSidebarOpen(false)} />
 
             <main className="lg:ml-64 pt-2">
                 <div className="p-3">
                     <h1 className="text-2xl font-bold text-white mb-3">Live Price Chart</h1>
 
-                    <Card className="bg-darkcard mb-6">
+                    <Card className="bg-[#1A1A1A] border-gray-800 mb-4">
                         <CardHeader>
                             <CardTitle className="text-white">Price Chart</CardTitle>
                         </CardHeader>
@@ -116,7 +112,7 @@ export default function LivePricePage() {
                                 <select
                                     value={symbol}
                                     onChange={(e) => handleSymbolChange(e.target.value)}
-                                    className="w-full mt-1 p-2 rounded-lg bg-darknavy border border-gray-700 text-white"
+                                    className="w-full mt-1 p-2 rounded-lg bg-black border border-gray-700 text-white"
                                 >
                                     <option value="EURUSD">EURUSD - Euro/US Dollar</option>
                                     <option value="GBPUSD">GBPUSD - British Pound/US Dollar</option>
@@ -155,7 +151,7 @@ export default function LivePricePage() {
                         </CardContent>
                     </Card>
 
-                    <Card className="bg-darkcard">
+                    <Card className="bg-[#1A1A1A] border-gray-800">
                         <CardHeader>
                             <CardTitle className="text-white">How to Use</CardTitle>
                         </CardHeader>
