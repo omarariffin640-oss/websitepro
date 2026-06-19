@@ -35,8 +35,6 @@ export default function UsersPage() {
     const [users, setUsers] = useState<User[]>([]);
     const [accounts, setAccounts] = useState<Account[]>([]);
     const [filteredUsers, setFilteredUsers] = useState<User[]>([]);
-    const [userEmail, setUserEmail] = useState("");
-    const [avatarUrl, setAvatarUrl] = useState("");
     const [loading, setLoading] = useState(true);
     const [search, setSearch] = useState("");
 
@@ -46,23 +44,16 @@ export default function UsersPage() {
             router.push("/login");
             return;
         }
-        setUserEmail(email);
 
-        // Fetch users
         fetch("https://websitepro-d5cu.onrender.com/users")
             .then(res => res.json())
             .then(data => {
                 setUsers(data);
                 setFilteredUsers(data);
-                const currentUser = data.find((u: User) => u.email === email);
-                if (currentUser) {
-                    setAvatarUrl(currentUser.avatar_url || "");
-                }
                 setLoading(false);
             })
             .catch(() => setLoading(false));
 
-        // Fetch accounts
         fetch("https://websitepro-d5cu.onrender.com/accounts")
             .then(res => res.json())
             .then(data => setAccounts(data))
@@ -89,13 +80,13 @@ export default function UsersPage() {
     const getStatusBadge = (status: string) => {
         switch (status) {
             case "active":
-                return <Badge className="bg-green-500">Active</Badge>;
+                return <Badge className="bg-green-500/20 text-green-500 border-green-500/30">Active</Badge>;
             case "banned":
-                return <Badge className="bg-red-500">Banned</Badge>;
+                return <Badge className="bg-red-500/20 text-red-500 border-red-500/30">Banned</Badge>;
             case "pending":
-                return <Badge className="bg-yellow-500">Pending</Badge>;
+                return <Badge className="bg-yellow-500/20 text-yellow-500 border-yellow-500/30">Pending</Badge>;
             default:
-                return <Badge className="bg-gray-500">Inactive</Badge>;
+                return <Badge className="bg-gray-500/20 text-gray-400 border-gray-500/30">Inactive</Badge>;
         }
     };
 
@@ -118,39 +109,40 @@ export default function UsersPage() {
 
     if (loading) {
         return (
-            <div className="flex min-h-screen items-center justify-center bg-darknavy">
+            <div className="flex min-h-screen items-center justify-center bg-black">
                 <p className="text-gray-400">Loading users...</p>
             </div>
         );
     }
 
     return (
-        <div className="min-h-screen bg-darknavy">
-            <Topbar onMenuClick={() => setSidebarOpen(true)} userEmail={userEmail} avatarUrl={avatarUrl} />
+        <div className="min-h-screen bg-black">
+            <Topbar onMenuClick={() => setSidebarOpen(true)} />
             <Sidebar isOpen={sidebarOpen} onClose={() => setSidebarOpen(false)} />
 
             <main className="lg:ml-64 pt-2">
                 <div className="p-3">
-                    <div className="flex justify-between items-center mb-3">
+                    {/* Header - Search & Export */}
+                    <div className="flex flex-col md:flex-row justify-between items-start md:items-center gap-3 mb-3">
                         <h1 className="text-2xl font-bold text-white">Users</h1>
-                        <div className="flex gap-3">
-                            <Button onClick={exportToCSV} className="bg-green-500 hover:bg-green-600">
-                                <Download className="w-4 h-4 mr-2" />
-                                Export CSV
-                            </Button>
-                            <div className="w-64">
+                        <div className="flex flex-col sm:flex-row gap-2 w-full md:w-auto">
+                            <div className="relative w-full sm:w-64">
                                 <Input
                                     type="text"
                                     placeholder="Search users..."
                                     value={search}
                                     onChange={(e) => setSearch(e.target.value)}
-                                    className="bg-darkcard border-gray-700 text-white"
+                                    className="bg-[#1A1A1A] border-gray-700 text-white w-full pl-3"
                                 />
                             </div>
+                            <Button onClick={exportToCSV} className="bg-purple-500 hover:bg-purple-600 shrink-0">
+                                <Download className="w-4 h-4 mr-2" />
+                                Export CSV
+                            </Button>
                         </div>
                     </div>
 
-                    <Card className="bg-darkcard">
+                    <Card className="bg-[#1A1A1A] border-gray-800">
                         <CardHeader>
                             <CardTitle className="text-white">User List</CardTitle>
                         </CardHeader>
@@ -176,13 +168,13 @@ export default function UsersPage() {
                                             filteredUsers.map((user) => {
                                                 const account = getUserAccount(user.id);
                                                 const balance = account?.balance || 0;
-                                                const profit = 0; // Placeholder - nanti connect ke challenge profit
+                                                const profit = 0;
 
                                                 return (
                                                     <tr key={user.id} className="border-b border-gray-800 hover:bg-gray-800/30 transition-colors">
                                                         <td className="py-3">
                                                             <div className="flex items-center gap-3">
-                                                                <div className="w-8 h-8 rounded-full bg-blue-500 flex items-center justify-center text-white text-xs font-bold">
+                                                                <div className="w-8 h-8 rounded-full bg-purple-500 flex items-center justify-center text-white text-xs font-bold">
                                                                     {user.email.charAt(0).toUpperCase()}
                                                                 </div>
                                                                 <div>
@@ -192,7 +184,7 @@ export default function UsersPage() {
                                                             </div>
                                                         </td>
                                                         <td className="py-3">
-                                                            <Badge variant="outline" className="text-blue-400 border-blue-400">
+                                                            <Badge variant="outline" className="text-purple-400 border-purple-400">
                                                                 {account?.account_name || "Standard"}
                                                             </Badge>
                                                         </td>
