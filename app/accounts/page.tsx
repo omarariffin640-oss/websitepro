@@ -17,8 +17,6 @@ export default function AccountsPage() {
     const router = useRouter();
     const [sidebarOpen, setSidebarOpen] = useState(false);
     const [accounts, setAccounts] = useState<Account[]>([]);
-    const [userEmail, setUserEmail] = useState("");
-    const [avatarUrl, setAvatarUrl] = useState("");
     const [loading, setLoading] = useState(true);
 
     useEffect(() => {
@@ -27,9 +25,7 @@ export default function AccountsPage() {
             router.push("/login");
             return;
         }
-        setUserEmail(email);
 
-        // Fetch REAL data dari backend
         fetch(`https://websitepro-d5cu.onrender.com/accounts?email=${email}`)
             .then(res => res.json())
             .then(data => {
@@ -50,15 +46,15 @@ export default function AccountsPage() {
 
     if (loading) {
         return (
-            <div className="flex min-h-screen items-center justify-center bg-darknavy">
+            <div className="flex min-h-screen items-center justify-center bg-black">
                 <p className="text-gray-400">Loading accounts...</p>
             </div>
         );
     }
 
     return (
-        <div className="min-h-screen bg-darknavy">
-            <Topbar onMenuClick={() => setSidebarOpen(true)} userEmail={userEmail} avatarUrl={avatarUrl} />
+        <div className="min-h-screen bg-black">
+            <Topbar onMenuClick={() => setSidebarOpen(true)} />
             <Sidebar isOpen={sidebarOpen} onClose={() => setSidebarOpen(false)} />
 
             <main className="lg:ml-64 pt-2">
@@ -66,15 +62,15 @@ export default function AccountsPage() {
                     <h1 className="text-2xl font-bold text-white mb-3">Accounts</h1>
 
                     {accounts.length === 0 ? (
-                        <Card className="bg-darkcard">
+                        <Card className="bg-[#1A1A1A] border-gray-800">
                             <CardContent className="p-6">
                                 <p className="text-gray-400 text-center">No accounts found. Create an account to get started.</p>
                             </CardContent>
                         </Card>
                     ) : (
-                        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+                        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
                             {accounts.map((account) => (
-                                <Card key={account.id} className="bg-darkcard">
+                                <Card key={account.id} className="bg-[#1A1A1A] border-gray-800 hover:border-purple-500/30 transition-colors">
                                     <CardHeader>
                                         <CardTitle className="text-white">{account.account_name}</CardTitle>
                                     </CardHeader>
