@@ -9,8 +9,6 @@ import Sidebar from "@/components/Sidebar";
 export default function RevenueReportsPage() {
     const router = useRouter();
     const [sidebarOpen, setSidebarOpen] = useState(false);
-    const [userEmail, setUserEmail] = useState("");
-    const [avatarUrl, setAvatarUrl] = useState("");
     const [loading, setLoading] = useState(true);
 
     useEffect(() => {
@@ -19,27 +17,28 @@ export default function RevenueReportsPage() {
             router.push("/login");
             return;
         }
-        setUserEmail(email);
         setLoading(false);
     }, [router]);
 
     if (loading) {
         return (
-            <div className="flex min-h-screen items-center justify-center bg-darknavy">
+            <div className="flex min-h-screen items-center justify-center bg-black">
                 <p className="text-gray-400">Loading...</p>
             </div>
         );
     }
 
     return (
-        <div className="min-h-screen bg-darknavy">
-            <Topbar onMenuClick={() => setSidebarOpen(true)} userEmail={userEmail} avatarUrl={avatarUrl} />
+        <div className="min-h-screen bg-black">
+            <Topbar onMenuClick={() => setSidebarOpen(true)} />
             <Sidebar isOpen={sidebarOpen} onClose={() => setSidebarOpen(false)} />
+
             <main className="lg:ml-64 pt-2">
                 <div className="p-3">
                     <h1 className="text-2xl font-bold text-white mb-3">Revenue Reports</h1>
-                    <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-                        <Card className="bg-darkcard">
+
+                    <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+                        <Card className="bg-[#1A1A1A] border-gray-800">
                             <CardHeader>
                                 <CardTitle className="text-white">Total Revenue</CardTitle>
                             </CardHeader>
@@ -47,15 +46,17 @@ export default function RevenueReportsPage() {
                                 <p className="text-3xl font-bold text-green-500">$125,000</p>
                             </CardContent>
                         </Card>
-                        <Card className="bg-darkcard">
+
+                        <Card className="bg-[#1A1A1A] border-gray-800">
                             <CardHeader>
                                 <CardTitle className="text-white">This Month</CardTitle>
                             </CardHeader>
                             <CardContent>
-                                <p className="text-3xl font-bold text-blue-500">$32,500</p>
+                                <p className="text-3xl font-bold text-purple-400">$32,500</p>
                             </CardContent>
                         </Card>
-                        <Card className="bg-darkcard">
+
+                        <Card className="bg-[#1A1A1A] border-gray-800">
                             <CardHeader>
                                 <CardTitle className="text-white">Pending Payouts</CardTitle>
                             </CardHeader>
