@@ -24,8 +24,6 @@ type Order = {
 export default function OrdersPage() {
     const router = useRouter();
     const [sidebarOpen, setSidebarOpen] = useState(false);
-    const [userEmail, setUserEmail] = useState("");
-    const [avatarUrl, setAvatarUrl] = useState("");
     const [loading, setLoading] = useState(true);
     const [search, setSearch] = useState("");
     const [orders, setOrders] = useState<Order[]>([]);
@@ -36,9 +34,7 @@ export default function OrdersPage() {
             router.push("/login");
             return;
         }
-        setUserEmail(email);
 
-        // Mock data - nanti connect ke backend
         setOrders([
             { id: 1, symbol: "EURUSD", type: "buy", volume: 0.5, price: 1.0850, profit: 45.20, status: "closed", time: "2026-06-18 10:30" },
             { id: 2, symbol: "GBPUSD", type: "sell", volume: 1.0, price: 1.2650, profit: -22.50, status: "open", time: "2026-06-18 09:15" },
@@ -50,10 +46,14 @@ export default function OrdersPage() {
 
     const getStatusBadge = (status: string) => {
         switch (status) {
-            case "open": return <Badge className="bg-green-500/20 text-green-500 border-green-500/30">Open</Badge>;
-            case "closed": return <Badge className="bg-gray-500/20 text-gray-400 border-gray-500/30">Closed</Badge>;
-            case "pending": return <Badge className="bg-yellow-500/20 text-yellow-500 border-yellow-500/30">Pending</Badge>;
-            default: return <Badge className="bg-gray-500/20 text-gray-400">Unknown</Badge>;
+            case "open":
+                return <Badge className="bg-green-500/20 text-green-500 border-green-500/30">Open</Badge>;
+            case "closed":
+                return <Badge className="bg-gray-500/20 text-gray-400 border-gray-500/30">Closed</Badge>;
+            case "pending":
+                return <Badge className="bg-yellow-500/20 text-yellow-500 border-yellow-500/30">Pending</Badge>;
+            default:
+                return <Badge className="bg-gray-500/20 text-gray-400">Unknown</Badge>;
         }
     };
 
@@ -63,15 +63,15 @@ export default function OrdersPage() {
 
     if (loading) {
         return (
-            <div className="flex min-h-screen items-center justify-center bg-darknavy">
+            <div className="flex min-h-screen items-center justify-center bg-black">
                 <p className="text-gray-400">Loading orders...</p>
             </div>
         );
     }
 
     return (
-        <div className="min-h-screen bg-darknavy">
-            <Topbar onMenuClick={() => setSidebarOpen(true)} userEmail={userEmail} avatarUrl={avatarUrl} />
+        <div className="min-h-screen bg-black">
+            <Topbar onMenuClick={() => setSidebarOpen(true)} />
             <Sidebar isOpen={sidebarOpen} onClose={() => setSidebarOpen(false)} />
 
             <main className="lg:ml-64 pt-2">
@@ -88,41 +88,39 @@ export default function OrdersPage() {
                                 placeholder="Search symbol..."
                                 value={search}
                                 onChange={(e) => setSearch(e.target.value)}
-                                className="pl-9 bg-darkcard border-gray-700 text-white w-full"
+                                className="pl-9 bg-[#1A1A1A] border-gray-700 text-white w-full"
                             />
                         </div>
                     </div>
 
-                    {/* Stats Cards */}
                     <div className="grid grid-cols-2 md:grid-cols-4 gap-3 mb-4">
-                        <Card className="bg-darkcard border-gray-800">
+                        <Card className="bg-[#1A1A1A] border-gray-800">
                             <CardContent className="pt-3">
                                 <p className="text-gray-400 text-xs">Total Orders</p>
                                 <p className="text-xl font-bold text-white">{orders.length}</p>
                             </CardContent>
                         </Card>
-                        <Card className="bg-darkcard border-gray-800">
+                        <Card className="bg-[#1A1A1A] border-gray-800">
                             <CardContent className="pt-3">
                                 <p className="text-gray-400 text-xs">Open Orders</p>
                                 <p className="text-xl font-bold text-green-500">{orders.filter(o => o.status === "open").length}</p>
                             </CardContent>
                         </Card>
-                        <Card className="bg-darkcard border-gray-800">
+                        <Card className="bg-[#1A1A1A] border-gray-800">
                             <CardContent className="pt-3">
                                 <p className="text-gray-400 text-xs">Total Profit</p>
                                 <p className="text-xl font-bold text-green-500">+$157.70</p>
                             </CardContent>
                         </Card>
-                        <Card className="bg-darkcard border-gray-800">
+                        <Card className="bg-[#1A1A1A] border-gray-800">
                             <CardContent className="pt-3">
                                 <p className="text-gray-400 text-xs">Win Rate</p>
-                                <p className="text-xl font-bold text-blue-500">67%</p>
+                                <p className="text-xl font-bold text-purple-400">67%</p>
                             </CardContent>
                         </Card>
                     </div>
 
-                    {/* Orders Table */}
-                    <Card className="bg-darkcard border-gray-800">
+                    <Card className="bg-[#1A1A1A] border-gray-800">
                         <CardHeader className="pb-2">
                             <CardTitle className="text-white">Order History</CardTitle>
                         </CardHeader>
