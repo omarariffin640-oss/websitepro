@@ -5,7 +5,7 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { ThemeToggle } from "@/components/ThemeToggle";
 import NotificationBell from "./NotificationBell";
-import { Menu, Search, ChevronDown, Camera } from "lucide-react";
+import { Menu, Search, ChevronDown } from "lucide-react";
 // @ts-ignore
 import { createClient } from "@supabase/supabase-js";
 
@@ -73,9 +73,14 @@ export default function Topbar({ onMenuClick, userEmail, avatarUrl, onAvatarUpda
     return (
         <header className="sticky top-0 z-40 bg-darknavy border-b border-gray-800">
             <div className="flex items-center justify-between px-4 h-16 gap-2">
-                {/* Left */}
+                {/* Left - Menu & Logo */}
                 <div className="flex items-center gap-3 shrink-0">
-                    <Button variant="ghost" size="icon" onClick={onMenuClick} className="lg:hidden text-white hover:bg-gray-800">
+                    <Button
+                        variant="ghost"
+                        size="icon"
+                        onClick={onMenuClick}
+                        className="lg:hidden text-white hover:bg-gray-800"
+                    >
                         <Menu className="h-5 w-5" />
                     </Button>
                     <div className="flex items-center gap-2">
@@ -86,7 +91,7 @@ export default function Topbar({ onMenuClick, userEmail, avatarUrl, onAvatarUpda
                     </div>
                 </div>
 
-                {/* Search */}
+                {/* Center - Search */}
                 <div className="flex-1 max-w-md mx-2">
                     <div className={`${searchOpen ? 'block' : 'hidden md:block'} relative`}>
                         <Search className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-gray-500" />
@@ -98,17 +103,21 @@ export default function Topbar({ onMenuClick, userEmail, avatarUrl, onAvatarUpda
                             className="w-full pl-9 bg-darkcard border-gray-700 text-white placeholder:text-gray-500"
                         />
                     </div>
-                    <Button variant="ghost" size="icon" className="md:hidden text-gray-400 hover:text-white" onClick={() => setSearchOpen(!searchOpen)}>
+                    <Button
+                        variant="ghost"
+                        size="icon"
+                        className="md:hidden text-gray-400 hover:text-white"
+                        onClick={() => setSearchOpen(!searchOpen)}
+                    >
                         <Search className="h-5 w-5" />
                     </Button>
                 </div>
 
-                {/* Right */}
+                {/* Right - Notif, Dark, Profile Upload */}
                 <div className="flex items-center gap-3 shrink-0">
                     <NotificationBell />
                     <ThemeToggle />
 
-                    {/* Profile with upload */}
                     <div className="relative group">
                         <input
                             type="file"
