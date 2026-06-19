@@ -119,10 +119,10 @@ export default function DashboardPage() {
 
     // Stats for cards
     const stats = [
-        { title: "Total Users", value: users.length, icon: Users, color: "border-blue-500", textColor: "text-blue-500" },
-        { title: "Total Accounts", value: 0, icon: Wallet, color: "border-orange-500", textColor: "text-orange-500" },
-        { title: "Active Challenges", value: activeChallenge ? 1 : 0, icon: Trophy, color: "border-yellow-500", textColor: "text-yellow-500" },
-        { title: "Pending Payouts", value: 0, icon: Wallet, color: "border-green-500", textColor: "text-green-500" },
+        { title: "Total Users", value: users.length, icon: Users, color: "border-purple-500", textColor: "text-purple-500" },
+        { title: "Total Accounts", value: 0, icon: Wallet, color: "border-purple-500", textColor: "text-purple-500" },
+        { title: "Active Challenges", value: activeChallenge ? 1 : 0, icon: Trophy, color: "border-purple-500", textColor: "text-purple-500" },
+        { title: "Pending Payouts", value: 0, icon: Wallet, color: "border-purple-500", textColor: "text-purple-500" },
     ];
 
     // Personal Stats

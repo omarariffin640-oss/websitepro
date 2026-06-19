@@ -79,7 +79,7 @@ export default function LoginPage() {
                         </p>
                     )}
 
-                    <Button onClick={handleLogin} className="w-full">
+                    <Button onClick={handleLogin} className="w-full bg-purple-500 hover:bg-purple-600">
                         Login
                     </Button>
 

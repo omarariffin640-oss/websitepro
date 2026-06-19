@@ -166,7 +166,7 @@ export default function Topbar({ onMenuClick }: TopbarProps) {
                         <Menu className="h-5 w-5" />
                     </Button>
                     <div className="flex items-center gap-2">
-                        <div className="w-8 h-8 bg-blue-500 rounded-lg flex items-center justify-center">
+                        <div className="w-8 h-8 bg-purple-500 rounded-lg flex items-center justify-center">
                             <span className="text-white font-bold text-lg">P</span>
                         </div>
                         <span className="font-bold text-xl text-white hidden sm:inline">PropFirm</span>

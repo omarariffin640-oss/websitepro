@@ -65,7 +65,7 @@ export default function RegisterPage() {
                 onChange={(e) => setPassword(e.target.value)}
             />
 
-            <button onClick={handleRegister}>
+            <button onClick={handleRegister} className="bg-purple-500 hover:bg-purple-600">
                 Register
             </button>
 
