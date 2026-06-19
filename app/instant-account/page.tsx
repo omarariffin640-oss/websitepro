@@ -19,8 +19,6 @@ export default function InstantAccountPage() {
     const router = useRouter();
     const [sidebarOpen, setSidebarOpen] = useState(false);
     const [account, setAccount] = useState<InstantAccount | null>(null);
-    const [userEmail, setUserEmail] = useState("");
-    const [avatarUrl, setAvatarUrl] = useState("");
     const [loading, setLoading] = useState(true);
     const [creating, setCreating] = useState(false);
     const [message, setMessage] = useState("");
@@ -31,9 +29,7 @@ export default function InstantAccountPage() {
             router.push("/login");
             return;
         }
-        setUserEmail(email);
 
-        // Check existing instant account
         fetch(`https://websitepro-d5cu.onrender.com/instant-account?email=${email}`)
             .then(res => res.json())
             .then(data => {
@@ -49,10 +45,11 @@ export default function InstantAccountPage() {
         setCreating(true);
         setMessage("");
 
+        const email = localStorage.getItem("userEmail");
         const res = await fetch("https://websitepro-d5cu.onrender.com/create-instant-account", {
             method: "POST",
             headers: { "Content-Type": "application/json" },
-            body: JSON.stringify({ user_email: userEmail })
+            body: JSON.stringify({ user_email: email })
         });
         const data = await res.json();
 
@@ -73,15 +70,15 @@ export default function InstantAccountPage() {
 
     if (loading) {
         return (
-            <div className="flex min-h-screen items-center justify-center bg-darknavy">
+            <div className="flex min-h-screen items-center justify-center bg-black">
                 <p className="text-gray-400">Loading...</p>
             </div>
         );
     }
 
     return (
-        <div className="min-h-screen bg-darknavy">
-            <Topbar onMenuClick={() => setSidebarOpen(true)} userEmail={userEmail} avatarUrl={avatarUrl} />
+        <div className="min-h-screen bg-black">
+            <Topbar onMenuClick={() => setSidebarOpen(true)} />
             <Sidebar isOpen={sidebarOpen} onClose={() => setSidebarOpen(false)} />
 
             <main className="lg:ml-64 pt-2">
@@ -95,37 +92,37 @@ export default function InstantAccountPage() {
                     )}
 
                     {account ? (
-                        <Card className="bg-darkcard">
+                        <Card className="bg-[#1A1A1A] border-gray-800">
                             <CardHeader>
                                 <CardTitle className="text-white">Your Instant Account</CardTitle>
                             </CardHeader>
                             <CardContent className="space-y-4">
-                                <div className="flex justify-between p-3 rounded-lg bg-darknavy/50">
+                                <div className="flex justify-between p-3 rounded-lg bg-black/50 border border-gray-800">
                                     <span className="text-gray-400">Account ID:</span>
                                     <span className="text-white font-mono">{account.account_id}</span>
                                 </div>
-                                <div className="flex justify-between p-3 rounded-lg bg-darknavy/50">
+                                <div className="flex justify-between p-3 rounded-lg bg-black/50 border border-gray-800">
                                     <span className="text-gray-400">Balance:</span>
                                     <span className="text-green-500 font-bold text-xl">${account.balance.toLocaleString()}</span>
                                 </div>
-                                <div className="flex justify-between p-3 rounded-lg bg-darknavy/50">
+                                <div className="flex justify-between p-3 rounded-lg bg-black/50 border border-gray-800">
                                     <span className="text-gray-400">Status:</span>
                                     <span className="text-green-500 capitalize">{account.status}</span>
                                 </div>
-                                <div className="flex justify-between p-3 rounded-lg bg-darknavy/50">
+                                <div className="flex justify-between p-3 rounded-lg bg-black/50 border border-gray-800">
                                     <span className="text-gray-400">Created:</span>
                                     <span className="text-gray-300">{new Date(account.created_at).toLocaleDateString()}</span>
                                 </div>
                             </CardContent>
                         </Card>
                     ) : (
-                        <Card className="bg-darkcard text-center">
+                        <Card className="bg-[#1A1A1A] border-gray-800 text-center">
                             <CardContent className="p-8">
                                 <p className="text-gray-400 mb-4">You don't have an instant account yet.</p>
                                 <Button
                                     onClick={createAccount}
                                     disabled={creating}
-                                    className="bg-orange-500 hover:bg-orange-600"
+                                    className="bg-purple-500 hover:bg-purple-600"
                                 >
                                     {creating ? "Creating..." : "Get Instant Account"}
                                 </Button>
