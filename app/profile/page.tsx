@@ -6,7 +6,6 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Label } from "@/components/ui/label";
-import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { ThemeToggle } from "@/components/ThemeToggle";
 // @ts-ignore
 import { createClient } from "@supabase/supabase-js";
@@ -62,7 +61,6 @@ export default function ProfilePage() {
         const fileExt = file.name.split('.').pop();
         const fileName = `${user?.id}-${Date.now()}.${fileExt}`;
 
-        // Upload dengan Authorization header - cara yang betul
         const { error: uploadError } = await supabase.storage
             .from('avatars')
             .upload(fileName, file, {
@@ -133,12 +131,18 @@ export default function ProfilePage() {
                 <Card>
                     <CardHeader className="text-center">
                         <div className="flex justify-center mb-4">
-                            <Avatar className="w-24 h-24">
-                                <AvatarImage src={user.avatar_url} />
-                                <AvatarFallback className="text-3xl bg-blue-500 text-white">
+                            {/* Profile Picture - guna img tag */}
+                            {user.avatar_url ? (
+                                <img
+                                    src={user.avatar_url}
+                                    alt="Profile"
+                                    className="w-24 h-24 rounded-full object-cover border-4 border-blue-500"
+                                />
+                            ) : (
+                                <div className="w-24 h-24 rounded-full bg-blue-500 flex items-center justify-center text-white text-3xl font-bold">
                                     {email.charAt(0).toUpperCase()}
-                                </AvatarFallback>
-                            </Avatar>
+                                </div>
+                            )}
                         </div>
                         <CardTitle className="text-2xl">My Profile</CardTitle>
                         <CardDescription>Update your personal information</CardDescription>
