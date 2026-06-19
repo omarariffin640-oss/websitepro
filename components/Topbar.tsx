@@ -32,7 +32,6 @@ export default function Topbar({ onMenuClick, userEmail, avatarUrl, onAvatarUpda
     const userName = userEmail?.split('@')[0] || "User";
     const displayName = userName.charAt(0).toUpperCase() + userName.slice(1);
 
-    // Close dropdown when click outside
     useEffect(() => {
         const handleClickOutside = (event: MouseEvent) => {
             if (dropdownRef.current && !dropdownRef.current.contains(event.target as Node)) {
@@ -76,6 +75,7 @@ export default function Topbar({ onMenuClick, userEmail, avatarUrl, onAvatarUpda
         if (data.success) {
             if (onAvatarUpdate) onAvatarUpdate(publicUrl);
             setIsOpen(false);
+            // ✅ Tak perlu redirect, hanya refresh avatar
             window.location.reload();
         } else {
             alert("Failed to save avatar URL");
