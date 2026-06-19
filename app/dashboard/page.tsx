@@ -70,6 +70,11 @@ export default function DashboardPage() {
     const [totalProfit, setTotalProfit] = useState(0);
     const [winRate, setWinRate] = useState(0);
 
+    // ✅ TAMBAH FUNCTION DI SINI (lepas semua useState)
+    const handleAvatarUpdate = (url: string) => {
+        setAvatarUrl(url);
+    };
+
     useEffect(() => {
         const email = localStorage.getItem("userEmail");
         if (!email) {
