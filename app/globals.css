@@ -1,66 +1,57 @@
-@import "tailwindcss";
-@import "tw-animate-css";
-@import "shadcn/tailwind.css";
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
 
-@custom-variant dark (&:is(.dark *));
+@layer base {
+  :root {
+    --background: 0 0% 0%;
+    --foreground: 0 0% 100%;
+    --card: 0 0% 10%;
+    --card-foreground: 0 0% 100%;
+    --popover: 0 0% 10%;
+    --popover-foreground: 0 0% 100%;
+    --primary: 263 100% 66%;
+    --primary-foreground: 0 0% 100%;
+    --secondary: 0 0% 16%;
+    --secondary-foreground: 0 0% 100%;
+    --muted: 0 0% 16%;
+    --muted-foreground: 0 0% 61%;
+    --accent: 263 100% 66%;
+    --accent-foreground: 0 0% 100%;
+    --destructive: 0 84% 60%;
+    --border: 0 0% 16%;
+    --input: 0 0% 16%;
+    --ring: 263 100% 66%;
+    --radius: 0.625rem;
+  }
 
-@theme inline {
-  --color-background: var(--background);
-  --color-foreground: var(--foreground);
-  --font-sans: var(--font-sans);
-  --font-mono: var(--font-geist-mono);
-}
-
-:root {
-  --background: #000000;
-  --foreground: #ffffff;
-  --card: #1A1A1A;
-  --card-foreground: #ffffff;
-  --primary: #8B5CF6;
-  --primary-foreground: #ffffff;
-  --secondary: #2A2A2A;
-  --secondary-foreground: #ffffff;
-  --muted: #2A2A2A;
-  --muted-foreground: #9CA3AF;
-  --accent: #8B5CF6;
-  --accent-foreground: #ffffff;
-  --destructive: #EF4444;
-  --border: #2A2A2A;
-  --input: #2A2A2A;
-  --ring: #8B5CF6;
-  --radius: 0.625rem;
-}
-
-.dark {
-  --background: #000000;
-  --foreground: #ffffff;
-  --card: #1A1A1A;
-  --card-foreground: #ffffff;
-  --primary: #8B5CF6;
-  --primary-foreground: #000000;
-  --secondary: #2A2A2A;
-  --secondary-foreground: #ffffff;
-  --muted: #2A2A2A;
-  --muted-foreground: #9CA3AF;
-  --accent: #8B5CF6;
-  --accent-foreground: #000000;
-  --destructive: #EF4444;
-  --border: #2A2A2A;
-  --input: #2A2A2A;
-  --ring: #8B5CF6;
+  .dark {
+    --background: 0 0% 0%;
+    --foreground: 0 0% 100%;
+    --card: 0 0% 10%;
+    --card-foreground: 0 0% 100%;
+    --primary: 263 100% 66%;
+    --primary-foreground: 0 0% 0%;
+    --secondary: 0 0% 16%;
+    --secondary-foreground: 0 0% 100%;
+    --muted: 0 0% 16%;
+    --muted-foreground: 0 0% 61%;
+    --accent: 263 100% 66%;
+    --accent-foreground: 0 0% 0%;
+    --destructive: 0 84% 60%;
+    --border: 0 0% 16%;
+    --input: 0 0% 16%;
+    --ring: 263 100% 66%;
+  }
 }
 
 @layer base {
   * {
-    @apply border-border outline-ring/50;
+    @apply border-border;
   }
 
   body {
     @apply bg-background text-foreground;
-  }
-
-  html {
-    @apply font-sans;
   }
 }
 
@@ -95,8 +86,4 @@
 
 .text-gray-muted {
   color: #9CA3AF;
-}
-
-.hover\:bg-purple-accent:hover {
-  background-color: #8B5CF6;
 }
