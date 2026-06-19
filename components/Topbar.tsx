@@ -157,7 +157,7 @@ export default function Topbar({ onMenuClick, userEmail, avatarUrl, onAvatarUpda
                         >
                             {avatarUrl ? (
                                 <img
-                                    src={avatarUrl}
+                                    src={avatarUrl + '?t=' + Date.now()}
                                     alt="Profile"
                                     className="h-8 w-8 rounded-full object-cover border-2 border-blue-500"
                                 />
