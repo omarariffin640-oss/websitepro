@@ -55,7 +55,7 @@
   }
 }
 
-/* Custom Colors */
+/* Custom Utility Classes */
 .bg-darknavy {
   background-color: #000000;
 }
@@ -86,4 +86,12 @@
 
 .text-gray-muted {
   color: #9CA3AF;
+}
+
+.hover\:bg-purple-accent:hover {
+  background-color: #8B5CF6;
+}
+
+.hover\:bg-purple-dark:hover {
+  background-color: #7C3AED;
 }
