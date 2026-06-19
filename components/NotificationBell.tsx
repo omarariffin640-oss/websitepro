@@ -22,7 +22,6 @@ export default function NotificationBell() {
     const [unreadCount, setUnreadCount] = useState(0);
 
     useEffect(() => {
-        // Mock notifications - nanti connect ke backend
         setNotifications([
             { id: 1, title: "Challenge Started", message: "Step 1 challenge has begun!", read: false, created_at: new Date().toISOString() },
             { id: 2, title: "Trade Closed", message: "Profit: +$50", read: false, created_at: new Date().toISOString() },
@@ -58,7 +57,7 @@ export default function NotificationBell() {
                 <div className="p-3 border-b border-gray-700 flex justify-between items-center">
                     <h3 className="font-semibold text-white">Notifications</h3>
                     {unreadCount > 0 && (
-                        <button onClick={markAllAsRead} className="text-xs text-blue-500 hover:text-blue-400">
+                        <button onClick={markAllAsRead} className="text-xs text-purple-400 hover:text-purple-300">
                             Mark all as read
                         </button>
                     )}
@@ -70,7 +69,7 @@ export default function NotificationBell() {
                         notifications.map((notif) => (
                             <div
                                 key={notif.id}
-                                className={`p-3 border-b border-gray-700 cursor-pointer hover:bg-darknavy/50 ${!notif.read ? "bg-blue-500/10" : ""}`}
+                                className={`p-3 border-b border-gray-700 cursor-pointer hover:bg-darknavy/50 ${!notif.read ? "bg-purple-500/10" : ""}`}
                                 onClick={() => markAsRead(notif.id)}
                             >
                                 <p className="text-sm font-medium text-white">{notif.title}</p>
