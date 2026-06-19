@@ -13,8 +13,6 @@ import { ShoppingCart, Star, Tag, ArrowUpRight, Clock } from "lucide-react";
 export default function MarketplacePage() {
     const router = useRouter();
     const [sidebarOpen, setSidebarOpen] = useState(false);
-    const [userEmail, setUserEmail] = useState("");
-    const [avatarUrl, setAvatarUrl] = useState("");
     const [loading, setLoading] = useState(true);
 
     useEffect(() => {
@@ -23,7 +21,6 @@ export default function MarketplacePage() {
             router.push("/login");
             return;
         }
-        setUserEmail(email);
         setLoading(false);
     }, [router]);
 
@@ -36,7 +33,7 @@ export default function MarketplacePage() {
             rating: 4.8,
             reviews: 124,
             badge: "Popular",
-            badgeColor: "bg-yellow-500/20 text-yellow-500"
+            badgeColor: "bg-yellow-500/20 text-yellow-500 border-yellow-500/30"
         },
         {
             id: 2,
@@ -46,7 +43,7 @@ export default function MarketplacePage() {
             rating: 4.9,
             reviews: 86,
             badge: "Best Seller",
-            badgeColor: "bg-green-500/20 text-green-500"
+            badgeColor: "bg-green-500/20 text-green-500 border-green-500/30"
         },
         {
             id: 3,
@@ -56,7 +53,7 @@ export default function MarketplacePage() {
             rating: 4.7,
             reviews: 45,
             badge: "Premium",
-            badgeColor: "bg-purple-500/20 text-purple-500"
+            badgeColor: "bg-purple-500/20 text-purple-400 border-purple-500/30"
         },
         {
             id: 4,
@@ -66,28 +63,31 @@ export default function MarketplacePage() {
             rating: 4.6,
             reviews: 210,
             badge: "Hot Deal",
-            badgeColor: "bg-red-500/20 text-red-500"
+            badgeColor: "bg-red-500/20 text-red-500 border-red-500/30"
         }
     ];
 
     if (loading) {
-        return <div className="flex min-h-screen items-center justify-center bg-darknavy"><p className="text-gray-400">Loading...</p></div>;
+        return (
+            <div className="flex min-h-screen items-center justify-center bg-black">
+                <p className="text-gray-400">Loading...</p>
+            </div>
+        );
     }
 
     return (
-        <div className="min-h-screen bg-darknavy">
-            <Topbar onMenuClick={() => setSidebarOpen(true)} userEmail={userEmail} avatarUrl={avatarUrl} />
+        <div className="min-h-screen bg-black">
+            <Topbar onMenuClick={() => setSidebarOpen(true)} />
             <Sidebar isOpen={sidebarOpen} onClose={() => setSidebarOpen(false)} />
 
             <main className="lg:ml-64 pt-2">
                 <div className="p-4 max-w-7xl mx-auto">
-
-                    <div className="flex justify-between items-center mb-6">
+                    <div className="flex justify-between items-center mb-4">
                         <h1 className="text-2xl font-bold text-white">🛒 Marketplace</h1>
-                        <Badge className="bg-emerald-500/20 text-emerald-400">New</Badge>
+                        <Badge className="bg-purple-500/20 text-purple-400 border-purple-500/30">New</Badge>
                     </div>
 
-                    <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+                    <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
                         {products.map((product) => (
                             <motion.div
                                 key={product.id}
@@ -95,7 +95,7 @@ export default function MarketplacePage() {
                                 animate={{ opacity: 1, y: 0 }}
                                 transition={{ duration: 0.5 }}
                             >
-                                <Card className="bg-darkcard border-gray-800 hover:border-blue-500/30 transition-colors">
+                                <Card className="bg-[#1A1A1A] border-gray-800 hover:border-purple-500/30 transition-colors">
                                     <CardHeader>
                                         <div className="flex justify-between items-start">
                                             <Badge className={product.badgeColor}>{product.badge}</Badge>
@@ -114,7 +114,7 @@ export default function MarketplacePage() {
                                                 <p className="text-sm text-gray-400 line-through">${product.originalPrice}</p>
                                             )}
                                         </div>
-                                        <Button className="w-full bg-blue-500 hover:bg-blue-600">
+                                        <Button className="w-full bg-purple-500 hover:bg-purple-600 text-white">
                                             <ShoppingCart className="h-4 w-4 mr-2" />
                                             Buy Now
                                         </Button>
@@ -123,7 +123,6 @@ export default function MarketplacePage() {
                             </motion.div>
                         ))}
                     </div>
-
                 </div>
             </main>
         </div>
