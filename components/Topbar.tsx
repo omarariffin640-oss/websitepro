@@ -20,8 +20,6 @@ export default function Topbar({ onMenuClick, userEmail, avatarUrl }: TopbarProp
     const userName = userEmail?.split('@')[0] || "User";
     const displayName = userName.charAt(0).toUpperCase() + userName.slice(1);
 
-    console.log("Topbar - avatarUrl:", avatarUrl); // Debug
-
     return (
         <header className="sticky top-0 z-40 bg-darknavy border-b border-gray-800">
             <div className="flex items-center justify-between px-4 h-16 gap-2">
@@ -65,10 +63,11 @@ export default function Topbar({ onMenuClick, userEmail, avatarUrl }: TopbarProp
                     </Button>
                 </div>
 
-                {/* Kanan - Profile Avatar (guna img tag) */}
+                {/* Kanan */}
                 <div className="flex items-center gap-3 shrink-0">
                     <NotificationBell />
                     <ThemeToggle />
+                    {/* Profile - guna img tag (sama macam profile page) */}
                     <div
                         className="flex items-center gap-2 ml-1 cursor-pointer hover:bg-gray-800/50 px-2 py-1 rounded-lg transition-colors"
                         onClick={() => window.location.href = '/profile'}
