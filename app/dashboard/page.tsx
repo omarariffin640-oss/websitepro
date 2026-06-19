@@ -83,7 +83,7 @@ export default function DashboardPage() {
         }
         setUserEmail(email);
         fetchData(email);
-    }, [router]);
+    }, [router, avatarUrl]);
 
     const fetchData = async (email: string) => {
         try {
