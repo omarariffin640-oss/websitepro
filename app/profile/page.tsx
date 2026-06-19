@@ -62,9 +62,14 @@ export default function ProfilePage() {
         const fileExt = file.name.split('.').pop();
         const fileName = `${user?.id}-${Date.now()}.${fileExt}`;
 
+        // Upload dengan Authorization header
         const { error: uploadError } = await supabase.storage
             .from('avatars')
-            .upload(fileName, file);
+            .upload(fileName, file, {
+                headers: {
+                    'Authorization': `Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Im14YWFub2h3YWFmenNod2tzcXJ0Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODA3NjA2NDksImV4cCI6MjA5NjMzNjY0OX0.gdZ1OIjsPXVQfBoT9Nipabzj6CU273ERxefvKSdbteI`
+                }
+            });
 
         if (uploadError) {
             setMessage("Upload failed: " + uploadError.message);
@@ -86,7 +91,6 @@ export default function ProfilePage() {
         if (data.success) {
             setUser({ ...user!, avatar_url: publicUrl });
             setMessage("Avatar updated successfully!");
-            // Auto redirect ke dashboard lepas 1 saat
             setTimeout(() => {
                 router.push("/dashboard");
             }, 1000);
