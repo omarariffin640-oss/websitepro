@@ -29,14 +29,12 @@ type Account = {
     created_at: string;
 };
 
-export default function UsersPage() {
+export default function AdminUsersPage() {
     const router = useRouter();
     const [sidebarOpen, setSidebarOpen] = useState(false);
     const [users, setUsers] = useState<User[]>([]);
     const [accounts, setAccounts] = useState<Account[]>([]);
     const [filteredUsers, setFilteredUsers] = useState<User[]>([]);
-    const [userEmail, setUserEmail] = useState("");
-    const [avatarUrl, setAvatarUrl] = useState("");
     const [loading, setLoading] = useState(true);
     const [search, setSearch] = useState("");
 
@@ -46,17 +44,12 @@ export default function UsersPage() {
             router.push("/login");
             return;
         }
-        setUserEmail(email);
 
         fetch("https://websitepro-d5cu.onrender.com/users")
             .then(res => res.json())
             .then(data => {
                 setUsers(data);
                 setFilteredUsers(data);
-                const currentUser = data.find((u: User) => u.email === email);
-                if (currentUser) {
-                    setAvatarUrl(currentUser.avatar_url || "");
-                }
                 setLoading(false);
             })
             .catch(() => setLoading(false));
@@ -117,15 +110,15 @@ export default function UsersPage() {
 
     if (loading) {
         return (
-            <div className="flex min-h-screen items-center justify-center bg-darknavy">
+            <div className="flex min-h-screen items-center justify-center bg-black">
                 <p className="text-gray-400">Loading users...</p>
             </div>
         );
     }
 
     return (
-        <div className="min-h-screen bg-darknavy">
-            <Topbar onMenuClick={() => setSidebarOpen(true)} userEmail={userEmail} avatarUrl={avatarUrl} />
+        <div className="min-h-screen bg-black">
+            <Topbar onMenuClick={() => setSidebarOpen(true)} />
             <Sidebar isOpen={sidebarOpen} onClose={() => setSidebarOpen(false)} />
 
             <main className="lg:ml-64 pt-2">
@@ -144,7 +137,7 @@ export default function UsersPage() {
                                     placeholder="Search users..."
                                     value={search}
                                     onChange={(e) => setSearch(e.target.value)}
-                                    className="pl-9 bg-darkcard border-gray-700 text-white w-full"
+                                    className="pl-9 bg-[#1A1A1A] border-gray-700 text-white w-full"
                                 />
                             </div>
                             <Button onClick={exportToCSV} className="bg-green-500 hover:bg-green-600 shrink-0">
@@ -155,10 +148,10 @@ export default function UsersPage() {
                     </div>
 
                     {/* Table */}
-                    <Card className="bg-darkcard border-gray-800">
+                    <Card className="bg-[#1A1A1A] border-gray-800">
                         <CardContent className="p-0 overflow-x-auto">
                             <table className="w-full text-left">
-                                <thead className="border-b border-gray-800 bg-darknavy/50">
+                                <thead className="border-b border-gray-800 bg-black/50">
                                     <tr>
                                         <th className="px-4 py-3 text-xs font-medium text-gray-400 uppercase tracking-wider">ID</th>
                                         <th className="px-4 py-3 text-xs font-medium text-gray-400 uppercase tracking-wider">User</th>
@@ -183,7 +176,7 @@ export default function UsersPage() {
                                                     <td className="px-4 py-3 text-sm text-gray-400 font-mono">#{String(user.id).padStart(4, '0')}</td>
                                                     <td className="px-4 py-3">
                                                         <div className="flex items-center gap-3">
-                                                            <div className="w-8 h-8 rounded-full bg-blue-500 flex items-center justify-center text-white text-xs font-bold shrink-0">
+                                                            <div className="w-8 h-8 rounded-full bg-purple-500 flex items-center justify-center text-white text-xs font-bold shrink-0">
                                                                 {user.email.charAt(0).toUpperCase()}
                                                             </div>
                                                             <div>
@@ -193,7 +186,7 @@ export default function UsersPage() {
                                                         </div>
                                                     </td>
                                                     <td className="px-4 py-3">
-                                                        <Badge variant="outline" className="text-blue-400 border-blue-400/50 text-xs">
+                                                        <Badge variant="outline" className="text-purple-400 border-purple-400/50 text-xs">
                                                             {account?.account_name || "Standard"}
                                                         </Badge>
                                                     </td>
@@ -226,7 +219,7 @@ export default function UsersPage() {
                         <p>Showing {filteredUsers.length} of {users.length} users</p>
                         <div className="flex gap-2">
                             <Button variant="outline" size="sm" className="border-gray-700 text-gray-400 hover:text-white">Previous</Button>
-                            <Button variant="outline" size="sm" className="border-gray-700 bg-blue-500/20 text-blue-400">1</Button>
+                            <Button variant="outline" size="sm" className="border-gray-700 bg-purple-500/20 text-purple-400">1</Button>
                             <Button variant="outline" size="sm" className="border-gray-700 text-gray-400 hover:text-white">2</Button>
                             <Button variant="outline" size="sm" className="border-gray-700 text-gray-400 hover:text-white">3</Button>
                             <Button variant="outline" size="sm" className="border-gray-700 text-gray-400 hover:text-white">Next</Button>
