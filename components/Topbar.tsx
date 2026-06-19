@@ -31,7 +31,10 @@ export default function Topbar({ onMenuClick }: TopbarProps) {
     // 🟢 FETCH AVATAR & USER DATA - ambil dari localStorage
     const fetchUserData = async () => {
         const email = localStorage.getItem("userEmail");
-        if (!email) return;
+        if (!email) {
+            console.log("No user email found in localStorage");
+            return;
+        }
 
         // Set display name
         const userName = email.split('@')[0];
@@ -39,6 +42,7 @@ export default function Topbar({ onMenuClick }: TopbarProps) {
 
         try {
             const res = await fetch("https://websitepro-d5cu.onrender.com/users");
+            if (!res.ok) throw new Error("Failed to fetch users");
             const data = await res.json();
             const user = data.find((u: any) => u.email === email);
             if (user?.avatar_url) {
@@ -54,6 +58,12 @@ export default function Topbar({ onMenuClick }: TopbarProps) {
     // Panggil fetchUserData bila component mount & bila page berubah
     useEffect(() => {
         fetchUserData();
+        // Jika gagal, cuba lagi selepas 1 saat
+        const timeout = setTimeout(() => {
+            fetchUserData();
+        }, 1000);
+
+        return () => clearTimeout(timeout);
     }, []);
 
     // Refresh avatar bila page focus (untuk detect perubahan dari page lain)
