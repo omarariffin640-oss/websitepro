@@ -80,7 +80,7 @@ export default function HomePage() {
         <div className="p-4 max-w-7xl mx-auto">
 
           {/* Special Offer Banner - Purple */}
-          <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.5 }} className="mb-4">
+          <motion.div initial={{ opacity: 0, y: 0.5 }} animate={{ opacity: 1, y: 1 }} transition={{ duration: 0.8 }} className="mb-4">
             <Card className="bg-gradient-to-r from-purple-500/20 to-emerald-500/20 border border-purple-500/30">
               <CardContent className="py-4 px-6">
                 <div className="flex flex-col md:flex-row items-center justify-between gap-4">
