@@ -50,20 +50,15 @@ const faqItems: FAQItem[] = [
 export default function FAQPage() {
     const router = useRouter();
     const [sidebarOpen, setSidebarOpen] = useState(false);
-    const [userEmail, setUserEmail] = useState("");
-    const [avatarUrl, setAvatarUrl] = useState("");
     const [loading, setLoading] = useState(true);
     const [openIndex, setOpenIndex] = useState<number | null>(null);
-    const [mounted, setMounted] = useState(false);
 
     useEffect(() => {
-        setMounted(true);
         const email = localStorage.getItem("userEmail");
         if (!email) {
             router.push("/login");
             return;
         }
-        setUserEmail(email);
         setLoading(false);
     }, [router]);
 
@@ -71,24 +66,24 @@ export default function FAQPage() {
         setOpenIndex(openIndex === index ? null : index);
     };
 
-    if (!mounted || loading) {
+    if (loading) {
         return (
-            <div className="flex min-h-screen items-center justify-center bg-darknavy">
+            <div className="flex min-h-screen items-center justify-center bg-black">
                 <p className="text-gray-400">Loading...</p>
             </div>
         );
     }
 
     return (
-        <div className="min-h-screen bg-darknavy">
-            <Topbar onMenuClick={() => setSidebarOpen(true)} userEmail={userEmail} avatarUrl={avatarUrl} />
+        <div className="min-h-screen bg-black">
+            <Topbar onMenuClick={() => setSidebarOpen(true)} />
             <Sidebar isOpen={sidebarOpen} onClose={() => setSidebarOpen(false)} />
 
             <main className="lg:ml-64 pt-2">
                 <div className="p-3">
                     <h1 className="text-2xl font-bold text-white mb-3">Frequently Asked Questions</h1>
 
-                    <Card className="bg-darkcard">
+                    <Card className="bg-[#1A1A1A] border-gray-800">
                         <CardHeader>
                             <CardTitle className="text-white">Challenge Rules & Guidelines</CardTitle>
                         </CardHeader>
