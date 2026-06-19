@@ -16,28 +16,31 @@ const supabase = createClient(
 
 interface TopbarProps {
     onMenuClick: () => void;
-    userEmail: string;
 }
 
-export default function Topbar({ onMenuClick, userEmail }: TopbarProps) {
+export default function Topbar({ onMenuClick }: TopbarProps) {
     const [searchOpen, setSearchOpen] = useState(false);
     const [searchQuery, setSearchQuery] = useState("");
     const [uploading, setUploading] = useState(false);
     const [isOpen, setIsOpen] = useState(false);
     const [avatarUrl, setAvatarUrl] = useState<string>("");
+    const [displayName, setDisplayName] = useState<string>("User");
     const fileInputRef = useRef<HTMLInputElement>(null);
     const dropdownRef = useRef<HTMLDivElement>(null);
 
-    const userName = userEmail?.split('@')[0] || "User";
-    const displayName = userName.charAt(0).toUpperCase() + userName.slice(1);
+    // 🟢 FETCH AVATAR & USER DATA - ambil dari localStorage
+    const fetchUserData = async () => {
+        const email = localStorage.getItem("userEmail");
+        if (!email) return;
 
-    // 🟢 FETCH AVATAR SENDIRI - akan jalan di semua page
-    const fetchAvatar = async () => {
-        if (!userEmail) return;
+        // Set display name
+        const userName = email.split('@')[0];
+        setDisplayName(userName.charAt(0).toUpperCase() + userName.slice(1));
+
         try {
             const res = await fetch("https://websitepro-d5cu.onrender.com/users");
             const data = await res.json();
-            const user = data.find((u: any) => u.email === userEmail);
+            const user = data.find((u: any) => u.email === email);
             if (user?.avatar_url) {
                 setAvatarUrl(user.avatar_url);
             } else {
@@ -48,11 +51,21 @@ export default function Topbar({ onMenuClick, userEmail }: TopbarProps) {
         }
     };
 
-    // Panggil fetchAvatar bila userEmail berubah
+    // Panggil fetchUserData bila component mount & bila page berubah
     useEffect(() => {
-        fetchAvatar();
-    }, [userEmail]);
+        fetchUserData();
+    }, []);
 
+    // Refresh avatar bila page focus (untuk detect perubahan dari page lain)
+    useEffect(() => {
+        const handleFocus = () => {
+            fetchUserData();
+        };
+        window.addEventListener('focus', handleFocus);
+        return () => window.removeEventListener('focus', handleFocus);
+    }, []);
+
+    // Close dropdown on click outside
     useEffect(() => {
         const handleClickOutside = (event: MouseEvent) => {
             if (dropdownRef.current && !dropdownRef.current.contains(event.target as Node)) {
@@ -64,6 +77,12 @@ export default function Topbar({ onMenuClick, userEmail }: TopbarProps) {
     }, []);
 
     const handleUpload = async (file: File) => {
+        const email = localStorage.getItem("userEmail");
+        if (!email) {
+            alert("Please login first");
+            return;
+        }
+
         setUploading(true);
         const fileExt = file.name.split('.').pop();
         const fileName = `${Date.now()}.${fileExt}`;
@@ -89,7 +108,7 @@ export default function Topbar({ onMenuClick, userEmail }: TopbarProps) {
         const res = await fetch("https://websitepro-d5cu.onrender.com/profile/update-avatar", {
             method: "PUT",
             headers: { "Content-Type": "application/json" },
-            body: JSON.stringify({ email: userEmail, avatarUrl: publicUrl })
+            body: JSON.stringify({ email, avatarUrl: publicUrl })
         });
         const data = await res.json();
 
@@ -104,12 +123,15 @@ export default function Topbar({ onMenuClick, userEmail }: TopbarProps) {
     };
 
     const handleRemove = async () => {
+        const email = localStorage.getItem("userEmail");
+        if (!email) return;
+
         if (!confirm("Remove profile picture?")) return;
 
         const res = await fetch("https://websitepro-d5cu.onrender.com/profile/update-avatar", {
             method: "PUT",
             headers: { "Content-Type": "application/json" },
-            body: JSON.stringify({ email: userEmail, avatarUrl: null })
+            body: JSON.stringify({ email, avatarUrl: null })
         });
         const data = await res.json();
 
@@ -160,7 +182,7 @@ export default function Topbar({ onMenuClick, userEmail }: TopbarProps) {
                     <NotificationBell />
                     <ThemeToggle />
 
-                    {/* Profile Dropdown - Avatar akan nampak di SEMUA page */}
+                    {/* Profile Dropdown */}
                     <div className="relative" ref={dropdownRef}>
                         <input
                             type="file"
@@ -179,7 +201,7 @@ export default function Topbar({ onMenuClick, userEmail }: TopbarProps) {
                                 <img
                                     src={avatarUrl + '?t=' + Date.now()}
                                     alt="Profile"
-                                    className="h-8 w-8 rounded-full object-cover border-2 border-blue-500"
+                                    className="h-10 w-10 rounded-full object-cover border-2 border-blue-500"
                                 />
                             ) : (
                                 <div className="h-10 w-10 rounded-full bg-blue-500 flex items-center justify-center text-white text-sm font-bold">
@@ -198,7 +220,7 @@ export default function Topbar({ onMenuClick, userEmail }: TopbarProps) {
                             <div className="absolute right-0 mt-2 w-56 bg-darkcard border border-gray-700 rounded-lg shadow-xl overflow-hidden z-50">
                                 <div className="p-3 border-b border-gray-700">
                                     <p className="text-white text-sm font-medium">{displayName}</p>
-                                    <p className="text-xs text-gray-400">{userEmail}</p>
+                                    <p className="text-xs text-gray-400">{localStorage.getItem("userEmail")}</p>
                                 </div>
                                 <div className="p-2 space-y-1">
                                     <button
