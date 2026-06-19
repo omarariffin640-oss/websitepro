@@ -34,7 +34,7 @@ app.get("/users", async (req, res) => {
 
     const { data, error } = await supabase
         .from("users")
-        .select("id, email, created_at");
+        .select("id, email, created_at, name, avatar_url");
 
     if (error) {
         return res.status(500).json({ error: error.message });
