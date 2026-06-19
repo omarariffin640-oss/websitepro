@@ -20,8 +20,6 @@ type NewsItem = {
 export default function NewsPage() {
     const router = useRouter();
     const [sidebarOpen, setSidebarOpen] = useState(false);
-    const [userEmail, setUserEmail] = useState("");
-    const [avatarUrl, setAvatarUrl] = useState("");
     const [loading, setLoading] = useState(true);
     const [news, setNews] = useState<NewsItem[]>([]);
 
@@ -31,13 +29,11 @@ export default function NewsPage() {
             router.push("/login");
             return;
         }
-        setUserEmail(email);
         fetchNews();
     }, [router]);
 
     const fetchNews = async () => {
         try {
-            // For now, use mock data until backend endpoint is ready
             const mockNews: NewsItem[] = [
                 {
                     id: 1,
@@ -81,35 +77,41 @@ export default function NewsPage() {
 
     const getCategoryBadge = (category: string) => {
         switch (category) {
-            case "announcement": return <Badge className="bg-blue-500/20 text-blue-400 border-blue-500/30">Announcement</Badge>;
-            case "tips": return <Badge className="bg-green-500/20 text-green-400 border-green-500/30">Tips</Badge>;
-            case "update": return <Badge className="bg-orange-500/20 text-orange-400 border-orange-500/30">Update</Badge>;
-            case "maintenance": return <Badge className="bg-red-500/20 text-red-400 border-red-500/30">Maintenance</Badge>;
-            default: return <Badge className="bg-gray-500/20 text-gray-400 border-gray-500/30">General</Badge>;
+            case "announcement":
+                return <Badge className="bg-purple-500/20 text-purple-400 border-purple-500/30">Announcement</Badge>;
+            case "tips":
+                return <Badge className="bg-green-500/20 text-green-400 border-green-500/30">Tips</Badge>;
+            case "update":
+                return <Badge className="bg-orange-500/20 text-orange-400 border-orange-500/30">Update</Badge>;
+            case "maintenance":
+                return <Badge className="bg-red-500/20 text-red-400 border-red-500/30">Maintenance</Badge>;
+            default:
+                return <Badge className="bg-gray-500/20 text-gray-400 border-gray-500/30">General</Badge>;
         }
     };
 
     if (loading) {
         return (
-            <div className="flex min-h-screen items-center justify-center bg-darknavy">
+            <div className="flex min-h-screen items-center justify-center bg-black">
                 <p className="text-gray-400">Loading news...</p>
             </div>
         );
     }
 
     return (
-        <div className="min-h-screen bg-darknavy">
-            <Topbar onMenuClick={() => setSidebarOpen(true)} userEmail={userEmail} avatarUrl={avatarUrl} />
+        <div className="min-h-screen bg-black">
+            <Topbar onMenuClick={() => setSidebarOpen(true)} />
             <Sidebar isOpen={sidebarOpen} onClose={() => setSidebarOpen(false)} />
+
             <main className="lg:ml-64 pt-2">
-                <div className="p-6 max-w-4xl mx-auto">
-                    <div className="flex items-center gap-3 mb-6">
+                <div className="p-4 max-w-4xl mx-auto">
+                    <div className="flex items-center gap-3 mb-4">
                         <h1 className="text-2xl font-bold text-white">📢 News & Announcements</h1>
-                        <Badge className="bg-blue-500/20 text-blue-400 border-blue-500/30">Latest Updates</Badge>
+                        <Badge className="bg-purple-500/20 text-purple-400 border-purple-500/30">Latest Updates</Badge>
                     </div>
 
                     {news.length === 0 ? (
-                        <Card className="bg-darkcard">
+                        <Card className="bg-[#1A1A1A] border-gray-800">
                             <CardContent className="pt-6">
                                 <p className="text-gray-400 text-center">No news yet. Stay tuned!</p>
                             </CardContent>
@@ -117,7 +119,7 @@ export default function NewsPage() {
                     ) : (
                         <div className="space-y-4">
                             {news.map((item) => (
-                                <Card key={item.id} className="bg-darkcard border-gray-800 hover:border-gray-700 transition-colors">
+                                <Card key={item.id} className="bg-[#1A1A1A] border-gray-800 hover:border-purple-500/30 transition-colors">
                                     <CardHeader>
                                         <div className="flex items-start justify-between">
                                             <div>
