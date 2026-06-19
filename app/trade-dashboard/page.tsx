@@ -20,8 +20,6 @@ type Trade = {
 export default function TradeDashboard() {
     const router = useRouter();
     const [sidebarOpen, setSidebarOpen] = useState(false);
-    const [userEmail, setUserEmail] = useState("");
-    const [avatarUrl, setAvatarUrl] = useState("");
     const [loading, setLoading] = useState(true);
     const [challenge, setChallenge] = useState<any>(null);
     const [trades, setTrades] = useState<Trade[]>([]);
@@ -35,18 +33,15 @@ export default function TradeDashboard() {
             router.push("/login");
             return;
         }
-        setUserEmail(email);
         fetchData(email);
     }, [router]);
 
     const fetchData = async (email: string) => {
         try {
-            // Get active challenge
             const challengeRes = await fetch(`https://websitepro-d5cu.onrender.com/active-challenge?email=${email}`);
             const challengeData = await challengeRes.json();
             setChallenge(challengeData);
 
-            // Get trades
             const tradesRes = await fetch(`https://websitepro-d5cu.onrender.com/trades?email=${email}`);
             const tradesData = await tradesRes.json();
             setTrades(tradesData || []);
@@ -57,6 +52,12 @@ export default function TradeDashboard() {
     };
 
     const addTrade = async () => {
+        const email = localStorage.getItem("userEmail");
+        if (!email) {
+            setMessage("Please login first");
+            return;
+        }
+
         if (!profit) {
             setMessage("Please enter profit/loss");
             return;
@@ -69,7 +70,7 @@ export default function TradeDashboard() {
             method: "POST",
             headers: { "Content-Type": "application/json" },
             body: JSON.stringify({
-                email: userEmail,
+                email,
                 symbol,
                 profit: profitNum,
                 newBalance
@@ -80,7 +81,7 @@ export default function TradeDashboard() {
         if (data.success) {
             setMessage("Trade added successfully!");
             setProfit("");
-            fetchData(userEmail);
+            fetchData(email);
         } else {
             setMessage(data.message || "Failed to add trade");
         }
@@ -89,15 +90,15 @@ export default function TradeDashboard() {
 
     if (loading) {
         return (
-            <div className="flex min-h-screen items-center justify-center bg-darknavy">
+            <div className="flex min-h-screen items-center justify-center bg-black">
                 <p className="text-gray-400">Loading trade dashboard...</p>
             </div>
         );
     }
 
     return (
-        <div className="min-h-screen bg-darknavy">
-            <Topbar onMenuClick={() => setSidebarOpen(true)} userEmail={userEmail} avatarUrl={avatarUrl} />
+        <div className="min-h-screen bg-black">
+            <Topbar onMenuClick={() => setSidebarOpen(true)} />
             <Sidebar isOpen={sidebarOpen} onClose={() => setSidebarOpen(false)} />
 
             <main className="lg:ml-64 pt-2">
@@ -105,19 +106,18 @@ export default function TradeDashboard() {
                     <h1 className="text-2xl font-bold text-white mb-3">Trade Dashboard</h1>
 
                     {message && (
-                        <div className="mb-4 p-3 bg-green-500/20 border border-green-500 rounded-lg">
+                        <div className="mb-4 p-3 rounded-lg bg-green-500/20 border border-green-500">
                             <p className="text-green-500">{message}</p>
                         </div>
                     )}
 
-                    {/* Active Challenge Info */}
                     {challenge && (
-                        <Card className="bg-darkcard mb-6">
+                        <Card className="bg-[#1A1A1A] border-gray-800 mb-4">
                             <CardHeader>
                                 <CardTitle className="text-white">Active Challenge</CardTitle>
                             </CardHeader>
                             <CardContent>
-                                <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
+                                <div className="grid grid-cols-2 md:grid-cols-4 gap-3">
                                     <div>
                                         <p className="text-gray-400 text-sm">Step</p>
                                         <p className="text-white font-bold text-xl">{challenge.step}</p>
@@ -134,15 +134,14 @@ export default function TradeDashboard() {
                                     </div>
                                     <div>
                                         <p className="text-gray-400 text-sm">Target Profit</p>
-                                        <p className="text-blue-500 font-bold text-xl">{challenge.target_profit}%</p>
+                                        <p className="text-purple-400 font-bold text-xl">{challenge.target_profit}%</p>
                                     </div>
                                 </div>
                             </CardContent>
                         </Card>
                     )}
 
-                    {/* Add Trade Form */}
-                    <Card className="bg-darkcard mb-6">
+                    <Card className="bg-[#1A1A1A] border-gray-800 mb-4">
                         <CardHeader>
                             <CardTitle className="text-white">Add Trade</CardTitle>
                         </CardHeader>
@@ -154,7 +153,7 @@ export default function TradeDashboard() {
                                         value={symbol}
                                         onChange={(e) => setSymbol(e.target.value)}
                                         placeholder="EURUSD"
-                                        className="bg-darknavy border-gray-700 text-white"
+                                        className="bg-black border-gray-700 text-white"
                                     />
                                 </div>
                                 <div>
@@ -164,11 +163,14 @@ export default function TradeDashboard() {
                                         value={profit}
                                         onChange={(e) => setProfit(e.target.value)}
                                         placeholder="50"
-                                        className="bg-darknavy border-gray-700 text-white"
+                                        className="bg-black border-gray-700 text-white"
                                     />
                                 </div>
                                 <div className="flex items-end">
-                                    <Button onClick={addTrade} className="w-full bg-orange-500 hover:bg-orange-600">
+                                    <Button
+                                        onClick={addTrade}
+                                        className="w-full bg-purple-500 hover:bg-purple-600 text-white"
+                                    >
                                         Add Trade
                                     </Button>
                                 </div>
@@ -176,8 +178,7 @@ export default function TradeDashboard() {
                         </CardContent>
                     </Card>
 
-                    {/* Trade History */}
-                    <Card className="bg-darkcard">
+                    <Card className="bg-[#1A1A1A] border-gray-800">
                         <CardHeader>
                             <CardTitle className="text-white">Trade History</CardTitle>
                         </CardHeader>
@@ -187,7 +188,7 @@ export default function TradeDashboard() {
                             ) : (
                                 <div className="space-y-2">
                                     {trades.map((trade) => (
-                                        <div key={trade.id} className="flex justify-between items-center p-3 rounded-lg bg-darknavy/50">
+                                        <div key={trade.id} className="flex justify-between items-center p-3 rounded-lg bg-black/50 border border-gray-800">
                                             <div>
                                                 <p className="text-white font-medium">{trade.symbol}</p>
                                                 <p className="text-gray-500 text-xs">{new Date(trade.timestamp).toLocaleString()}</p>
