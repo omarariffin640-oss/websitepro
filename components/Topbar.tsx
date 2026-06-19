@@ -31,7 +31,7 @@ export default function Topbar({ onMenuClick, userEmail }: TopbarProps) {
     const userName = userEmail?.split('@')[0] || "User";
     const displayName = userName.charAt(0).toUpperCase() + userName.slice(1);
 
-    // Fetch avatar from API
+    // 🟢 FETCH AVATAR SENDIRI - akan jalan di semua page
     const fetchAvatar = async () => {
         if (!userEmail) return;
         try {
@@ -40,12 +40,15 @@ export default function Topbar({ onMenuClick, userEmail }: TopbarProps) {
             const user = data.find((u: any) => u.email === userEmail);
             if (user?.avatar_url) {
                 setAvatarUrl(user.avatar_url);
+            } else {
+                setAvatarUrl("");
             }
         } catch (err) {
             console.log("Error fetching avatar:", err);
         }
     };
 
+    // Panggil fetchAvatar bila userEmail berubah
     useEffect(() => {
         fetchAvatar();
     }, [userEmail]);
@@ -157,7 +160,7 @@ export default function Topbar({ onMenuClick, userEmail }: TopbarProps) {
                     <NotificationBell />
                     <ThemeToggle />
 
-                    {/* Profile Dropdown */}
+                    {/* Profile Dropdown - Avatar akan nampak di SEMUA page */}
                     <div className="relative" ref={dropdownRef}>
                         <input
                             type="file"
@@ -179,7 +182,7 @@ export default function Topbar({ onMenuClick, userEmail }: TopbarProps) {
                                     className="h-8 w-8 rounded-full object-cover border-2 border-blue-500"
                                 />
                             ) : (
-                                <div className="h-8 w-8 rounded-full bg-blue-500 flex items-center justify-center text-white text-sm font-bold">
+                                <div className="h-10 w-10 rounded-full bg-blue-500 flex items-center justify-center text-white text-sm font-bold">
                                     {displayName.charAt(0).toUpperCase()}
                                 </div>
                             )}
