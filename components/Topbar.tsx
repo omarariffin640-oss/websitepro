@@ -1,6 +1,7 @@
 "use client";
 
 import { useState, useRef, useEffect } from "react";
+import { usePathname } from "next/navigation";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { ThemeToggle } from "@/components/ThemeToggle";
@@ -19,6 +20,7 @@ interface TopbarProps {
 }
 
 export default function Topbar({ onMenuClick }: TopbarProps) {
+    const pathname = usePathname();
     const [searchOpen, setSearchOpen] = useState(false);
     const [searchQuery, setSearchQuery] = useState("");
     const [uploading, setUploading] = useState(false);
@@ -28,7 +30,6 @@ export default function Topbar({ onMenuClick }: TopbarProps) {
     const fileInputRef = useRef<HTMLInputElement>(null);
     const dropdownRef = useRef<HTMLDivElement>(null);
 
-    // 🟢 FETCH AVATAR & USER DATA - ambil dari localStorage
     const fetchUserData = async () => {
         const email = localStorage.getItem("userEmail");
         if (!email) {
@@ -36,7 +37,6 @@ export default function Topbar({ onMenuClick }: TopbarProps) {
             return;
         }
 
-        // Set display name
         const userName = email.split('@')[0];
         setDisplayName(userName.charAt(0).toUpperCase() + userName.slice(1));
 
@@ -55,18 +55,16 @@ export default function Topbar({ onMenuClick }: TopbarProps) {
         }
     };
 
-    // Panggil fetchUserData bila component mount & bila page berubah
+    // 1. Fetch avatar bila mount & retry
     useEffect(() => {
         fetchUserData();
-        // Jika gagal, cuba lagi selepas 1 saat
         const timeout = setTimeout(() => {
             fetchUserData();
         }, 1000);
-
         return () => clearTimeout(timeout);
     }, []);
 
-    // Refresh avatar bila page focus (untuk detect perubahan dari page lain)
+    // 2. Refresh bila page focus
     useEffect(() => {
         const handleFocus = () => {
             fetchUserData();
@@ -75,7 +73,7 @@ export default function Topbar({ onMenuClick }: TopbarProps) {
         return () => window.removeEventListener('focus', handleFocus);
     }, []);
 
-    // Close dropdown on click outside
+    // 3. Close dropdown on click outside
     useEffect(() => {
         const handleClickOutside = (event: MouseEvent) => {
             if (dropdownRef.current && !dropdownRef.current.contains(event.target as Node)) {
@@ -85,6 +83,11 @@ export default function Topbar({ onMenuClick }: TopbarProps) {
         document.addEventListener('mousedown', handleClickOutside);
         return () => document.removeEventListener('mousedown', handleClickOutside);
     }, []);
+
+    // 4. Refresh avatar bila page berubah
+    useEffect(() => {
+        fetchUserData();
+    }, [pathname]);
 
     const handleUpload = async (file: File) => {
         const email = localStorage.getItem("userEmail");
@@ -192,7 +195,6 @@ export default function Topbar({ onMenuClick }: TopbarProps) {
                     <NotificationBell />
                     <ThemeToggle />
 
-                    {/* Profile Dropdown */}
                     <div className="relative" ref={dropdownRef}>
                         <input
                             type="file"
@@ -211,10 +213,10 @@ export default function Topbar({ onMenuClick }: TopbarProps) {
                                 <img
                                     src={avatarUrl + '?t=' + Date.now()}
                                     alt="Profile"
-                                    className="h-10 w-10 rounded-full object-cover border-2 border-blue-500"
+                                    className="h-8 w-8 rounded-full object-cover border-2 border-blue-500"
                                 />
                             ) : (
-                                <div className="h-10 w-10 rounded-full bg-blue-500 flex items-center justify-center text-white text-sm font-bold">
+                                <div className="h-8 w-8 rounded-full bg-blue-500 flex items-center justify-center text-white text-sm font-bold">
                                     {displayName.charAt(0).toUpperCase()}
                                 </div>
                             )}
@@ -225,7 +227,6 @@ export default function Topbar({ onMenuClick }: TopbarProps) {
                             <ChevronDown className="hidden lg:block h-4 w-4 text-gray-400" />
                         </div>
 
-                        {/* Dropdown Menu */}
                         {isOpen && (
                             <div className="absolute right-0 mt-2 w-56 bg-darkcard border border-gray-700 rounded-lg shadow-xl overflow-hidden z-50">
                                 <div className="p-3 border-b border-gray-700">
