@@ -62,7 +62,7 @@ export default function ProfilePage() {
         const fileExt = file.name.split('.').pop();
         const fileName = `${user?.id}-${Date.now()}.${fileExt}`;
 
-        // Upload dengan Authorization header
+        // Upload dengan Authorization header - cara yang betul
         const { error: uploadError } = await supabase.storage
             .from('avatars')
             .upload(fileName, file, {
