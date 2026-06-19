@@ -63,17 +63,11 @@ export default function DashboardPage() {
     const [sidebarOpen, setSidebarOpen] = useState(false);
     const [users, setUsers] = useState<User[]>([]);
     const [userEmail, setUserEmail] = useState("");
-    const [avatarUrl, setAvatarUrl] = useState("");
     const [loading, setLoading] = useState(true);
     const [trades, setTrades] = useState<Trade[]>([]);
     const [activeChallenge, setActiveChallenge] = useState<Challenge | null>(null);
     const [totalProfit, setTotalProfit] = useState(0);
     const [winRate, setWinRate] = useState(0);
-
-    // ✅ TAMBAH FUNCTION DI SINI (lepas semua useState)
-    const handleAvatarUpdate = (url: string) => {
-        setAvatarUrl(url);
-    };
 
     useEffect(() => {
         const email = localStorage.getItem("userEmail");
@@ -83,7 +77,7 @@ export default function DashboardPage() {
         }
         setUserEmail(email);
         fetchData(email);
-    }, [router, avatarUrl]);
+    }, [router]);
 
     const fetchData = async (email: string) => {
         try {
@@ -91,10 +85,6 @@ export default function DashboardPage() {
             const usersRes = await fetch("https://websitepro-d5cu.onrender.com/users");
             const usersData = await usersRes.json();
             setUsers(usersData);
-            const currentUser = usersData.find((u: User) => u.email === email);
-            if (currentUser) {
-                setAvatarUrl(currentUser.avatar_url || "");
-            }
 
             // Fetch trades
             const tradesRes = await fetch(`https://websitepro-d5cu.onrender.com/trades?email=${email}`);
@@ -160,7 +150,6 @@ export default function DashboardPage() {
         ]
     };
 
-    // Chart Data - Weekly Profit
     const weeklyProfitData = {
         labels: ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun'],
         datasets: [
@@ -174,7 +163,6 @@ export default function DashboardPage() {
         ]
     };
 
-    // Chart Data - Your Performance
     const performanceData = {
         labels: trades.slice(-10).map((_, i) => `Trade ${i + 1}`),
         datasets: [
@@ -216,7 +204,6 @@ export default function DashboardPage() {
                 <div className="p-3">
                     <h1 className="text-2xl font-bold text-white mb-3">Dashboard</h1>
 
-                    {/* Active Challenge Status */}
                     {activeChallenge && (
                         <Card className="mb-6 bg-gradient-to-r from-blue-500/20 to-purple-500/20 border border-blue-500/30">
                             <CardContent className="pt-6">
@@ -247,7 +234,6 @@ export default function DashboardPage() {
                         </Card>
                     )}
 
-                    {/* Platform Stats */}
                     <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
                         {stats.map((stat, index) => (
                             <motion.div
@@ -271,7 +257,6 @@ export default function DashboardPage() {
                         ))}
                     </div>
 
-                    {/* Personal Stats */}
                     <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mt-6">
                         {personalStats.map((stat, index) => (
                             <motion.div
@@ -297,9 +282,7 @@ export default function DashboardPage() {
                         ))}
                     </div>
 
-                    {/* Charts Section */}
                     <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 mt-6">
-                        {/* User Growth Chart */}
                         <motion.div
                             initial={{ opacity: 0, y: 20 }}
                             animate={{ opacity: 1, y: 0 }}
@@ -317,7 +300,6 @@ export default function DashboardPage() {
                             </Card>
                         </motion.div>
 
-                        {/* Weekly Profit Chart */}
                         <motion.div
                             initial={{ opacity: 0, y: 20 }}
                             animate={{ opacity: 1, y: 0 }}
@@ -336,7 +318,6 @@ export default function DashboardPage() {
                         </motion.div>
                     </div>
 
-                    {/* Your Performance Chart */}
                     {trades.length > 0 && (
                         <motion.div
                             initial={{ opacity: 0, y: 20 }}
@@ -356,7 +337,6 @@ export default function DashboardPage() {
                         </motion.div>
                     )}
 
-                    {/* Recent Trades */}
                     <motion.div
                         initial={{ opacity: 0, y: 20 }}
                         animate={{ opacity: 1, y: 0 }}
