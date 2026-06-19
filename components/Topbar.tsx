@@ -1,11 +1,11 @@
 "use client";
 
-import { useState, useRef } from "react";
+import { useState, useRef, useEffect } from "react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { ThemeToggle } from "@/components/ThemeToggle";
 import NotificationBell from "./NotificationBell";
-import { Menu, Search, ChevronDown } from "lucide-react";
+import { Menu, Search, ChevronDown, Camera, Trash2, User } from "lucide-react";
 // @ts-ignore
 import { createClient } from "@supabase/supabase-js";
 
@@ -25,10 +25,23 @@ export default function Topbar({ onMenuClick, userEmail, avatarUrl, onAvatarUpda
     const [searchOpen, setSearchOpen] = useState(false);
     const [searchQuery, setSearchQuery] = useState("");
     const [uploading, setUploading] = useState(false);
+    const [isOpen, setIsOpen] = useState(false);
     const fileInputRef = useRef<HTMLInputElement>(null);
+    const dropdownRef = useRef<HTMLDivElement>(null);
 
     const userName = userEmail?.split('@')[0] || "User";
     const displayName = userName.charAt(0).toUpperCase() + userName.slice(1);
+
+    // Close dropdown when click outside
+    useEffect(() => {
+        const handleClickOutside = (event: MouseEvent) => {
+            if (dropdownRef.current && !dropdownRef.current.contains(event.target as Node)) {
+                setIsOpen(false);
+            }
+        };
+        document.addEventListener('mousedown', handleClickOutside);
+        return () => document.removeEventListener('mousedown', handleClickOutside);
+    }, []);
 
     const handleUpload = async (file: File) => {
         setUploading(true);
@@ -62,7 +75,7 @@ export default function Topbar({ onMenuClick, userEmail, avatarUrl, onAvatarUpda
 
         if (data.success) {
             if (onAvatarUpdate) onAvatarUpdate(publicUrl);
-            alert("Avatar updated successfully!");
+            setIsOpen(false);
             window.location.reload();
         } else {
             alert("Failed to save avatar URL");
@@ -70,17 +83,31 @@ export default function Topbar({ onMenuClick, userEmail, avatarUrl, onAvatarUpda
         setUploading(false);
     };
 
+    const handleRemove = async () => {
+        if (!confirm("Remove profile picture?")) return;
+
+        const res = await fetch("https://websitepro-d5cu.onrender.com/profile/update-avatar", {
+            method: "PUT",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({ email: userEmail, avatarUrl: null })
+        });
+        const data = await res.json();
+
+        if (data.success) {
+            if (onAvatarUpdate) onAvatarUpdate("");
+            setIsOpen(false);
+            window.location.reload();
+        } else {
+            alert("Failed to remove avatar");
+        }
+    };
+
     return (
         <header className="sticky top-0 z-40 bg-darknavy border-b border-gray-800">
             <div className="flex items-center justify-between px-4 h-16 gap-2">
-                {/* Left - Menu & Logo */}
+                {/* Left */}
                 <div className="flex items-center gap-3 shrink-0">
-                    <Button
-                        variant="ghost"
-                        size="icon"
-                        onClick={onMenuClick}
-                        className="lg:hidden text-white hover:bg-gray-800"
-                    >
+                    <Button variant="ghost" size="icon" onClick={onMenuClick} className="lg:hidden text-white hover:bg-gray-800">
                         <Menu className="h-5 w-5" />
                     </Button>
                     <div className="flex items-center gap-2">
@@ -91,7 +118,7 @@ export default function Topbar({ onMenuClick, userEmail, avatarUrl, onAvatarUpda
                     </div>
                 </div>
 
-                {/* Center - Search */}
+                {/* Search */}
                 <div className="flex-1 max-w-md mx-2">
                     <div className={`${searchOpen ? 'block' : 'hidden md:block'} relative`}>
                         <Search className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-gray-500" />
@@ -103,22 +130,18 @@ export default function Topbar({ onMenuClick, userEmail, avatarUrl, onAvatarUpda
                             className="w-full pl-9 bg-darkcard border-gray-700 text-white placeholder:text-gray-500"
                         />
                     </div>
-                    <Button
-                        variant="ghost"
-                        size="icon"
-                        className="md:hidden text-gray-400 hover:text-white"
-                        onClick={() => setSearchOpen(!searchOpen)}
-                    >
+                    <Button variant="ghost" size="icon" className="md:hidden text-gray-400 hover:text-white" onClick={() => setSearchOpen(!searchOpen)}>
                         <Search className="h-5 w-5" />
                     </Button>
                 </div>
 
-                {/* Right - Notif, Dark, Profile Upload */}
+                {/* Right */}
                 <div className="flex items-center gap-3 shrink-0">
                     <NotificationBell />
                     <ThemeToggle />
 
-                    <div className="relative group">
+                    {/* Profile Dropdown */}
+                    <div className="relative" ref={dropdownRef}>
                         <input
                             type="file"
                             ref={fileInputRef}
@@ -130,7 +153,7 @@ export default function Topbar({ onMenuClick, userEmail, avatarUrl, onAvatarUpda
                         />
                         <div
                             className="flex items-center gap-2 ml-1 cursor-pointer hover:bg-gray-800/50 px-2 py-1 rounded-lg transition-colors"
-                            onClick={() => fileInputRef.current?.click()}
+                            onClick={() => setIsOpen(!isOpen)}
                         >
                             {avatarUrl ? (
                                 <img
@@ -145,11 +168,42 @@ export default function Topbar({ onMenuClick, userEmail, avatarUrl, onAvatarUpda
                             )}
                             <div className="hidden lg:block">
                                 <p className="text-sm font-medium text-white leading-tight">{displayName}</p>
-                                <p className="text-xs text-gray-400 leading-tight">Click to change</p>
+                                <p className="text-xs text-gray-400 leading-tight">Trader</p>
                             </div>
                             <ChevronDown className="hidden lg:block h-4 w-4 text-gray-400" />
-                            {uploading && <span className="text-xs text-gray-400">Uploading...</span>}
                         </div>
+
+                        {/* Dropdown Menu */}
+                        {isOpen && (
+                            <div className="absolute right-0 mt-2 w-56 bg-darkcard border border-gray-700 rounded-lg shadow-xl overflow-hidden z-50">
+                                <div className="p-3 border-b border-gray-700">
+                                    <p className="text-white text-sm font-medium">{displayName}</p>
+                                    <p className="text-xs text-gray-400">{userEmail}</p>
+                                </div>
+                                <div className="p-2 space-y-1">
+                                    <button
+                                        onClick={() => {
+                                            setIsOpen(false);
+                                            fileInputRef.current?.click();
+                                        }}
+                                        className="flex items-center gap-3 w-full px-3 py-2 rounded-lg text-gray-300 hover:bg-gray-800/50 hover:text-white transition-colors"
+                                        disabled={uploading}
+                                    >
+                                        <Camera className="h-4 w-4" />
+                                        <span className="text-sm">{uploading ? "Uploading..." : "Upload Photo"}</span>
+                                    </button>
+                                    {avatarUrl && (
+                                        <button
+                                            onClick={handleRemove}
+                                            className="flex items-center gap-3 w-full px-3 py-2 rounded-lg text-red-400 hover:bg-red-500/10 hover:text-red-300 transition-colors"
+                                        >
+                                            <Trash2 className="h-4 w-4" />
+                                            <span className="text-sm">Remove Photo</span>
+                                        </button>
+                                    )}
+                                </div>
+                            </div>
+                        )}
                     </div>
                 </div>
             </div>
