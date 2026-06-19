@@ -14,8 +14,6 @@ import Sidebar from "@/components/Sidebar";
 export default function AdminNewsPage() {
     const router = useRouter();
     const [sidebarOpen, setSidebarOpen] = useState(false);
-    const [userEmail, setUserEmail] = useState("");
-    const [avatarUrl, setAvatarUrl] = useState("");
     const [loading, setLoading] = useState(true);
     const [title, setTitle] = useState("");
     const [content, setContent] = useState("");
@@ -24,8 +22,10 @@ export default function AdminNewsPage() {
 
     useEffect(() => {
         const email = localStorage.getItem("userEmail");
-        if (!email) { router.push("/login"); return; }
-        setUserEmail(email);
+        if (!email) {
+            router.push("/login");
+            return;
+        }
         setLoading(false);
     }, [router]);
 
@@ -43,23 +43,30 @@ export default function AdminNewsPage() {
         setTimeout(() => setMessage(""), 3000);
     };
 
-    if (loading) return <div className="flex min-h-screen items-center justify-center bg-darknavy"><p className="text-gray-400">Loading...</p></div>;
+    if (loading) {
+        return (
+            <div className="flex min-h-screen items-center justify-center bg-black">
+                <p className="text-gray-400">Loading...</p>
+            </div>
+        );
+    }
 
     return (
-        <div className="min-h-screen bg-darknavy">
-            <Topbar onMenuClick={() => setSidebarOpen(true)} userEmail={userEmail} avatarUrl={avatarUrl} />
+        <div className="min-h-screen bg-black">
+            <Topbar onMenuClick={() => setSidebarOpen(true)} />
             <Sidebar isOpen={sidebarOpen} onClose={() => setSidebarOpen(false)} />
+
             <main className="lg:ml-64 pt-2">
-                <div className="p-6 max-w-3xl mx-auto">
-                    <h1 className="text-2xl font-bold text-white mb-6">📝 Post News</h1>
+                <div className="p-4 max-w-3xl mx-auto">
+                    <h1 className="text-2xl font-bold text-white mb-4">📝 Post News</h1>
 
                     {message && (
-                        <div className="mb-4 p-3 bg-green-500/20 border border-green-500 rounded-lg">
+                        <div className="mb-4 p-3 rounded-lg bg-green-500/20 border border-green-500">
                             <p className="text-green-500">{message}</p>
                         </div>
                     )}
 
-                    <Card className="bg-darkcard">
+                    <Card className="bg-[#1A1A1A] border-gray-800">
                         <CardHeader>
                             <CardTitle className="text-white">Create News Post</CardTitle>
                         </CardHeader>
@@ -70,17 +77,17 @@ export default function AdminNewsPage() {
                                     value={title}
                                     onChange={(e) => setTitle(e.target.value)}
                                     placeholder="Enter news title"
-                                    className="bg-darknavy border-gray-700 text-white"
+                                    className="bg-black border-gray-700 text-white"
                                 />
                             </div>
 
                             <div className="space-y-2">
                                 <Label className="text-gray-300">Category</Label>
                                 <Select onValueChange={setCategory} value={category}>
-                                    <SelectTrigger className="bg-darknavy border-gray-700 text-white">
+                                    <SelectTrigger className="bg-black border-gray-700 text-white">
                                         <SelectValue placeholder="Select category" />
                                     </SelectTrigger>
-                                    <SelectContent className="bg-darknavy border-gray-700 text-white">
+                                    <SelectContent className="bg-[#1A1A1A] border-gray-700 text-white">
                                         <SelectItem value="announcement">Announcement</SelectItem>
                                         <SelectItem value="tips">Tips</SelectItem>
                                         <SelectItem value="update">Update</SelectItem>
@@ -96,11 +103,14 @@ export default function AdminNewsPage() {
                                     onChange={(e) => setContent(e.target.value)}
                                     placeholder="Write your news content..."
                                     rows={6}
-                                    className="bg-darknavy border-gray-700 text-white"
+                                    className="bg-black border-gray-700 text-white"
                                 />
                             </div>
 
-                            <Button onClick={submitNews} className="w-full bg-blue-500 hover:bg-blue-600">
+                            <Button
+                                onClick={submitNews}
+                                className="w-full bg-purple-500 hover:bg-purple-600"
+                            >
                                 Publish News
                             </Button>
                         </CardContent>
