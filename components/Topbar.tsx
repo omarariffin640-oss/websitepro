@@ -5,7 +5,7 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { ThemeToggle } from "@/components/ThemeToggle";
 import NotificationBell from "./NotificationBell";
-import { Menu, Search, ChevronDown, Camera, Trash2, User } from "lucide-react";
+import { Menu, Search, ChevronDown, Camera, Trash2 } from "lucide-react";
 // @ts-ignore
 import { createClient } from "@supabase/supabase-js";
 
@@ -17,23 +17,40 @@ const supabase = createClient(
 interface TopbarProps {
     onMenuClick: () => void;
     userEmail: string;
-    avatarUrl?: string;
-    onAvatarUpdate?: (url: string) => void;
 }
 
-export default function Topbar({ onMenuClick, userEmail, avatarUrl, onAvatarUpdate }: TopbarProps) {
+export default function Topbar({ onMenuClick, userEmail }: TopbarProps) {
     const [searchOpen, setSearchOpen] = useState(false);
     const [searchQuery, setSearchQuery] = useState("");
     const [uploading, setUploading] = useState(false);
     const [isOpen, setIsOpen] = useState(false);
+    const [avatarUrl, setAvatarUrl] = useState<string>("");
     const fileInputRef = useRef<HTMLInputElement>(null);
     const dropdownRef = useRef<HTMLDivElement>(null);
 
     const userName = userEmail?.split('@')[0] || "User";
     const displayName = userName.charAt(0).toUpperCase() + userName.slice(1);
 
+    // Fetch avatar from API
+    const fetchAvatar = async () => {
+        if (!userEmail) return;
+        try {
+            const res = await fetch("https://websitepro-d5cu.onrender.com/users");
+            const data = await res.json();
+            const user = data.find((u: any) => u.email === userEmail);
+            if (user?.avatar_url) {
+                setAvatarUrl(user.avatar_url);
+            }
+        } catch (err) {
+            console.log("Error fetching avatar:", err);
+        }
+    };
+
     useEffect(() => {
-        console.log("Topbar - avatarUrl received:", avatarUrl);
+        fetchAvatar();
+    }, [userEmail]);
+
+    useEffect(() => {
         const handleClickOutside = (event: MouseEvent) => {
             if (dropdownRef.current && !dropdownRef.current.contains(event.target as Node)) {
                 setIsOpen(false);
@@ -41,7 +58,7 @@ export default function Topbar({ onMenuClick, userEmail, avatarUrl, onAvatarUpda
         };
         document.addEventListener('mousedown', handleClickOutside);
         return () => document.removeEventListener('mousedown', handleClickOutside);
-    }, [avatarUrl]);
+    }, []);
 
     const handleUpload = async (file: File) => {
         setUploading(true);
@@ -74,10 +91,9 @@ export default function Topbar({ onMenuClick, userEmail, avatarUrl, onAvatarUpda
         const data = await res.json();
 
         if (data.success) {
-            if (onAvatarUpdate) onAvatarUpdate(publicUrl);
+            setAvatarUrl(publicUrl);
             setIsOpen(false);
-            // ✅ Tak perlu redirect, hanya refresh avatar
-            window.location.reload();
+            setTimeout(() => window.location.reload(), 500);
         } else {
             alert("Failed to save avatar URL");
         }
@@ -95,7 +111,7 @@ export default function Topbar({ onMenuClick, userEmail, avatarUrl, onAvatarUpda
         const data = await res.json();
 
         if (data.success) {
-            if (onAvatarUpdate) onAvatarUpdate("");
+            setAvatarUrl("");
             setIsOpen(false);
             window.location.reload();
         } else {
@@ -193,15 +209,13 @@ export default function Topbar({ onMenuClick, userEmail, avatarUrl, onAvatarUpda
                                         <Camera className="h-4 w-4" />
                                         <span className="text-sm">{uploading ? "Uploading..." : "Upload Photo"}</span>
                                     </button>
-                                    {avatarUrl && (
-                                        <button
-                                            onClick={handleRemove}
-                                            className="flex items-center gap-3 w-full px-3 py-2 rounded-lg text-red-400 hover:bg-red-500/10 hover:text-red-300 transition-colors"
-                                        >
-                                            <Trash2 className="h-4 w-4" />
-                                            <span className="text-sm">Remove Photo</span>
-                                        </button>
-                                    )}
+                                    <button
+                                        onClick={handleRemove}
+                                        className="flex items-center gap-3 w-full px-3 py-2 rounded-lg text-red-400 hover:bg-red-500/10 hover:text-red-300 transition-colors"
+                                    >
+                                        <Trash2 className="h-4 w-4" />
+                                        <span className="text-sm">Remove Photo</span>
+                                    </button>
                                 </div>
                             </div>
                         )}
