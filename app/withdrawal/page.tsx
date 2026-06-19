@@ -6,6 +6,7 @@ import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
+import { Badge } from "@/components/ui/badge";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import Topbar from "@/components/Topbar";
 import Sidebar from "@/components/Sidebar";
@@ -13,8 +14,6 @@ import Sidebar from "@/components/Sidebar";
 export default function WithdrawalPage() {
     const router = useRouter();
     const [sidebarOpen, setSidebarOpen] = useState(false);
-    const [userEmail, setUserEmail] = useState("");
-    const [avatarUrl, setAvatarUrl] = useState("");
     const [loading, setLoading] = useState(true);
     const [amount, setAmount] = useState("");
     const [paymentMethod, setPaymentMethod] = useState("");
@@ -29,20 +28,17 @@ export default function WithdrawalPage() {
             router.push("/login");
             return;
         }
-        setUserEmail(email);
         fetchData(email);
     }, [router]);
 
     const fetchData = async (email: string) => {
         try {
-            // Get available balance from challenge
             const challengeRes = await fetch(`https://websitepro-d5cu.onrender.com/active-challenge?email=${email}`);
             const challengeData = await challengeRes.json();
             if (challengeData) {
                 setAvailableBalance(challengeData.current_balance || 0);
             }
 
-            // Get withdrawal history
             const withdrawalRes = await fetch(`https://websitepro-d5cu.onrender.com/withdrawals?email=${email}`);
             const withdrawalData = await withdrawalRes.json();
             setWithdrawals(withdrawalData || []);
@@ -53,6 +49,12 @@ export default function WithdrawalPage() {
     };
 
     const submitWithdrawal = async () => {
+        const email = localStorage.getItem("userEmail");
+        if (!email) {
+            setMessage("Please login first");
+            return;
+        }
+
         if (!amount || !paymentMethod || !accountDetails) {
             setMessage("Please fill all fields");
             return;
@@ -67,7 +69,7 @@ export default function WithdrawalPage() {
             method: "POST",
             headers: { "Content-Type": "application/json" },
             body: JSON.stringify({
-                email: userEmail,
+                email,
                 amount: parseFloat(amount),
                 payment_method: paymentMethod,
                 account_details: accountDetails
@@ -80,7 +82,7 @@ export default function WithdrawalPage() {
             setAmount("");
             setPaymentMethod("");
             setAccountDetails("");
-            fetchData(userEmail);
+            fetchData(email);
         } else {
             setMessage(data.message || "Failed to submit");
         }
@@ -89,25 +91,30 @@ export default function WithdrawalPage() {
 
     const getStatusBadge = (status: string) => {
         switch (status) {
-            case "approved": return "text-green-500 bg-green-500/10";
-            case "pending": return "text-yellow-500 bg-yellow-500/10";
-            case "rejected": return "text-red-500 bg-red-500/10";
-            default: return "text-gray-500 bg-gray-500/10";
+            case "approved":
+                return <Badge className="bg-green-500/20 text-green-500 border-green-500/30">Approved</Badge>;
+            case "pending":
+                return <Badge className="bg-yellow-500/20 text-yellow-500 border-yellow-500/30">Pending</Badge>;
+            case "rejected":
+                return <Badge className="bg-red-500/20 text-red-500 border-red-500/30">Rejected</Badge>;
+            default:
+                return <Badge className="bg-gray-500/20 text-gray-400 border-gray-500/30">Unknown</Badge>;
         }
     };
 
     if (loading) {
         return (
-            <div className="flex min-h-screen items-center justify-center bg-darknavy">
+            <div className="flex min-h-screen items-center justify-center bg-black">
                 <p className="text-gray-400">Loading...</p>
             </div>
         );
     }
 
     return (
-        <div className="min-h-screen bg-darknavy">
-            <Topbar onMenuClick={() => setSidebarOpen(true)} userEmail={userEmail} avatarUrl={avatarUrl} />
+        <div className="min-h-screen bg-black">
+            <Topbar onMenuClick={() => setSidebarOpen(true)} />
             <Sidebar isOpen={sidebarOpen} onClose={() => setSidebarOpen(false)} />
+
             <main className="lg:ml-64 pt-2">
                 <div className="p-3 max-w-4xl mx-auto">
                     <h1 className="text-2xl font-bold text-white mb-3">Withdrawal</h1>
@@ -118,8 +125,7 @@ export default function WithdrawalPage() {
                         </div>
                     )}
 
-                    {/* Available Balance */}
-                    <Card className="bg-darkcard mb-6">
+                    <Card className="bg-[#1A1A1A] border-gray-800 mb-4">
                         <CardHeader>
                             <CardTitle className="text-white">Available Balance</CardTitle>
                         </CardHeader>
@@ -128,8 +134,7 @@ export default function WithdrawalPage() {
                         </CardContent>
                     </Card>
 
-                    {/* Withdrawal Form */}
-                    <Card className="bg-darkcard mb-6">
+                    <Card className="bg-[#1A1A1A] border-gray-800 mb-4">
                         <CardHeader>
                             <CardTitle className="text-white">Request Withdrawal</CardTitle>
                         </CardHeader>
@@ -141,17 +146,17 @@ export default function WithdrawalPage() {
                                     value={amount}
                                     onChange={(e) => setAmount(e.target.value)}
                                     placeholder="Enter amount"
-                                    className="bg-darknavy border-gray-700 text-white"
+                                    className="bg-black border-gray-700 text-white"
                                 />
                             </div>
 
                             <div className="space-y-2">
                                 <Label className="text-gray-300">Payment Method</Label>
                                 <Select onValueChange={setPaymentMethod} value={paymentMethod}>
-                                    <SelectTrigger className="bg-darknavy border-gray-700 text-white">
+                                    <SelectTrigger className="bg-black border-gray-700 text-white">
                                         <SelectValue placeholder="Select payment method" />
                                     </SelectTrigger>
-                                    <SelectContent className="bg-darknavy border-gray-700 text-white">
+                                    <SelectContent className="bg-[#1A1A1A] border-gray-700 text-white">
                                         <SelectItem value="bank_transfer">Bank Transfer</SelectItem>
                                         <SelectItem value="crypto">Cryptocurrency</SelectItem>
                                         <SelectItem value="paypal">PayPal</SelectItem>
@@ -165,18 +170,20 @@ export default function WithdrawalPage() {
                                     value={accountDetails}
                                     onChange={(e) => setAccountDetails(e.target.value)}
                                     placeholder="Bank account / Wallet address"
-                                    className="bg-darknavy border-gray-700 text-white"
+                                    className="bg-black border-gray-700 text-white"
                                 />
                             </div>
 
-                            <Button onClick={submitWithdrawal} className="w-full bg-orange-500 hover:bg-orange-600">
+                            <Button
+                                onClick={submitWithdrawal}
+                                className="w-full bg-purple-500 hover:bg-purple-600 text-white"
+                            >
                                 Submit Request
                             </Button>
                         </CardContent>
                     </Card>
 
-                    {/* Withdrawal History */}
-                    <Card className="bg-darkcard">
+                    <Card className="bg-[#1A1A1A] border-gray-800">
                         <CardHeader>
                             <CardTitle className="text-white">Withdrawal History</CardTitle>
                         </CardHeader>
@@ -186,15 +193,13 @@ export default function WithdrawalPage() {
                             ) : (
                                 <div className="space-y-3">
                                     {withdrawals.map((w) => (
-                                        <div key={w.id} className="flex justify-between items-center p-3 rounded-lg bg-darknavy/50">
+                                        <div key={w.id} className="flex justify-between items-center p-3 rounded-lg bg-black/50 border border-gray-800">
                                             <div>
                                                 <p className="text-white font-medium">${w.amount}</p>
                                                 <p className="text-gray-400 text-sm">{w.payment_method}</p>
                                             </div>
                                             <div className="text-right">
-                                                <span className={`px-2 py-1 rounded-full text-xs ${getStatusBadge(w.status)}`}>
-                                                    {w.status.toUpperCase()}
-                                                </span>
+                                                {getStatusBadge(w.status)}
                                                 <p className="text-gray-500 text-xs mt-1">{new Date(w.created_at).toLocaleDateString()}</p>
                                             </div>
                                         </div>
