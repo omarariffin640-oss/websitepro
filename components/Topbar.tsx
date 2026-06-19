@@ -33,6 +33,7 @@ export default function Topbar({ onMenuClick, userEmail, avatarUrl, onAvatarUpda
     const displayName = userName.charAt(0).toUpperCase() + userName.slice(1);
 
     useEffect(() => {
+        console.log("Topbar - avatarUrl received:", avatarUrl);
         const handleClickOutside = (event: MouseEvent) => {
             if (dropdownRef.current && !dropdownRef.current.contains(event.target as Node)) {
                 setIsOpen(false);
@@ -40,7 +41,7 @@ export default function Topbar({ onMenuClick, userEmail, avatarUrl, onAvatarUpda
         };
         document.addEventListener('mousedown', handleClickOutside);
         return () => document.removeEventListener('mousedown', handleClickOutside);
-    }, []);
+    }, [avatarUrl]);
 
     const handleUpload = async (file: File) => {
         setUploading(true);
