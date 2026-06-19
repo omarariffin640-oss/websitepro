@@ -12,8 +12,6 @@ import Sidebar from "@/components/Sidebar";
 export default function SettingsPage() {
     const router = useRouter();
     const [sidebarOpen, setSidebarOpen] = useState(false);
-    const [userEmail, setUserEmail] = useState("");
-    const [avatarUrl, setAvatarUrl] = useState("");
     const [loading, setLoading] = useState(true);
     const [settings, setSettings] = useState({
         notifications: true,
@@ -27,33 +25,32 @@ export default function SettingsPage() {
             router.push("/login");
             return;
         }
-        setUserEmail(email);
         setLoading(false);
     }, [router]);
 
     if (loading) {
         return (
-            <div className="flex min-h-screen items-center justify-center bg-darknavy">
+            <div className="flex min-h-screen items-center justify-center bg-black">
                 <p className="text-gray-400">Loading settings...</p>
             </div>
         );
     }
 
     return (
-        <div className="min-h-screen bg-darknavy">
-            <Topbar onMenuClick={() => setSidebarOpen(true)} userEmail={userEmail} avatarUrl={avatarUrl} />
+        <div className="min-h-screen bg-black">
+            <Topbar onMenuClick={() => setSidebarOpen(true)} />
             <Sidebar isOpen={sidebarOpen} onClose={() => setSidebarOpen(false)} />
 
             <main className="lg:ml-64 pt-2">
-                <div className="p-3">
+                <div className="p-3 max-w-2xl">
                     <h1 className="text-2xl font-bold text-white mb-3">Settings</h1>
 
-                    <Card className="bg-darkcard max-w-2xl">
+                    <Card className="bg-[#1A1A1A] border-gray-800">
                         <CardHeader>
                             <CardTitle className="text-white">Preferences</CardTitle>
                         </CardHeader>
                         <CardContent className="space-y-4">
-                            <div className="flex items-center justify-between p-3 rounded-lg bg-darknavy/50">
+                            <div className="flex items-center justify-between p-3 rounded-lg bg-black/50 border border-gray-800">
                                 <div>
                                     <p className="text-white font-medium">Notifications</p>
                                     <p className="text-gray-400 text-sm">Receive notifications about your account</p>
@@ -62,11 +59,11 @@ export default function SettingsPage() {
                                     type="checkbox"
                                     checked={settings.notifications}
                                     onChange={(e) => setSettings({ ...settings, notifications: e.target.checked })}
-                                    className="w-5 h-5 text-blue-500"
+                                    className="w-5 h-5 text-purple-500 accent-purple-500"
                                 />
                             </div>
 
-                            <div className="flex items-center justify-between p-3 rounded-lg bg-darknavy/50">
+                            <div className="flex items-center justify-between p-3 rounded-lg bg-black/50 border border-gray-800">
                                 <div>
                                     <p className="text-white font-medium">Email Alerts</p>
                                     <p className="text-gray-400 text-sm">Get email alerts for important updates</p>
@@ -75,11 +72,11 @@ export default function SettingsPage() {
                                     type="checkbox"
                                     checked={settings.emailAlerts}
                                     onChange={(e) => setSettings({ ...settings, emailAlerts: e.target.checked })}
-                                    className="w-5 h-5 text-blue-500"
+                                    className="w-5 h-5 text-purple-500 accent-purple-500"
                                 />
                             </div>
 
-                            <div className="flex items-center justify-between p-3 rounded-lg bg-darknavy/50">
+                            <div className="flex items-center justify-between p-3 rounded-lg bg-black/50 border border-gray-800">
                                 <div>
                                     <p className="text-white font-medium">Two-Factor Authentication</p>
                                     <p className="text-gray-400 text-sm">Add an extra layer of security</p>
@@ -88,11 +85,11 @@ export default function SettingsPage() {
                                     type="checkbox"
                                     checked={settings.twoFactor}
                                     onChange={(e) => setSettings({ ...settings, twoFactor: e.target.checked })}
-                                    className="w-5 h-5 text-blue-500"
+                                    className="w-5 h-5 text-purple-500 accent-purple-500"
                                 />
                             </div>
 
-                            <Button className="w-full mt-4 bg-blue-500 hover:bg-blue-600">
+                            <Button className="w-full mt-4 bg-purple-500 hover:bg-purple-600 text-white">
                                 Save Settings
                             </Button>
                         </CardContent>
