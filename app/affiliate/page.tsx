@@ -13,8 +13,6 @@ import { Users, Wallet, TrendingUp, Share2, Gift, ArrowUpRight, Copy, CheckCircl
 export default function AffiliatePage() {
     const router = useRouter();
     const [sidebarOpen, setSidebarOpen] = useState(false);
-    const [userEmail, setUserEmail] = useState("");
-    const [avatarUrl, setAvatarUrl] = useState("");
     const [loading, setLoading] = useState(true);
     const [copied, setCopied] = useState(false);
 
@@ -24,7 +22,6 @@ export default function AffiliatePage() {
             router.push("/login");
             return;
         }
-        setUserEmail(email);
         setLoading(false);
     }, [router]);
 
@@ -42,7 +39,7 @@ export default function AffiliatePage() {
 
     return (
         <div className="min-h-screen bg-darknavy">
-            <Topbar onMenuClick={() => setSidebarOpen(true)} userEmail={userEmail} avatarUrl={avatarUrl} />
+            <Topbar onMenuClick={() => setSidebarOpen(true)} />
             <Sidebar isOpen={sidebarOpen} onClose={() => setSidebarOpen(false)} />
 
             <main className="lg:ml-64 pt-2">
@@ -82,7 +79,7 @@ export default function AffiliatePage() {
                                 <div className="flex-1 p-3 rounded-lg bg-darknavy/50 border border-gray-700">
                                     <p className="text-gray-300 text-sm break-all">{referralLink}</p>
                                 </div>
-                                <Button onClick={copyLink} className="bg-blue-500 hover:bg-blue-600 shrink-0">
+                                <Button onClick={copyLink} className="bg-purple-500 hover:bg-purple-600 shrink-0">
                                     {copied ? <CheckCircle className="h-4 w-4 mr-2" /> : <Copy className="h-4 w-4 mr-2" />}
                                     {copied ? "Copied!" : "Copy Link"}
                                 </Button>
