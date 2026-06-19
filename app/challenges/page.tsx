@@ -33,8 +33,6 @@ export default function ChallengesPage() {
     const [sidebarOpen, setSidebarOpen] = useState(false);
     const [challenges, setChallenges] = useState<Challenge[]>([]);
     const [activeChallenge, setActiveChallenge] = useState<ActiveChallenge | null>(null);
-    const [userEmail, setUserEmail] = useState("");
-    const [avatarUrl, setAvatarUrl] = useState("");
     const [loading, setLoading] = useState(true);
     const [message, setMessage] = useState("");
 
@@ -44,9 +42,7 @@ export default function ChallengesPage() {
             router.push("/login");
             return;
         }
-        setUserEmail(email);
 
-        // Get challenge rules
         fetch("https://websitepro-d5cu.onrender.com/challenge-rules")
             .then(res => res.json())
             .then(data => {
@@ -54,7 +50,6 @@ export default function ChallengesPage() {
             })
             .catch(() => setLoading(false));
 
-        // Get active challenge
         fetch(`https://websitepro-d5cu.onrender.com/active-challenge?email=${email}`)
             .then(res => res.json())
             .then(data => {
@@ -67,17 +62,22 @@ export default function ChallengesPage() {
     }, [router]);
 
     const startChallenge = async (step: number) => {
+        const email = localStorage.getItem("userEmail");
+        if (!email) {
+            setMessage("Please login first");
+            return;
+        }
+
         setMessage("Starting challenge...");
         const res = await fetch("https://websitepro-d5cu.onrender.com/start-challenge", {
             method: "POST",
             headers: { "Content-Type": "application/json" },
-            body: JSON.stringify({ user_email: userEmail, step })
+            body: JSON.stringify({ user_email: email, step })
         });
         const data = await res.json();
         if (data.success) {
             setMessage(`Challenge Step ${step} started successfully!`);
-            // Refresh active challenge
-            const refreshRes = await fetch(`https://websitepro-d5cu.onrender.com/active-challenge?email=${userEmail}`);
+            const refreshRes = await fetch(`https://websitepro-d5cu.onrender.com/active-challenge?email=${email}`);
             const refreshData = await refreshRes.json();
             if (refreshData && refreshData.id) {
                 setActiveChallenge(refreshData);
@@ -90,15 +90,15 @@ export default function ChallengesPage() {
 
     if (loading) {
         return (
-            <div className="flex min-h-screen items-center justify-center bg-darknavy">
+            <div className="flex min-h-screen items-center justify-center bg-black">
                 <p className="text-gray-400">Loading challenges...</p>
             </div>
         );
     }
 
     return (
-        <div className="min-h-screen bg-darknavy">
-            <Topbar onMenuClick={() => setSidebarOpen(true)} userEmail={userEmail} avatarUrl={avatarUrl} />
+        <div className="min-h-screen bg-black">
+            <Topbar onMenuClick={() => setSidebarOpen(true)} />
             <Sidebar isOpen={sidebarOpen} onClose={() => setSidebarOpen(false)} />
 
             <main className="lg:ml-64 pt-2">
@@ -106,14 +106,13 @@ export default function ChallengesPage() {
                     <h1 className="text-2xl font-bold text-white mb-3">Challenges</h1>
 
                     {message && (
-                        <div className="mb-4 p-3 bg-green-500/20 border border-green-500 rounded-lg">
+                        <div className="mb-4 p-3 rounded-lg bg-green-500/20 border border-green-500">
                             <p className="text-green-500">{message}</p>
                         </div>
                     )}
 
-                    {/* Active Challenge Section */}
                     {activeChallenge && (
-                        <Card className="mb-6 bg-blue-500/10 border border-blue-500">
+                        <Card className="mb-6 bg-purple-500/10 border border-purple-500">
                             <CardHeader>
                                 <CardTitle className="text-white">🔥 Active Challenge</CardTitle>
                             </CardHeader>
@@ -140,9 +139,9 @@ export default function ChallengesPage() {
                         </Card>
                     )}
 
-                    <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                    <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                         {challenges.map((challenge) => (
-                            <Card key={challenge.step} className="bg-darkcard">
+                            <Card key={challenge.step} className="bg-[#1A1A1A] border-gray-800">
                                 <CardHeader>
                                     <CardTitle className="text-white">Step {challenge.step}</CardTitle>
                                 </CardHeader>
@@ -165,7 +164,7 @@ export default function ChallengesPage() {
                                     </div>
                                     <Button
                                         onClick={() => startChallenge(challenge.step)}
-                                        className="w-full mt-4 bg-orange-500 hover:bg-orange-600"
+                                        className="w-full mt-4 bg-purple-500 hover:bg-purple-600 text-white"
                                         disabled={activeChallenge !== null}
                                     >
                                         {activeChallenge ? "Challenge in Progress" : `Start Step ${challenge.step}`}
