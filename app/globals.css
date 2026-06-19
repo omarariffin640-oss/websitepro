@@ -55,8 +55,8 @@
   }
 }
 
-/* Custom Utility Classes */
-.bg-darknavy {
+/* Custom Utility Classes - Purple + Black + White */
+.bg-black {
   background-color: #000000;
 }
 
@@ -64,34 +64,102 @@
   background-color: #1A1A1A;
 }
 
-.bg-purple-accent {
+.bg-purple-500 {
   background-color: #8B5CF6;
 }
 
-.text-purple-accent {
+.bg-purple-500\/10 {
+  background-color: rgba(139, 92, 246, 0.1);
+}
+
+.bg-purple-500\/20 {
+  background-color: rgba(139, 92, 246, 0.2);
+}
+
+.bg-purple-500\/30 {
+  background-color: rgba(139, 92, 246, 0.3);
+}
+
+.text-purple-400 {
+  color: #A78BFA;
+}
+
+.text-purple-500 {
   color: #8B5CF6;
 }
 
-.border-purple-accent {
+.border-purple-500 {
   border-color: #8B5CF6;
 }
 
-.text-green-accent {
+.border-purple-500\/30 {
+  border-color: rgba(139, 92, 246, 0.3);
+}
+
+.hover\:bg-purple-600:hover {
+  background-color: #7C3AED;
+}
+
+.hover\:text-purple-300:hover {
+  color: #C4B5FD;
+}
+
+.text-green-500 {
   color: #22C55E;
 }
 
-.text-red-accent {
+.text-red-500 {
   color: #EF4444;
 }
 
-.text-gray-muted {
+.text-yellow-500 {
+  color: #F59E0B;
+}
+
+.text-emerald-500 {
+  color: #10B981;
+}
+
+.text-amber-500 {
+  color: #F59E0B;
+}
+
+.text-rose-500 {
+  color: #F43F5E;
+}
+
+.text-cyan-500 {
+  color: #06B6D4;
+}
+
+.text-gray-400 {
   color: #9CA3AF;
 }
 
-.hover\:bg-purple-accent:hover {
-  background-color: #8B5CF6;
+.text-gray-500 {
+  color: #6B7280;
 }
 
-.hover\:bg-purple-dark:hover {
-  background-color: #7C3AED;
+.bg-emerald-500\/20 {
+  background-color: rgba(16, 185, 129, 0.2);
+}
+
+.bg-amber-500\/20 {
+  background-color: rgba(245, 158, 11, 0.2);
+}
+
+.bg-rose-500\/20 {
+  background-color: rgba(244, 63, 94, 0.2);
+}
+
+.bg-green-500\/20 {
+  background-color: rgba(34, 197, 94, 0.2);
+}
+
+.bg-red-500\/20 {
+  background-color: rgba(239, 68, 68, 0.2);
+}
+
+.bg-yellow-500\/20 {
+  background-color: rgba(245, 158, 11, 0.2);
 }
