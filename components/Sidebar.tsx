@@ -72,7 +72,7 @@ export default function Sidebar({ isOpen, onClose }: SidebarProps) {
                             `}
                         >
                             <div className="flex items-center gap-3">
-                                <item.icon className={`h-5 w-5 ${isActive(item.href) ? "text-purple-400" : item.color}`} />
+                                <item.icon className={`h-5 w-5 ${item.color}`} />
                                 <span className="text-sm font-medium">{item.name}</span>
                             </div>
                             {isOpen ? <ChevronDown className="h-4 w-4" /> : <ChevronRight className="h-4 w-4" />}
@@ -90,12 +90,12 @@ export default function Sidebar({ isOpen, onClose }: SidebarProps) {
                         className={`
                             flex items-center gap-3 px-3 py-2.5 rounded-xl transition-all duration-200
                             ${isItemActive
-                                ? "bg-blue-500/20 text-white border-r-2 border-purple-500"
+                                ? "bg-purple-500/20 text-white border-r-2 border-purple-500"
                                 : "text-gray-400 hover:bg-gray-800/50 hover:text-white"
                             }
                         `}
                     >
-                        <item.icon className={`h-5 w-5 ${isItemActive ? "text-blue-500" : item.color}`} />
+                        <item.icon className={`h-5 w-5 ${isItemActive ? "text-purple-500" : item.color}`} />
                         <span className="text-sm font-medium">{item.name}</span>
                     </Link>
                 )}
