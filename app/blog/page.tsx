@@ -13,8 +13,6 @@ import { Calendar, User, Tag, ArrowUpRight } from "lucide-react";
 export default function BlogPage() {
     const router = useRouter();
     const [sidebarOpen, setSidebarOpen] = useState(false);
-    const [userEmail, setUserEmail] = useState("");
-    const [avatarUrl, setAvatarUrl] = useState("");
     const [loading, setLoading] = useState(true);
 
     useEffect(() => {
@@ -23,7 +21,6 @@ export default function BlogPage() {
             router.push("/login");
             return;
         }
-        setUserEmail(email);
         setLoading(false);
     }, [router]);
 
@@ -67,23 +64,26 @@ export default function BlogPage() {
     ];
 
     if (loading) {
-        return <div className="flex min-h-screen items-center justify-center bg-darknavy"><p className="text-gray-400">Loading...</p></div>;
+        return (
+            <div className="flex min-h-screen items-center justify-center bg-black">
+                <p className="text-gray-400">Loading...</p>
+            </div>
+        );
     }
 
     return (
-        <div className="min-h-screen bg-darknavy">
-            <Topbar onMenuClick={() => setSidebarOpen(true)} userEmail={userEmail} avatarUrl={avatarUrl} />
+        <div className="min-h-screen bg-black">
+            <Topbar onMenuClick={() => setSidebarOpen(true)} />
             <Sidebar isOpen={sidebarOpen} onClose={() => setSidebarOpen(false)} />
 
             <main className="lg:ml-64 pt-2">
                 <div className="p-4 max-w-7xl mx-auto">
-
-                    <div className="flex justify-between items-center mb-6">
+                    <div className="flex justify-between items-center mb-4">
                         <h1 className="text-2xl font-bold text-white">📰 Blog</h1>
-                        <Badge className="bg-blue-500/20 text-blue-400">Latest Updates</Badge>
+                        <Badge className="bg-purple-500/20 text-purple-400 border-purple-500/30">Latest Updates</Badge>
                     </div>
 
-                    <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                    <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                         {posts.map((post) => (
                             <motion.div
                                 key={post.id}
@@ -91,10 +91,10 @@ export default function BlogPage() {
                                 animate={{ opacity: 1, y: 0 }}
                                 transition={{ duration: 0.5 }}
                             >
-                                <Card className="bg-darkcard border-gray-800 hover:border-blue-500/30 transition-colors cursor-pointer">
+                                <Card className="bg-[#1A1A1A] border-gray-800 hover:border-purple-500/30 transition-colors cursor-pointer">
                                     <CardHeader>
                                         <div className="flex items-center gap-2 mb-1">
-                                            <Badge className="bg-blue-500/20 text-blue-400">{post.category}</Badge>
+                                            <Badge className="bg-purple-500/20 text-purple-400 border-purple-500/30">{post.category}</Badge>
                                             <span className="text-xs text-gray-500">{post.readTime}</span>
                                         </div>
                                         <CardTitle className="text-white text-xl">{post.title}</CardTitle>
@@ -110,7 +110,7 @@ export default function BlogPage() {
                                                     <Calendar className="h-3 w-3" /> {post.date}
                                                 </span>
                                             </div>
-                                            <Button variant="ghost" className="text-blue-400 hover:text-blue-300 p-0 h-auto text-sm">
+                                            <Button variant="ghost" className="text-purple-400 hover:text-purple-300 p-0 h-auto text-sm">
                                                 Read More <ArrowUpRight className="h-4 w-4 ml-1" />
                                             </Button>
                                         </div>
@@ -119,7 +119,6 @@ export default function BlogPage() {
                             </motion.div>
                         ))}
                     </div>
-
                 </div>
             </main>
         </div>
