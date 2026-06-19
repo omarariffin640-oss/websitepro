@@ -3,7 +3,6 @@
 import { useState } from "react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
-import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { ThemeToggle } from "@/components/ThemeToggle";
 import NotificationBell from "./NotificationBell";
 import { Menu, Search, ChevronDown } from "lucide-react";
@@ -21,10 +20,12 @@ export default function Topbar({ onMenuClick, userEmail, avatarUrl }: TopbarProp
     const userName = userEmail?.split('@')[0] || "User";
     const displayName = userName.charAt(0).toUpperCase() + userName.slice(1);
 
+    console.log("Topbar - avatarUrl:", avatarUrl); // Debug
+
     return (
         <header className="sticky top-0 z-40 bg-darknavy border-b border-gray-800">
             <div className="flex items-center justify-between px-4 h-16 gap-2">
-                {/* Kiri - Menu & Logo */}
+                {/* Kiri */}
                 <div className="flex items-center gap-3 shrink-0">
                     <Button
                         variant="ghost"
@@ -42,7 +43,7 @@ export default function Topbar({ onMenuClick, userEmail, avatarUrl }: TopbarProp
                     </div>
                 </div>
 
-                {/* Tengah - Search Bar */}
+                {/* Search */}
                 <div className="flex-1 max-w-md mx-2">
                     <div className={`${searchOpen ? 'block' : 'hidden md:block'} relative`}>
                         <Search className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-gray-500" />
@@ -64,17 +65,25 @@ export default function Topbar({ onMenuClick, userEmail, avatarUrl }: TopbarProp
                     </Button>
                 </div>
 
-                {/* Kanan - Notif, Dark Mode, Profile */}
+                {/* Kanan - Profile Avatar (guna img tag) */}
                 <div className="flex items-center gap-3 shrink-0">
                     <NotificationBell />
                     <ThemeToggle />
-                    <div className="flex items-center gap-2 ml-1 cursor-pointer hover:bg-gray-800/50 px-2 py-1 rounded-lg transition-colors">
-                        <Avatar className="h-8 w-8">
-                            <AvatarImage src={avatarUrl} />
-                            <AvatarFallback className="bg-blue-500 text-white text-sm">
+                    <div
+                        className="flex items-center gap-2 ml-1 cursor-pointer hover:bg-gray-800/50 px-2 py-1 rounded-lg transition-colors"
+                        onClick={() => window.location.href = '/profile'}
+                    >
+                        {avatarUrl ? (
+                            <img
+                                src={avatarUrl}
+                                alt="Profile"
+                                className="h-8 w-8 rounded-full object-cover border-2 border-blue-500"
+                            />
+                        ) : (
+                            <div className="h-8 w-8 rounded-full bg-blue-500 flex items-center justify-center text-white text-sm font-bold">
                                 {displayName.charAt(0).toUpperCase()}
-                            </AvatarFallback>
-                        </Avatar>
+                            </div>
+                        )}
                         <div className="hidden lg:block">
                             <p className="text-sm font-medium text-white leading-tight">{displayName}</p>
                             <p className="text-xs text-gray-400 leading-tight">Trader</p>
