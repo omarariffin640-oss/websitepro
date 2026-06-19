@@ -213,10 +213,10 @@ export default function Topbar({ onMenuClick }: TopbarProps) {
                                 <img
                                     src={avatarUrl + '?t=' + Date.now()}
                                     alt="Profile"
-                                    className="h-8 w-8 rounded-full object-cover border-2 border-blue-500"
+                                    className="h-8 w-8 rounded-full object-cover border-2 border-purple-500"
                                 />
                             ) : (
-                                <div className="h-8 w-8 rounded-full bg-blue-500 flex items-center justify-center text-white text-sm font-bold">
+                                <div className="h-8 w-8 rounded-full bg-purple-500 flex items-center justify-center text-white text-sm font-bold">
                                     {displayName.charAt(0).toUpperCase()}
                                 </div>
                             )}
