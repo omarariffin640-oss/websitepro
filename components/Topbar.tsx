@@ -4,12 +4,14 @@ import { useState, useEffect } from "react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { Button } from "@/components/ui/button";
-import { Menu, X, ChevronDown } from "lucide-react";
+import { Menu, X, ChevronDown, Globe, Sun, Moon, Circle, Disc, Send } from "lucide-react";
+import { useTheme } from "next-themes";
 
 export default function Topbar() {
     const [isOpen, setIsOpen] = useState(false);
     const [scrolled, setScrolled] = useState(false);
     const pathname = usePathname();
+    const { theme, setTheme } = useTheme();
 
     useEffect(() => {
         const handleScroll = () => {
@@ -59,18 +61,55 @@ export default function Topbar() {
                         ))}
                     </nav>
 
-                    {/* Desktop Actions */}
-                    <div className="hidden lg:flex items-center gap-3">
-                        <Link href="/login">
-                            <Button variant="ghost" className="text-gray-300 hover:text-white">
-                                Login
-                            </Button>
-                        </Link>
-                        <Link href="/register">
-                            <Button className="bg-purple-500 hover:bg-purple-600 text-white">
-                                Register
-                            </Button>
-                        </Link>
+                    {/* Right Side: Status, Social, Dark, Auth */}
+                    <div className="hidden lg:flex items-center gap-4">
+                        {/* Live Status */}
+                        <div className="flex items-center gap-2">
+                            <span className="relative flex h-2.5 w-2.5">
+                                <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-green-400 opacity-75"></span>
+                                <span className="relative inline-flex rounded-full h-2.5 w-2.5 bg-green-500"></span>
+                            </span>
+                            <span className="text-xs text-gray-400 font-medium">Live</span>
+                        </div>
+
+                        {/* Language */}
+                        <button className="flex items-center gap-1 text-gray-400 hover:text-white transition-colors text-sm">
+                            <Globe className="h-4 w-4" />
+                            <span>EN</span>
+                            <ChevronDown className="h-3 w-3" />
+                        </button>
+
+                        {/* Dark Mode */}
+                        <button
+                            onClick={() => setTheme(theme === "dark" ? "light" : "dark")}
+                            className="text-gray-400 hover:text-white transition-colors"
+                        >
+                            {theme === "dark" ? <Sun className="h-4 w-4" /> : <Moon className="h-4 w-4" />}
+                        </button>
+
+                        {/* Social Icons */}
+                        <div className="flex items-center gap-2">
+                            <a href="#" className="text-gray-400 hover:text-white transition-colors">
+                                <Disc className="h-4 w-4" />
+                            </a>
+                            <a href="#" className="text-gray-400 hover:text-white transition-colors">
+                                <Send className="h-4 w-4" />
+                            </a>
+                        </div>
+
+                        {/* Auth Buttons */}
+                        <div className="flex items-center gap-2 ml-2 border-l border-gray-800 pl-4">
+                            <Link href="/login">
+                                <Button variant="ghost" size="sm" className="text-gray-300 hover:text-white">
+                                    Login
+                                </Button>
+                            </Link>
+                            <Link href="/register">
+                                <Button size="sm" className="bg-purple-500 hover:bg-purple-600 text-white">
+                                    Register
+                                </Button>
+                            </Link>
+                        </div>
                     </div>
 
                     {/* Mobile Menu Button */}
@@ -100,7 +139,34 @@ export default function Topbar() {
                                 {link.name}
                             </Link>
                         ))}
-                        <div className="flex flex-col gap-2 pt-3 border-t border-gray-800">
+
+                        {/* Mobile: Status, Dark, Social */}
+                        <div className="flex items-center gap-4 pt-3 border-t border-gray-800">
+                            <div className="flex items-center gap-2">
+                                <span className="relative flex h-2 w-2">
+                                    <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-green-400 opacity-75"></span>
+                                    <span className="relative inline-flex rounded-full h-2 w-2 bg-green-500"></span>
+                                </span>
+                                <span className="text-xs text-gray-400">Live</span>
+                            </div>
+                            <button className="text-gray-400 hover:text-white transition-colors">
+                                <Globe className="h-4 w-4" />
+                            </button>
+                            <button
+                                onClick={() => setTheme(theme === "dark" ? "light" : "dark")}
+                                className="text-gray-400 hover:text-white transition-colors"
+                            >
+                                {theme === "dark" ? <Sun className="h-4 w-4" /> : <Moon className="h-4 w-4" />}
+                            </button>
+                            <a href="#" className="text-gray-400 hover:text-white">
+                                <Disc className="h-4 w-4" />
+                            </a>
+                            <a href="#" className="text-gray-400 hover:text-white">
+                                <Send className="h-4 w-4" />
+                            </a>
+                        </div>
+
+                        <div className="flex flex-col gap-2 pt-2">
                             <Link href="/login" onClick={() => setIsOpen(false)}>
                                 <Button variant="ghost" className="w-full text-gray-300">
                                     Login
