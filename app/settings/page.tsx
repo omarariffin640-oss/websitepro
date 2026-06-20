@@ -38,7 +38,7 @@ export default function SettingsPage() {
 
     return (
         <div className="min-h-screen bg-black">
-            <Topbar onMenuClick={() => setSidebarOpen(true)} />
+            <Topbar />
             <Sidebar isOpen={sidebarOpen} onClose={() => setSidebarOpen(false)} />
 
             <main className="lg:ml-64 pt-2">

@@ -83,7 +83,7 @@ export default function LeaderboardPage() {
 
     return (
         <div className="min-h-screen bg-black">
-            <Topbar onMenuClick={() => setSidebarOpen(true)} />
+            <Topbar />
             <Sidebar isOpen={sidebarOpen} onClose={() => setSidebarOpen(false)} />
             <main className="lg:ml-64 pt-2">
                 <div className="p-4 max-w-4xl mx-auto">
