@@ -1,58 +1,29 @@
-@tailwind base;
-@tailwind components;
-@tailwind utilities;
+@import "tailwindcss";
 
-@layer base {
-  :root {
-    --background: 0 0% 0%;
-    --foreground: 0 0% 100%;
-    --card: 0 0% 10%;
-    --card-foreground: 0 0% 100%;
-    --primary: 263 100% 66%;
-    --primary-foreground: 0 0% 100%;
-    --border: 0 0% 16%;
-    --input: 0 0% 16%;
-    --ring: 263 100% 66%;
-    --radius: 0.625rem;
-  }
+@theme {
+  --color-background: #000000;
+  --color-foreground: #ffffff;
+  --color-card: #1A1A1A;
+  --color-card-foreground: #ffffff;
+  --color-primary: #8B5CF6;
+  --color-primary-foreground: #ffffff;
+  --color-border: #2A2A2A;
+  --color-input: #2A2A2A;
+  --color-ring: #8B5CF6;
 }
 
 @layer base {
   * {
-    @apply border-gray-800;
+    border-color: var(--color-border, #2A2A2A);
   }
 
   body {
-    @apply bg-black text-white;
-    font-family: 'Inter', sans-serif;
+    background-color: var(--color-background, #000000);
+    color: var(--color-foreground, #ffffff);
   }
 }
 
-/* Glassmorphism */
-.glass {
-  background: rgba(255, 255, 255, 0.05);
-  backdrop-filter: blur(12px);
-  -webkit-backdrop-filter: blur(12px);
-  border: 1px solid rgba(255, 255, 255, 0.08);
-}
-
-.glass-card {
-  background: rgba(255, 255, 255, 0.03);
-  backdrop-filter: blur(20px);
-  -webkit-backdrop-filter: blur(20px);
-  border: 1px solid rgba(255, 255, 255, 0.06);
-}
-
-/* Neon Glow */
-.neon-purple {
-  box-shadow: 0 0 30px rgba(139, 92, 246, 0.3);
-}
-
-.neon-blue {
-  box-shadow: 0 0 30px rgba(59, 130, 246, 0.3);
-}
-
-/* Custom Colors */
+/* ===== KELAS KESELAMATAN ===== */
 .bg-darknavy {
   background-color: #0a0e27;
 }
@@ -79,4 +50,24 @@
 
 .text-red-500 {
   color: #EF4444;
+}
+
+.text-gray-400 {
+  color: #9CA3AF;
+}
+
+.text-gray-500 {
+  color: #6B7280;
+}
+
+.border-gray-800 {
+  border-color: #2A2A2A;
+}
+
+.bg-black {
+  background-color: #000000;
+}
+
+.text-white {
+  color: #ffffff;
 }
