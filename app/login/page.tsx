@@ -43,49 +43,58 @@ export default function LoginPage() {
     };
 
     return (
-        <div className="flex min-h-screen items-center justify-center bg-gray-50">
-            <Card className="w-full max-w-md">
+        <div className="flex min-h-screen items-center justify-center bg-black">
+            <Card className="w-full max-w-md bg-[#1A1A1A] border-gray-800">
                 <CardHeader>
-                    <CardTitle className="text-2xl text-center">Login</CardTitle>
-                    <CardDescription className="text-center">
+                    <CardTitle className="text-2xl text-center text-white">Login</CardTitle>
+                    <CardDescription className="text-center text-gray-400">
                         Enter your credentials to access your account
                     </CardDescription>
                 </CardHeader>
                 <CardContent className="space-y-4">
                     <div className="space-y-2">
-                        <Label htmlFor="email">Email</Label>
+                        <Label htmlFor="email" className="text-gray-300">Email</Label>
                         <Input
                             id="email"
                             type="email"
                             placeholder="you@example.com"
                             value={email}
                             onChange={(e) => setEmail(e.target.value)}
+                            className="bg-black border-gray-700 text-white"
                         />
                     </div>
                     <div className="space-y-2">
-                        <Label htmlFor="password">Password</Label>
+                        <Label htmlFor="password" className="text-gray-300">Password</Label>
                         <Input
                             id="password"
                             type="password"
                             placeholder="Enter your password"
                             value={password}
                             onChange={(e) => setPassword(e.target.value)}
+                            className="bg-black border-gray-700 text-white"
                         />
                     </div>
 
                     {message && (
-                        <p className={`text-center text-sm ${message.includes("✅") ? "text-green-600" : "text-red-600"}`}>
+                        <p className={`text-center text-sm ${message.includes("✅") ? "text-green-500" : "text-red-500"}`}>
                             {message}
                         </p>
                     )}
 
-                    <Button onClick={handleLogin} className="w-full bg-purple-500 hover:bg-purple-600">
+                    <Button onClick={handleLogin} className="w-full bg-purple-500 hover:bg-purple-600 text-white">
                         Login
                     </Button>
 
                     <p className="text-center text-sm">
-                        <Link href="/forgot-password" className="text-blue-600 hover:underline">
+                        <Link href="/forgot-password" className="text-purple-400 hover:text-purple-300">
                             Forgot Password?
+                        </Link>
+                    </p>
+
+                    <p className="text-center text-sm text-gray-500">
+                        Don't have an account?{" "}
+                        <Link href="/register" className="text-purple-400 hover:text-purple-300">
+                            Register
                         </Link>
                     </p>
                 </CardContent>
