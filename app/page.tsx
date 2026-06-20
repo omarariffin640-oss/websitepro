@@ -11,7 +11,7 @@ import {
   TrendingUp, TrendingDown, Wallet, Users, Gift, ArrowUpRight,
   Calendar, CheckCircle, Clock, Award, Zap, Eye, PlusCircle,
   Shield, Share2, Megaphone, Activity, Trophy, UserCheck,
-  BarChart3, Star, DollarSign, Globe,
+  BarChart3, Star, DollarSign, Globe, Headset,
   LayoutDashboard, FolderKanban, Settings, LogOut,
   LineChart, CandlestickChart
 } from "lucide-react";
