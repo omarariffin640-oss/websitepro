@@ -45,14 +45,14 @@ export default function Topbar() {
                     </Link>
 
                     {/* Desktop Navigation */}
-                    <nav className="hidden lg:flex items-center gap-8">
+                    <nav className="hidden lg:flex items-center gap-12">
                         {navLinks.map((link) => (
                             <div key={link.name} className="relative group">
                                 <Link
                                     href={link.href}
                                     className={`text-sm transition-colors flex items-center gap-1 ${pathname === link.href
-                                            ? "text-purple-400 font-medium"
-                                            : "text-gray-300 hover:text-white"
+                                        ? "text-purple-400 font-medium"
+                                        : "text-gray-300 hover:text-white"
                                         }`}
                                 >
                                     {link.name}
@@ -116,8 +116,8 @@ export default function Topbar() {
                                 href={link.href}
                                 onClick={() => setIsOpen(false)}
                                 className={`block text-base transition-colors ${pathname === link.href
-                                        ? "text-purple-400 font-medium"
-                                        : "text-gray-300 hover:text-white"
+                                    ? "text-purple-400 font-medium"
+                                    : "text-gray-300 hover:text-white"
                                     }`}
                             >
                                 {link.name}
