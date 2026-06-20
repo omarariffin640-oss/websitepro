@@ -2,69 +2,53 @@
 
 import { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
+import Link from "next/link";
 import { motion } from "framer-motion";
-import { Button } from "../components/ui/button";
-import { Card, CardContent, CardHeader, CardTitle } from "../components/ui/card";
-import { Badge } from "../components/ui/badge";
-import Topbar from "../components/Topbar";
-import Sidebar from "../components/Sidebar";
+import { Button } from "@/components/ui/button";
+import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import { Badge } from "@/components/ui/badge";
 import {
-  Wallet, TrendingUp, FolderKanban, Users,
-  Gift, ArrowUpRight, Calendar, CheckCircle, Clock, AlertCircle,
-  Award, Zap, Eye, PlusCircle, Shield,
-  Share2, Megaphone, Activity, Trophy, UserCheck, BarChart3, Star
+  TrendingUp, TrendingDown, Wallet, Users, Gift, ArrowUpRight,
+  Calendar, CheckCircle, Clock, Award, Zap, Eye, PlusCircle,
+  Shield, Share2, Megaphone, Activity, Trophy, UserCheck,
+  BarChart3, Star, DollarSign, Globe,
+  LayoutDashboard, FolderKanban, Settings, LogOut,
+  LineChart, CandlestickChart
 } from "lucide-react";
 
 export default function HomePage() {
   const router = useRouter();
-  const [sidebarOpen, setSidebarOpen] = useState(false);
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
     const email = localStorage.getItem("userEmail");
-    if (!email) {
-      router.push("/login");
-      return;
+    if (email) {
+      // User logged in, but we show landing page anyway
     }
     setLoading(false);
-  }, [router]);
+  }, []);
 
   const stats = [
-    { title: "Total Balance", value: "$104,230", icon: Wallet, color: "text-purple-400", bg: "bg-purple-500/10" },
-    { title: "Total Profit", value: "+$8,450", icon: TrendingUp, color: "text-emerald-500", bg: "bg-emerald-500/10" },
-    { title: "Total Accounts", value: "3,718", icon: FolderKanban, color: "text-purple-400", bg: "bg-purple-500/10" },
-    { title: "Active Users", value: "1,807", icon: UserCheck, color: "text-cyan-500", bg: "bg-cyan-500/10" },
+    { value: "50,000+", label: "Traders Worldwide", icon: Users },
+    { value: "$10M+", label: "Total Payouts", icon: DollarSign },
+    { value: "180+", label: "Countries", icon: Globe },
+    { value: "99.9%", label: "Payout Success", icon: CheckCircle },
+    { value: "24h", label: "Payouts Processed", icon: Clock },
   ];
 
-  const myAccounts = [
-    { id: "#100001", name: "10K Challenge", balance: 10540, status: "Active", progress: 72 },
-    { id: "#100002", name: "5K Instant", balance: 5200, status: "Active", progress: 100 },
-    { id: "#100003", name: "10K Standard", balance: 9800, status: "Pause", progress: 45 },
-    { id: "#100004", name: "25K Pro", balance: 25000, status: "Failed", progress: 0 },
+  const challenges = [
+    { size: "$5,000", price: 49, originalPrice: 50, target: "8%", dailyLoss: "5%", totalLoss: "10%" },
+    { size: "$10,000", price: 89, originalPrice: 100, target: "8%", dailyLoss: "5%", totalLoss: "10%" },
+    { size: "$25,000", price: 179, originalPrice: 219, target: "8%", dailyLoss: "5%", totalLoss: "10%" },
+    { size: "$50,000", price: 299, originalPrice: 369, target: "8%", dailyLoss: "5%", totalLoss: "10%" },
   ];
 
-  const activities = [
-    { user: "Ali Noor", action: "Completed Challenge Step 1", time: "2 hours ago" },
-    { user: "Sarah Tan", action: "Requested Payout $2,500", time: "5 hours ago" },
-    { user: "John Lim", action: "Started New Challenge", time: "1 day ago" },
-    { user: "Ahmad Faiz", action: "Deposited $5,000", time: "2 days ago" },
-  ];
-
-  const overview = [
-    { label: "Active", value: 3, percent: 60, color: "text-emerald-500", bg: "bg-emerald-500/20" },
-    { label: "Pause", value: 1, percent: 20, color: "text-amber-500", bg: "bg-amber-500/20" },
-    { label: "Failed", value: 1, percent: 20, color: "text-rose-500", bg: "bg-rose-500/20" },
-  ];
-
-  const reviews = [
-    { name: "Ali Noor", text: "Best prop firm! Fast payout and excellent support.", rating: 5, time: "2 days ago" },
-    { name: "Sarah Tan", text: "Challenges are fair and achievable. Highly recommended!", rating: 5, time: "5 days ago" },
-  ];
-
-  const news = [
-    { title: "New Trading Rules Update", date: "May 15, 2025", icon: Megaphone },
-    { title: "Memorial Day Payout Schedule", date: "May 29, 2024", icon: Calendar },
-    { title: "Affiliate Program Launched", date: "May 10, 2024", icon: Share2 },
+  const features = [
+    { icon: Shield, title: "Fair Rules", desc: "Transparent and trader friendly rules." },
+    { icon: Zap, title: "Fast Payouts", desc: "Payouts processed within 24 hours." },
+    { icon: Headset, title: "24/7 Support", desc: "Our support team is always here to help." },
+    { icon: BarChart3, title: "Advanced Platform", desc: "Trade on MT5 with low spreads." },
+    { icon: Users, title: "Global Community", desc: "Join our global trading community." },
   ];
 
   if (loading) {
@@ -73,190 +57,270 @@ export default function HomePage() {
 
   return (
     <div className="min-h-screen bg-black">
-      <Topbar onMenuClick={() => setSidebarOpen(true)} />
-      <Sidebar isOpen={sidebarOpen} onClose={() => setSidebarOpen(false)} />
+      {/* ===== HERO SECTION ===== */}
+      <section className="relative min-h-screen flex items-center overflow-hidden pt-16">
+        {/* Background Effects */}
+        <div className="absolute inset-0 bg-gradient-to-br from-purple-900/20 via-black to-blue-900/10" />
+        <div className="absolute top-1/4 right-1/4 w-96 h-96 bg-purple-500/10 rounded-full blur-3xl" />
+        <div className="absolute bottom-1/4 left-1/4 w-64 h-64 bg-blue-500/10 rounded-full blur-3xl" />
 
-      <main className="lg:ml-64 pt-2">
-        <div className="p-4 max-w-7xl mx-auto">
+        {/* Grid Pattern */}
+        <div className="absolute inset-0 bg-[url('data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iNjAiIGhlaWdodD0iNjAiIHZpZXdCb3g9IjAgMCA2MCA2MCIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj48ZyBmaWxsPSJub25lIiBmaWxsLXJ1bGU9ImV2ZW5vZGQiPjxnIGZpbGw9IiNmZmYiIGZpbGwtb3BhY2l0eT0iMC4wMyI+PHBhdGggZD0iTTM2IDM0djItSDI0di0yaDEyek0zNiAyNHYySDI0di0yaDEyeiIvPjwvZz48L2c+PC9zdmc+')] opacity-20" />
 
-          {/* Special Offer Banner - Purple */}
-          <motion.div initial={{ opacity: 0, y: 0.5 }} animate={{ opacity: 1, y: 1 }} transition={{ duration: 0.8 }} className="mb-4">
-            <Card className="bg-gradient-to-r from-purple-500/20 to-emerald-500/20 border border-purple-500/30">
-              <CardContent className="py-4 px-6">
-                <div className="flex flex-col md:flex-row items-center justify-between gap-4">
-                  <div className="flex items-center gap-4">
-                    <Gift className="h-8 w-8 text-purple-400" />
-                    <div>
-                      <h3 className="text-xl font-bold text-white">🎉 Special Offer</h3>
-                      <p className="text-gray-300 text-sm">20% OFF all Instant Accounts • Code: <Badge className="bg-purple-500/20 text-purple-400 border-purple-500/30">INSTANT20</Badge></p>
-                    </div>
-                  </div>
-                  <Button className="bg-purple-500 hover:bg-purple-600 text-white">Claim Now</Button>
+        <div className="container mx-auto px-4 relative z-10">
+          <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
+            {/* Left Content */}
+            <motion.div
+              initial={{ opacity: 0, x: -30 }}
+              animate={{ opacity: 1, x: 0 }}
+              transition={{ duration: 0.8 }}
+            >
+              <Badge className="mb-4 bg-purple-500/20 text-purple-400 border-purple-500/30">
+                🚀 Trusted by Traders Worldwide
+              </Badge>
+              <h1 className="text-4xl md:text-5xl lg:text-6xl xl:text-7xl font-bold text-white leading-tight mb-4">
+                Trade Up To{" "}
+                <span className="bg-gradient-to-r from-purple-400 to-blue-400 bg-clip-text text-transparent">
+                  $200,000
+                </span>{" "}
+                Funded Capital
+              </h1>
+              <p className="text-lg md:text-xl text-gray-300 mb-8 max-w-lg">
+                Take your trading to the next level with Noor Funding.
+                Pass the challenge, prove your skills, and get funded.
+              </p>
+
+              <div className="flex flex-wrap gap-4 mb-8">
+                <Link href="/register">
+                  <Button className="bg-purple-500 hover:bg-purple-600 text-white px-8 py-6 text-lg rounded-xl">
+                    Start Challenge
+                  </Button>
+                </Link>
+                <Link href="/instant-account">
+                  <Button variant="outline" className="border-purple-500/50 text-white hover:bg-purple-500/20 px-8 py-6 text-lg rounded-xl">
+                    Instant Account
+                  </Button>
+                </Link>
+              </div>
+
+              {/* Trustpilot */}
+              <div className="flex items-center gap-4">
+                <div className="flex items-center gap-1">
+                  {[...Array(5)].map((_, i) => (
+                    <Star key={i} className="h-5 w-5 fill-yellow-500 text-yellow-500" />
+                  ))}
                 </div>
-              </CardContent>
-            </Card>
+                <span className="text-white font-medium">4.8 out of 5</span>
+                <span className="text-gray-400">• Trustpilot</span>
+              </div>
+            </motion.div>
+
+            {/* Right Content - Dashboard Preview */}
+            <motion.div
+              initial={{ opacity: 0, x: 30 }}
+              animate={{ opacity: 1, x: 0 }}
+              transition={{ duration: 0.8, delay: 0.2 }}
+              className="relative"
+            >
+              <div className="glass rounded-2xl p-4 border border-purple-500/20">
+                <div className="flex items-center gap-3 mb-4">
+                  <div className="w-3 h-3 rounded-full bg-red-500" />
+                  <div className="w-3 h-3 rounded-full bg-yellow-500" />
+                  <div className="w-3 h-3 rounded-full bg-green-500" />
+                  <span className="text-gray-400 text-sm ml-2">Dashboard Preview</span>
+                </div>
+                <div className="grid grid-cols-3 gap-3 mb-4">
+                  <div className="bg-purple-500/20 rounded-lg p-3 text-center">
+                    <p className="text-2xl font-bold text-white">$50K</p>
+                    <p className="text-xs text-gray-400">Balance</p>
+                  </div>
+                  <div className="bg-green-500/20 rounded-lg p-3 text-center">
+                    <p className="text-2xl font-bold text-green-500">+$2,684</p>
+                    <p className="text-xs text-gray-400">Profit</p>
+                  </div>
+                  <div className="bg-blue-500/20 rounded-lg p-3 text-center">
+                    <p className="text-2xl font-bold text-blue-400">12</p>
+                    <p className="text-xs text-gray-400">Trades</p>
+                  </div>
+                </div>
+                <div className="h-20 bg-gradient-to-r from-purple-500/20 to-blue-500/20 rounded-lg flex items-center justify-center">
+                  <div className="w-full h-10 flex items-end gap-1 px-2">
+                    {[30, 45, 35, 60, 50, 75, 65, 85, 70, 55, 40, 65].map((h, i) => (
+                      <div key={i} className="flex-1 bg-purple-500/40 rounded-t" style={{ height: `${h}%` }} />
+                    ))}
+                  </div>
+                </div>
+              </div>
+            </motion.div>
+          </div>
+        </div>
+      </section>
+
+      {/* ===== STATISTICS SECTION ===== */}
+      <section className="py-16 border-t border-gray-800">
+        <div className="container mx-auto px-4">
+          <div className="grid grid-cols-2 md:grid-cols-5 gap-6">
+            {stats.map((stat, i) => (
+              <motion.div
+                key={stat.label}
+                initial={{ opacity: 0, y: 20 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ duration: 0.5, delay: i * 0.1 }}
+                className="text-center"
+              >
+                <stat.icon className="h-8 w-8 text-purple-400 mx-auto mb-2" />
+                <p className="text-2xl md:text-3xl font-bold text-white">{stat.value}</p>
+                <p className="text-sm text-gray-400">{stat.label}</p>
+              </motion.div>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      {/* ===== CHALLENGES SECTION ===== */}
+      <section className="py-20 bg-darknavy/50">
+        <div className="container mx-auto px-4">
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.5 }}
+            className="text-center mb-12"
+          >
+            <Badge className="mb-3 bg-purple-500/20 text-purple-400 border-purple-500/30">Challenges</Badge>
+            <h2 className="text-3xl md:text-4xl font-bold text-white">Choose Your Challenge</h2>
+            <p className="text-gray-400 mt-2">Select the account size that fits your trading style.</p>
           </motion.div>
 
-          {/* Stats Cards */}
-          <div className="grid grid-cols-2 md:grid-cols-4 gap-4 mb-4">
-            {stats.map((stat, i) => (
-              <motion.div key={stat.title} initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.5, delay: i * 0.05 }}>
-                <Card className="bg-[#1A1A1A] border-gray-800">
-                  <CardContent className="pt-4">
-                    <div className="flex items-center gap-3">
-                      <div className={`p-2.5 rounded-lg ${stat.bg}`}>
-                        <stat.icon className={`h-5 w-5 ${stat.color}`} />
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+            {challenges.map((challenge, i) => (
+              <motion.div
+                key={challenge.size}
+                initial={{ opacity: 0, y: 20 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ duration: 0.5, delay: i * 0.1 }}
+              >
+                <Card className="glass-card hover:border-purple-500/30 transition-all duration-300 hover:scale-105">
+                  <CardHeader>
+                    <CardTitle className="text-2xl font-bold text-white">{challenge.size}</CardTitle>
+                  </CardHeader>
+                  <CardContent className="space-y-4">
+                    <div className="flex items-baseline gap-2">
+                      <span className="text-3xl font-bold text-white">${challenge.price}</span>
+                      <span className="text-gray-400 line-through">${challenge.originalPrice}</span>
+                    </div>
+                    <div className="space-y-2 text-sm">
+                      <div className="flex justify-between">
+                        <span className="text-gray-400">Profit Target</span>
+                        <span className="text-white">{challenge.target}</span>
                       </div>
-                      <div>
-                        <p className="text-gray-400 text-xs">{stat.title}</p>
-                        <p className="text-xl font-bold text-white">{stat.value}</p>
+                      <div className="flex justify-between">
+                        <span className="text-gray-400">Max Daily Drawdown</span>
+                        <span className="text-white">{challenge.dailyLoss}</span>
+                      </div>
+                      <div className="flex justify-between">
+                        <span className="text-gray-400">Max Overall Drawdown</span>
+                        <span className="text-white">{challenge.totalLoss}</span>
+                      </div>
+                      <div className="flex justify-between">
+                        <span className="text-gray-400">Leverage</span>
+                        <span className="text-white">1:100</span>
                       </div>
                     </div>
+                    <Button className="w-full bg-purple-500 hover:bg-purple-600 text-white">
+                      Start Challenge
+                    </Button>
                   </CardContent>
                 </Card>
               </motion.div>
             ))}
           </div>
 
-          {/* My Accounts + Recent Activity */}
-          <div className="grid grid-cols-1 lg:grid-cols-2 gap-4 mb-4">
-            <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.5, delay: 0.1 }}>
-              <Card className="bg-[#1A1A1A] border-gray-800">
-                <CardHeader className="pb-2">
-                  <div className="flex justify-between items-center">
-                    <CardTitle className="text-white text-lg">📁 My Accounts</CardTitle>
-                    <Button variant="ghost" className="text-purple-400 text-sm p-0">View All <ArrowUpRight className="h-4 w-4 ml-1" /></Button>
-                  </div>
-                </CardHeader>
-                <CardContent>
-                  <div className="grid grid-cols-1 gap-2">
-                    {myAccounts.map((acc) => (
-                      <div key={acc.id} className="flex items-center justify-between p-2 rounded-lg bg-black/50 border border-gray-700 hover:border-purple-500/30 transition-colors">
-                        <div>
-                          <p className="text-xs text-gray-400">{acc.id}</p>
-                          <p className="text-sm font-medium text-white">{acc.name}</p>
-                        </div>
-                        <div className="flex items-center gap-3">
-                          <p className="text-white text-sm font-medium">${acc.balance.toLocaleString()}</p>
-                          <Badge className={acc.status === "Active" ? "bg-emerald-500/20 text-emerald-500 border-emerald-500/30" : acc.status === "Pause" ? "bg-amber-500/20 text-amber-500 border-amber-500/30" : "bg-rose-500/20 text-rose-500 border-rose-500/30"}>
-                            {acc.status}
-                          </Badge>
-                        </div>
-                      </div>
-                    ))}
-                  </div>
-                </CardContent>
-              </Card>
-            </motion.div>
-
-            <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.5, delay: 0.15 }}>
-              <Card className="bg-[#1A1A1A] border-gray-800">
-                <CardHeader className="pb-2">
-                  <div className="flex justify-between items-center">
-                    <CardTitle className="text-white text-lg">🔄 Recent Activity</CardTitle>
-                    <Button variant="ghost" className="text-purple-400 text-sm p-0">View All <ArrowUpRight className="h-4 w-4 ml-1" /></Button>
-                  </div>
-                </CardHeader>
-                <CardContent>
-                  <div className="space-y-2">
-                    {activities.map((activity, i) => (
-                      <div key={i} className="flex items-center gap-3 p-2 rounded-lg bg-black/50 border border-gray-800">
-                        <div className="w-8 h-8 rounded-full bg-purple-500 flex items-center justify-center text-white text-xs font-bold">
-                          {activity.user.charAt(0)}
-                        </div>
-                        <div className="flex-1">
-                          <p className="text-sm text-white">{activity.action}</p>
-                          <p className="text-xs text-gray-400">{activity.user} • {activity.time}</p>
-                        </div>
-                      </div>
-                    ))}
-                  </div>
-                </CardContent>
-              </Card>
-            </motion.div>
-          </div>
-
-          {/* 3 Cards - Account Overview + Reviews + News */}
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-            <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.5, delay: 0.2 }}>
-              <Card className="bg-[#1A1A1A] border-gray-800 h-full">
-                <CardHeader className="pb-2">
-                  <CardTitle className="text-white text-lg">📊 Account Overview</CardTitle>
-                </CardHeader>
-                <CardContent>
-                  <div className="space-y-2">
-                    {overview.map((item) => (
-                      <div key={item.label} className={`p-3 rounded-lg ${item.bg} flex justify-between items-center border border-gray-700`}>
-                        <span className="text-white text-sm">{item.label}</span>
-                        <span className={`text-lg font-bold ${item.color}`}>{item.value} ({item.percent}%)</span>
-                      </div>
-                    ))}
-                  </div>
-                </CardContent>
-              </Card>
-            </motion.div>
-
-            <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.5, delay: 0.25 }}>
-              <Card className="bg-[#1A1A1A] border-gray-800 h-full">
-                <CardHeader className="pb-2">
-                  <div className="flex justify-between items-center">
-                    <CardTitle className="text-white text-lg">⭐ Reviews</CardTitle>
-                    <Button variant="ghost" className="text-purple-400 text-sm p-0">View All <ArrowUpRight className="h-4 w-4 ml-1" /></Button>
-                  </div>
-                </CardHeader>
-                <CardContent>
-                  <div className="space-y-2">
-                    {reviews.map((review, i) => (
-                      <div key={i} className="p-2 rounded-lg bg-black/50 border border-gray-700">
-                        <div className="flex items-center gap-2">
-                          <div className="w-7 h-7 rounded-full bg-purple-500/20 flex items-center justify-center text-purple-400 text-xs font-bold">
-                            {review.name.split(' ').map(n => n[0]).join('')}
-                          </div>
-                          <div>
-                            <p className="text-sm font-medium text-white">{review.name}</p>
-                            <div className="flex items-center gap-1">
-                              {[...Array(5)].map((_, i) => (
-                                <Star key={i} className="h-3 w-3 text-yellow-500 fill-yellow-500" />
-                              ))}
-                            </div>
-                          </div>
-                        </div>
-                        <p className="text-xs text-gray-400 mt-1">"{review.text}"</p>
-                        <p className="text-xs text-gray-500">{review.time}</p>
-                      </div>
-                    ))}
-                  </div>
-                </CardContent>
-              </Card>
-            </motion.div>
-
-            <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.5, delay: 0.3 }}>
-              <Card className="bg-[#1A1A1A] border-gray-800 h-full">
-                <CardHeader className="pb-2">
-                  <div className="flex justify-between items-center">
-                    <CardTitle className="text-white text-lg">📢 News</CardTitle>
-                    <Button variant="ghost" className="text-purple-400 text-sm p-0">View <ArrowUpRight className="h-4 w-4 ml-1" /></Button>
-                  </div>
-                </CardHeader>
-                <CardContent>
-                  <div className="space-y-2">
-                    {news.map((item, i) => (
-                      <div key={i} className="flex items-center gap-3 p-2 rounded-lg bg-black/50 border border-gray-800">
-                        <div className="p-2 rounded-lg bg-purple-500/20"><item.icon className="h-4 w-4 text-purple-400" /></div>
-                        <div className="flex-1">
-                          <p className="text-sm text-white">{item.title}</p>
-                          <p className="text-xs text-gray-400">{item.date}</p>
-                        </div>
-                      </div>
-                    ))}
-                  </div>
-                </CardContent>
-              </Card>
-            </motion.div>
-          </div>
-
+          {/* Instant Funding Card */}
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.5, delay: 0.5 }}
+            className="mt-8"
+          >
+            <Card className="glass-card border-purple-500/30 hover:border-purple-500/50 transition-all duration-300">
+              <CardContent className="p-6 flex flex-col md:flex-row items-center justify-between gap-4">
+                <div>
+                  <Badge className="mb-2 bg-purple-500/20 text-purple-400 border-purple-500/30">Instant Funding</Badge>
+                  <h3 className="text-xl font-bold text-white">Skip the Challenge</h3>
+                  <p className="text-gray-400">Get funded instantly. No challenge required.</p>
+                </div>
+                <Link href="/instant-account">
+                  <Button className="bg-gradient-to-r from-purple-500 to-blue-500 hover:from-purple-600 hover:to-blue-600 text-white px-8">
+                    Get Instant Account <ArrowUpRight className="ml-2 h-4 w-4" />
+                  </Button>
+                </Link>
+              </CardContent>
+            </Card>
+          </motion.div>
         </div>
-      </main>
+      </section>
+
+      {/* ===== FEATURES SECTION ===== */}
+      <section className="py-20">
+        <div className="container mx-auto px-4">
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.5 }}
+            className="text-center mb-12"
+          >
+            <Badge className="mb-3 bg-purple-500/20 text-purple-400 border-purple-500/30">Features</Badge>
+            <h2 className="text-3xl md:text-4xl font-bold text-white">Why Choose Noor Funding</h2>
+          </motion.div>
+
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-5 gap-6">
+            {features.map((feature, i) => (
+              <motion.div
+                key={feature.title}
+                initial={{ opacity: 0, y: 20 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ duration: 0.5, delay: i * 0.1 }}
+              >
+                <Card className="glass-card text-center hover:border-purple-500/30 transition-all duration-300">
+                  <CardContent className="pt-6">
+                    <div className="w-12 h-12 bg-purple-500/20 rounded-full flex items-center justify-center mx-auto mb-3">
+                      <feature.icon className="h-6 w-6 text-purple-400" />
+                    </div>
+                    <h3 className="text-white font-semibold mb-1">{feature.title}</h3>
+                    <p className="text-gray-400 text-sm">{feature.desc}</p>
+                  </CardContent>
+                </Card>
+              </motion.div>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      {/* ===== CTA SECTION ===== */}
+      <section className="py-20 border-t border-gray-800">
+        <div className="container mx-auto px-4">
+          <div className="glass rounded-2xl p-8 md:p-12 text-center max-w-4xl mx-auto border border-purple-500/20">
+            <h2 className="text-3xl md:text-4xl font-bold text-white mb-4">
+              Ready to Start Trading?
+            </h2>
+            <p className="text-gray-400 mb-6 max-w-lg mx-auto">
+              Join thousands of traders who have already gotten funded.
+            </p>
+            <div className="flex flex-wrap justify-center gap-4">
+              <Link href="/register">
+                <Button className="bg-purple-500 hover:bg-purple-600 text-white px-8 py-6 text-lg rounded-xl">
+                  Start Your Challenge
+                </Button>
+              </Link>
+              <Link href="/instant-account">
+                <Button variant="outline" className="border-purple-500/50 text-white hover:bg-purple-500/20 px-8 py-6 text-lg rounded-xl">
+                  Get Instant Account
+                </Button>
+              </Link>
+            </div>
+          </div>
+        </div>
+      </section>
     </div>
   );
 }

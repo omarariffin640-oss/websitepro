@@ -19,15 +19,44 @@
 
 @layer base {
   * {
-    @apply border border-gray-800;
+    @apply border-gray-800;
   }
 
   body {
     @apply bg-black text-white;
+    font-family: 'Inter', sans-serif;
   }
 }
 
-/* Custom Classes */
+/* Glassmorphism */
+.glass {
+  background: rgba(255, 255, 255, 0.05);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+}
+
+.glass-card {
+  background: rgba(255, 255, 255, 0.03);
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
+  border: 1px solid rgba(255, 255, 255, 0.06);
+}
+
+/* Neon Glow */
+.neon-purple {
+  box-shadow: 0 0 30px rgba(139, 92, 246, 0.3);
+}
+
+.neon-blue {
+  box-shadow: 0 0 30px rgba(59, 130, 246, 0.3);
+}
+
+/* Custom Colors */
+.bg-darknavy {
+  background-color: #0a0e27;
+}
+
 .bg-darkcard {
   background-color: #1A1A1A;
 }
@@ -42,4 +71,12 @@
 
 .border-purple-500 {
   border-color: #8B5CF6;
+}
+
+.text-green-500 {
+  color: #22C55E;
+}
+
+.text-red-500 {
+  color: #EF4444;
 }
