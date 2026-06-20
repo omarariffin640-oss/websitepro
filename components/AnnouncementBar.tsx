@@ -33,7 +33,7 @@ export default function AnnouncementBar() {
 
     return (
         <div className="relative z-50 w-full bg-gradient-to-r from-purple-600/10 via-black to-blue-600/10 border-b border-purple-500/20 backdrop-blur-sm">
-            <div className="container mx-auto px-4 py-2.5">
+            <div className="container mx-auto px-4 py-1.5">
                 <div className="flex flex-wrap items-center justify-between gap-5 text-xs sm:text-sm">
                     {/* Left: Sale & Timer */}
                     <div className="flex items-center gap-4 flex-wrap">
