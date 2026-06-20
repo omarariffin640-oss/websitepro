@@ -29,7 +29,7 @@ export default function Topbar() {
     ];
 
     return (
-        <header className={`fixed top-0 left-0 right-0 z-40 transition-all duration-300 ${scrolled ? "bg-black/90 backdrop-blur-xl border-b border-gray-800/50" : "bg-transparent"
+        <header className={`fixed top-0 left-0 right-0 z-50 transition-all duration-300 ${scrolled ? "bg-black/90 backdrop-blur-xl border-b border-gray-800/50" : "bg-transparent"
             }`}>
             <div className="container mx-auto px-4 pt-[38px]">
                 <div className="flex items-center justify-between h-20">
@@ -51,8 +51,8 @@ export default function Topbar() {
                                 <Link
                                     href={link.href}
                                     className={`text-sm transition-colors flex items-center gap-1 ${pathname === link.href
-                                            ? "text-purple-400 font-medium"
-                                            : "text-gray-300 hover:text-white"
+                                        ? "text-purple-400 font-medium"
+                                        : "text-gray-300 hover:text-white"
                                         }`}
                                 >
                                     {link.name}
@@ -114,8 +114,8 @@ export default function Topbar() {
                                 href={link.href}
                                 onClick={() => setIsOpen(false)}
                                 className={`block text-base transition-colors ${pathname === link.href
-                                        ? "text-purple-400 font-medium"
-                                        : "text-gray-300 hover:text-white"
+                                    ? "text-purple-400 font-medium"
+                                    : "text-gray-300 hover:text-white"
                                     }`}
                             >
                                 {link.name}
