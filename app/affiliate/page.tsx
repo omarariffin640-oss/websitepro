@@ -7,6 +7,7 @@ import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import Topbar from "@/components/Topbar";
 import Sidebar from "@/components/Sidebar";
+// @ts-ignore
 import { motion } from "framer-motion";
 import { Users, Wallet, TrendingUp, Share2, Gift, ArrowUpRight, Copy, CheckCircle } from "lucide-react";
 
