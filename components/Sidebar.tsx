@@ -128,12 +128,10 @@ export default function Sidebar({ isOpen, onClose }: SidebarProps) {
                 lg:translate-x-0
                 ${isOpen ? "translate-x-0" : "-translate-x-full"}
             `}>
-                {/* Logo - NF Icon sahaja */}
+                {/* Logo - minimal, tanpa warna */}
                 <div className="flex items-center justify-between p-4 border-b border-gray-800">
                     <div className="flex items-center justify-center w-full">
-                        <div className="w-8 h-8 bg-gradient-to-br from-purple-500/20 to-purple-600/20 rounded-lg flex items-center justify-center border border-purple-500/20">
-                            <div className="w-4 h-4 bg-purple-500 rounded-sm"></div>
-                        </div>
+                        {/* Kosong - takde icon atau text */}
                     </div>
                     <Button variant="ghost" size="icon" onClick={onClose} className="lg:hidden text-gray-400 hover:text-white absolute right-2">
                         <X className="h-5 w-5" />
