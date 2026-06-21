@@ -11,7 +11,7 @@ export default function Topbar() {
     return (
         <>
             {/* Topbar - fixed di atas */}
-            <div className="fixed top-0 left-0 right-0 z-50 bg-black border-b border-gray-800 h-16 flex items-center px-4">
+            <div className="fixed top-[38px] left-0 right-0 z-40 bg-black border-b border-gray-800 h-16 flex items-center px-4">
                 <div className="container mx-auto flex items-center justify-between">
                     {/* Logo */}
                     <Link href="/" className="flex items-center gap-2">

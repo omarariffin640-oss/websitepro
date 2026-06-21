@@ -32,7 +32,7 @@ export default function AnnouncementBar() {
     if (!isVisible) return null;
 
     return (
-        <div className="relative z-50 w-full bg-gradient-to-r from-purple-600/10 via-black to-blue-600/10 border-b border-purple-500/20 backdrop-blur-sm">
+        <div className="fixed top-0 left-0 right-0 z-50 w-full bg-gradient-to-r from-purple-600/10 via-black to-blue-600/10 border-b border-purple-500/20 backdrop-blur-sm">
             <div className="container mx-auto px-4 py-12">
                 <div className="flex flex-wrap items-center justify-between gap-5 text-xs sm:text-sm">
                     {/* Left: Sale & Timer */}
