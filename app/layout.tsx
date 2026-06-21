@@ -21,9 +21,9 @@ export default function RootLayout({
     <html lang="en" suppressHydrationWarning>
       <body className={`${inter.className} antialiased`}>
         <ThemeProvider>
-          <AnnouncementBar />
-          <Topbar />
-          <main className="pt-16">
+          <AnnouncementBar />  {/* Banner - relative */}
+          <Topbar />           {/* Topbar - fixed top-0 */}
+          <main className="pt-[76px]">
             {children}
           </main>
         </ThemeProvider>
