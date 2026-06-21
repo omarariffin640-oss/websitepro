@@ -111,7 +111,7 @@ export default function DashboardPage() {
 
     if (loading) {
         return (
-            <div className="flex min-h-screen items-center justify-center bg-darknavy">
+            <div className="flex min-h-screen items-center justify-center bg-black">
                 <p className="text-gray-400">Loading dashboard...</p>
             </div>
         );
@@ -196,7 +196,7 @@ export default function DashboardPage() {
     };
 
     return (
-        <div className="min-h-screen bg-darknavy">
+        <div className="min-h-screen bg-black">
             <Topbar />
             <Sidebar isOpen={sidebarOpen} onClose={() => setSidebarOpen(false)} />
 
@@ -205,7 +205,7 @@ export default function DashboardPage() {
                     <h1 className="text-2xl font-bold text-white mb-3">Dashboard</h1>
 
                     {activeChallenge && (
-                        <Card className="mb-6 bg-gradient-to-r from-blue-500/20 to-purple-500/20 border border-blue-500/30">
+                        <Card className="mb-6 bg-gradient-to-r from-purple-500/20 to-purple-500/20 border border-purple-500/30">
                             <CardContent className="pt-6">
                                 <div className="flex items-center justify-between flex-wrap gap-4">
                                     <div>
