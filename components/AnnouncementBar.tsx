@@ -15,7 +15,7 @@ export default function AnnouncementBar() {
         minutes: 36,
         seconds: 16
     });
-    const [isRunning, setIsRunning] = useState(true); // ← tukar true/false untuk stop/start
+    const [isRunning, setIsRunning] = useState(false); // ← tukar true/false untuk stop/start
 
     useEffect(() => {
         if (!isRunning) return;
