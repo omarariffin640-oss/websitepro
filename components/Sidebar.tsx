@@ -131,8 +131,8 @@ export default function Sidebar({ isOpen, onClose }: SidebarProps) {
                 {/* Logo - NF Icon sahaja */}
                 <div className="flex items-center justify-between p-4 border-b border-gray-800">
                     <div className="flex items-center justify-center w-full">
-                        <div className="w-10 h-10 bg-gradient-to-br from-purple-500 to-purple-600 rounded-xl flex items-center justify-center shadow-lg shadow-purple-500/20">
-                            <span className="text-white font-bold text-lg">✦</span>
+                        <div className="w-8 h-8 bg-gradient-to-br from-purple-500/20 to-purple-600/20 rounded-lg flex items-center justify-center border border-purple-500/20">
+                            <div className="w-4 h-4 bg-purple-500 rounded-sm"></div>
                         </div>
                     </div>
                     <Button variant="ghost" size="icon" onClick={onClose} className="lg:hidden text-gray-400 hover:text-white absolute right-2">
