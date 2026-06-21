@@ -23,7 +23,7 @@ export default function RootLayout({
         <ThemeProvider>
           <AnnouncementBar />
           <Topbar />
-          <main className="pt-[120px]">
+          <main className="pt-[160px]">
             {children}
           </main>
         </ThemeProvider>
