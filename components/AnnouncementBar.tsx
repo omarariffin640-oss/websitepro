@@ -7,13 +7,15 @@ import { useState, useEffect } from "react";
 export default function AnnouncementBar() {
     const { theme, setTheme } = useTheme();
     const [lang, setLang] = useState("EN");
+    const [isLangOpen, setIsLangOpen] = useState(false);
+    const [status, setStatus] = useState("All Systems Operational");
     const [timeLeft, setTimeLeft] = useState({
         days: 2,
         hours: 14,
         minutes: 36,
         seconds: 16
     });
-    const [isRunning, setIsRunning] = useState(false); // ← tukar true/false untuk stop/start
+    const [isRunning, setIsRunning] = useState(true); // ← tukar true/false untuk stop/start
 
     useEffect(() => {
         if (!isRunning) return;
@@ -53,7 +55,7 @@ export default function AnnouncementBar() {
                         </div>
                     </div>
 
-                    {/* Right: Status, Eye, Language, Dark */}
+                    {/* Right: Live, Status, Language, Dark */}
                     <div className="flex items-center gap-3">
                         {/* Live Status */}
                         <div className="flex items-center gap-2">
@@ -66,20 +68,44 @@ export default function AnnouncementBar() {
 
                         <div className="h-4 w-px bg-gray-700"></div>
 
-                        {/* Status Button */}
-                        <button className="flex items-center gap-1 text-gray-400 hover:text-white transition-colors">
+                        {/* Status Button - toggle */}
+                        <button
+                            onClick={() => setStatus(status === "All Systems Operational" ? "Maintenance Mode" : "All Systems Operational")}
+                            className="flex items-center gap-1 text-gray-400 hover:text-white transition-colors"
+                        >
                             <Eye className="h-3.5 w-3.5" />
-                            <span className="text-xs">Status</span>
+                            <span className="text-xs">{status}</span>
                         </button>
 
                         <div className="h-4 w-px bg-gray-700"></div>
 
-                        {/* Language Selector */}
-                        <button className="flex items-center gap-1 text-gray-400 hover:text-white transition-colors">
-                            <Globe className="h-3.5 w-3.5" />
-                            <span className="text-xs">{lang}</span>
-                            <ChevronDown className="h-3 w-3" />
-                        </button>
+                        {/* Language Selector with Dropdown */}
+                        <div className="relative">
+                            <button
+                                onClick={() => setIsLangOpen(!isLangOpen)}
+                                className="flex items-center gap-1 text-gray-400 hover:text-white transition-colors"
+                            >
+                                <Globe className="h-3.5 w-3.5" />
+                                <span className="text-xs">{lang}</span>
+                                <ChevronDown className="h-3 w-3" />
+                            </button>
+                            {isLangOpen && (
+                                <div className="absolute top-full left-0 mt-1 bg-black border border-gray-700 rounded-lg shadow-lg z-50 min-w-[100px]">
+                                    <button
+                                        onClick={() => { setLang("EN"); setIsLangOpen(false); }}
+                                        className="block w-full px-4 py-2 text-xs text-gray-300 hover:bg-gray-800 hover:text-white text-left"
+                                    >
+                                        English
+                                    </button>
+                                    <button
+                                        onClick={() => { setLang("MS"); setIsLangOpen(false); }}
+                                        className="block w-full px-4 py-2 text-xs text-gray-300 hover:bg-gray-800 hover:text-white text-left"
+                                    >
+                                        Malay
+                                    </button>
+                                </div>
+                            )}
+                        </div>
 
                         <div className="h-4 w-px bg-gray-700"></div>
 
