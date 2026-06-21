@@ -29,8 +29,7 @@ export default function Topbar() {
     ];
 
     return (
-        <header className={`fixed top-[38x] left-0 right-0 z-40 transition-all duration-300 ${scrolled ? "bg-black/90 backdrop-blur-xl border-b border-gray-800/50" : "bg-transparent"
-            }`}>
+        <header className="fixed top-0 left-0 right-0 z-50 bg-black/95 backdrop-blur-xl border-b border-gray-800/50">
             <div className="container mx-auto px-4">
                 <div className="flex items-center justify-between h-20">
                     {/* Logo */}

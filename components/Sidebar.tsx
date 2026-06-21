@@ -107,7 +107,7 @@ export default function Sidebar({ isOpen, onClose }: SidebarProps) {
 
     if (loading) {
         return (
-            <aside className="fixed top-0 left-0 z-50 h-full w-56 bg-darknavy/95 backdrop-blur-sm border-r border-gray-800 pt-[76px]">
+            <aside className="fixed top-0 left-0 z-50 h-full w-56 bg-darknavy/95 backdrop-blur-sm border-r border-gray-800 pt-[76px] ...`}">
                 <div className="p-4"><p className="text-gray-400">Loading...</p></div>
             </aside>
         );
