@@ -10,7 +10,7 @@ export default function Topbar() {
 
     return (
         <>
-            {/* Topbar - fixed di atas */}
+            {/* Topbar - fixed di bawah Banner */}
             <div className="fixed top-[48px] left-0 right-0 z-40 bg-black border-b border-gray-800 h-16 flex items-center px-4">
                 <div className="container mx-auto flex items-center justify-between">
                     {/* Logo */}
@@ -50,7 +50,7 @@ export default function Topbar() {
 
             {/* Mobile menu */}
             {isOpen && (
-                <div className="fixed top-16 left-0 right-0 z-40 bg-black border-b border-gray-800 lg:hidden p-4">
+                <div className="fixed top-[112px] left-0 right-0 z-40 bg-black border-b border-gray-800 lg:hidden p-4">
                     <div className="flex flex-col gap-3">
                         <Link href="/" className="text-gray-300 hover:text-white">Home</Link>
                         <Link href="/challenges" className="text-gray-300 hover:text-white">Challenges</Link>

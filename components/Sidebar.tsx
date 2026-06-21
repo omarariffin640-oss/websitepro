@@ -107,7 +107,7 @@ export default function Sidebar({ isOpen, onClose }: SidebarProps) {
 
     if (loading) {
         return (
-            <aside className="fixed top-0 left-0 z-40 h-full w-56 bg-darknavy/95 backdrop-blur-sm border-r border-gray-800 pt-16">
+            <aside className="fixed top-0 left-0 z-40 h-full w-56 bg-darknavy/95 backdrop-blur-sm border-r border-gray-800 pt-[112px]">
                 <div className="p-4"><p className="text-gray-400">Loading...</p></div>
             </aside>
         );
@@ -123,7 +123,7 @@ export default function Sidebar({ isOpen, onClose }: SidebarProps) {
             )}
 
             <aside className={`
-                fixed top-0 left-0 z-40 h-full w-56 bg-darknavy/95 backdrop-blur-sm border-r border-gray-800 pt-16
+                fixed top-0 left-0 z-40 h-full w-56 bg-darknavy/95 backdrop-blur-sm border-r border-gray-800 pt-[112px]
                 transform transition-transform duration-300 ease-in-out
                 lg:translate-x-0
                 ${isOpen ? "translate-x-0" : "-translate-x-full"}

@@ -1,11 +1,10 @@
 "use client";
 
 import { useState, useEffect } from "react";
-import { X, Globe, Sun, Moon, Circle } from "lucide-react";
+import { Globe, Sun, Moon, Circle } from "lucide-react";
 import { useTheme } from "next-themes";
 
 export default function AnnouncementBar() {
-    const [isVisible, setIsVisible] = useState(true);
     const { theme, setTheme } = useTheme();
     const [timeLeft, setTimeLeft] = useState({
         days: 2,
@@ -29,12 +28,10 @@ export default function AnnouncementBar() {
         return () => clearInterval(timer);
     }, []);
 
-    if (!isVisible) return null;
-
     return (
         <div className="fixed top-0 left-0 right-0 z-50 w-full bg-gradient-to-r from-purple-600/10 via-black to-blue-600/10 border-b border-purple-500/20 backdrop-blur-sm py-3">
-            <div className="container mx-auto px-4 py-12">
-                <div className="flex flex-wrap items-center justify-between gap-5 text-xs sm:text-sm">
+            <div className="container mx-auto px-4">
+                <div className="flex flex-wrap items-center justify-between gap-3 text-xs sm:text-sm">
                     {/* Left: Sale & Timer */}
                     <div className="flex items-center gap-4 flex-wrap">
                         <span className="flex items-center gap-2">
@@ -55,7 +52,7 @@ export default function AnnouncementBar() {
                         </div>
                     </div>
 
-                    {/* Right: Status, EN, Dark Mode, Close */}
+                    {/* Right: Status, EN, Dark Mode */}
                     <div className="flex items-center gap-4">
                         <div className="flex items-center gap-2">
                             <span className="relative flex h-2.5 w-2.5">
@@ -74,12 +71,6 @@ export default function AnnouncementBar() {
                             className="text-gray-400 hover:text-white transition-colors"
                         >
                             {theme === "dark" ? <Sun className="h-4 w-4" /> : <Moon className="h-4 w-4" />}
-                        </button>
-                        <button
-                            onClick={() => setIsVisible(false)}
-                            className="text-gray-500 hover:text-white transition-colors"
-                        >
-                            <X className="h-4 w-4" />
                         </button>
                     </div>
                 </div>
