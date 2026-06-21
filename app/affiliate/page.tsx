@@ -5,7 +5,6 @@ import { useRouter } from "next/navigation";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
-import Topbar from "@/components/Topbar";
 import Sidebar from "@/components/Sidebar";
 // @ts-ignore
 import { motion } from "framer-motion";
@@ -39,10 +38,8 @@ export default function AffiliatePage() {
     }
 
     return (
-        <div className="min-h-screen bg-darknavy">
-            <Topbar />
+        <div className="min-h-screen bg-black">
             <Sidebar isOpen={sidebarOpen} onClose={() => setSidebarOpen(false)} />
-
             <main className="lg:ml-64 pt-2">
                 <div className="p-4 max-w-7xl mx-auto">
 

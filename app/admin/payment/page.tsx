@@ -6,7 +6,6 @@ import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
-import Topbar from "@/components/Topbar";
 import Sidebar from "@/components/Sidebar";
 
 export default function PaymentGatewayPage() {
@@ -33,9 +32,7 @@ export default function PaymentGatewayPage() {
 
     return (
         <div className="min-h-screen bg-black">
-            <Topbar />
             <Sidebar isOpen={sidebarOpen} onClose={() => setSidebarOpen(false)} />
-
             <main className="lg:ml-64 pt-2">
                 <div className="p-3">
                     <h1 className="text-2xl font-bold text-white mb-3">Payment Gateway Settings</h1>

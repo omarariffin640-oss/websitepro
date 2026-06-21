@@ -8,7 +8,6 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { Textarea } from "@/components/ui/textarea";
-import Topbar from "@/components/Topbar";
 import Sidebar from "@/components/Sidebar";
 
 export default function AdminNewsPage() {
@@ -53,9 +52,7 @@ export default function AdminNewsPage() {
 
     return (
         <div className="min-h-screen bg-black">
-            <Topbar />
             <Sidebar isOpen={sidebarOpen} onClose={() => setSidebarOpen(false)} />
-
             <main className="lg:ml-64 pt-2">
                 <div className="p-4 max-w-3xl mx-auto">
                     <h1 className="text-2xl font-bold text-white mb-4">📝 Post News</h1>

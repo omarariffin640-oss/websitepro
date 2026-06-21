@@ -5,7 +5,6 @@ import { useRouter } from "next/navigation";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
-import Topbar from "@/components/Topbar";
 import Sidebar from "@/components/Sidebar";
 import { Eye, Trash2 } from "lucide-react";
 
@@ -33,9 +32,7 @@ export default function CouponsPage() {
 
     return (
         <div className="min-h-screen bg-black">
-            <Topbar />
             <Sidebar isOpen={sidebarOpen} onClose={() => setSidebarOpen(false)} />
-
             <main className="lg:ml-64 pt-2">
                 <div className="p-3">
                     <h1 className="text-2xl font-bold text-white mb-3">Coupons Management</h1>
