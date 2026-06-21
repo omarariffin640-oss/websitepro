@@ -13,7 +13,7 @@ export default function AnnouncementBar() {
         minutes: 36,
         seconds: 16
     });
-    const [isRunning, setIsRunning] = useState(true);
+    const [isRunning, setIsRunning] = useState(true); // ← tukar true/false untuk stop/start
 
     useEffect(() => {
         if (!isRunning) return;
@@ -35,7 +35,7 @@ export default function AnnouncementBar() {
         <div className="fixed top-0 left-0 right-0 z-50 w-full bg-gradient-to-r from-purple-600/10 via-black to-blue-600/10 border-b border-purple-500/20 backdrop-blur-sm py-2.5">
             <div className="container mx-auto px-4">
                 <div className="flex flex-wrap items-center justify-between gap-3 text-xs sm:text-sm">
-                    {/* Left */}
+                    {/* Left: Sale & Timer */}
                     <div className="flex items-center gap-3 flex-wrap">
                         <span className="text-orange-400 font-bold text-base">🔥</span>
                         <span className="text-white font-semibold">WEEKEND SALE</span>
@@ -51,17 +51,11 @@ export default function AnnouncementBar() {
                             <span className="text-purple-400">:</span>
                             <span className="bg-purple-500/20 px-2 py-0.5 rounded">{String(timeLeft.seconds).padStart(2, '0')}s</span>
                         </div>
-                        {/* START/STOP Button */}
-                        <button
-                            onClick={() => setIsRunning(!isRunning)}
-                            className={`px-2 py-0.5 rounded text-xs font-medium ${isRunning ? 'bg-red-500/20 text-red-400' : 'bg-green-500/20 text-green-400'}`}
-                        >
-                            {isRunning ? '⏸ Stop' : '▶️ Start'}
-                        </button>
                     </div>
 
-                    {/* Right */}
+                    {/* Right: Status, Eye, Language, Dark */}
                     <div className="flex items-center gap-3">
+                        {/* Live Status */}
                         <div className="flex items-center gap-2">
                             <span className="relative flex h-2 w-2">
                                 <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-green-400 opacity-75"></span>
@@ -69,18 +63,27 @@ export default function AnnouncementBar() {
                             </span>
                             <span className="text-green-400 text-xs font-medium">Live Payouts</span>
                         </div>
+
                         <div className="h-4 w-px bg-gray-700"></div>
+
+                        {/* Status Button */}
                         <button className="flex items-center gap-1 text-gray-400 hover:text-white transition-colors">
                             <Eye className="h-3.5 w-3.5" />
                             <span className="text-xs">Status</span>
                         </button>
+
                         <div className="h-4 w-px bg-gray-700"></div>
+
+                        {/* Language Selector */}
                         <button className="flex items-center gap-1 text-gray-400 hover:text-white transition-colors">
                             <Globe className="h-3.5 w-3.5" />
                             <span className="text-xs">{lang}</span>
                             <ChevronDown className="h-3 w-3" />
                         </button>
+
                         <div className="h-4 w-px bg-gray-700"></div>
+
+                        {/* Dark Mode */}
                         <button
                             onClick={() => setTheme(theme === "dark" ? "light" : "dark")}
                             className="text-gray-400 hover:text-white transition-colors"
