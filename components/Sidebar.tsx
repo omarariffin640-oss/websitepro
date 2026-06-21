@@ -121,7 +121,7 @@ export default function Sidebar({ isOpen, onClose }: SidebarProps) {
             )}
 
             <aside className={`
-                fixed top-0 left-0 z-50 h-full w-56 bg-darknavy/95 backdrop-blur-sm border-r border-gray-800 pt-[76px]
+                fixed top-0 left-0 z-50 h-full w-56 bg-darknavy/95 backdrop-blur-sm border-r border-gray-800
                 transform transition-transform duration-300 ease-in-out
                 lg:translate-x-0
                 ${isOpen ? "translate-x-0" : "-translate-x-full"}
@@ -135,8 +135,6 @@ export default function Sidebar({ isOpen, onClose }: SidebarProps) {
                             <span className="font-bold text-lg text-white block leading-tight">NOOR</span>
                             <span className="text-xs text-purple-400 font-medium block leading-tight">FUNDING</span>
                         </div>
-
-                        <span className="font-bold text-lg text-white">PropFirm</span>
                     </div>
                     <Button variant="ghost" size="icon" onClick={onClose} className="lg:hidden text-gray-400 hover:text-white">
                         <X className="h-5 w-5" />
