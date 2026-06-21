@@ -1,7 +1,7 @@
 "use client";
 
 import { useState, useEffect } from "react";
-import { Globe, Sun, Moon, Circle } from "lucide-react";
+import { Globe, Sun, Moon } from "lucide-react";
 import { useTheme } from "next-themes";
 
 export default function AnnouncementBar() {
@@ -12,8 +12,10 @@ export default function AnnouncementBar() {
         minutes: 26,
         seconds: 16
     });
+    const [isRunning, setIsRunning] = useState(true);
 
     useEffect(() => {
+        if (!isRunning) return;
         const timer = setInterval(() => {
             setTimeLeft(prev => {
                 let { days, hours, minutes, seconds } = prev;
@@ -26,7 +28,7 @@ export default function AnnouncementBar() {
             });
         }, 1000);
         return () => clearInterval(timer);
-    }, []);
+    }, [isRunning]);
 
     return (
         <div className="fixed top-0 left-0 right-0 z-50 w-full bg-gradient-to-r from-purple-600/10 via-black to-blue-600/10 border-b border-purple-500/20 backdrop-blur-sm py-3">
