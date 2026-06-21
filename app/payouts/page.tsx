@@ -5,7 +5,6 @@ import { useRouter } from "next/navigation";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
-import Topbar from "@/components/Topbar";
 import Sidebar from "@/components/Sidebar";
 
 type Payout = {
@@ -59,9 +58,7 @@ export default function PayoutsPage() {
 
     return (
         <div className="min-h-screen bg-black">
-            <Topbar />
             <Sidebar isOpen={sidebarOpen} onClose={() => setSidebarOpen(false)} />
-
             <main className="lg:ml-64 pt-3">
                 <div className="p-3">
                     <div className="flex justify-between items-center mb-4">

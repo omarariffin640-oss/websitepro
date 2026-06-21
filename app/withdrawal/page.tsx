@@ -8,7 +8,6 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Badge } from "@/components/ui/badge";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
-import Topbar from "@/components/Topbar";
 import Sidebar from "@/components/Sidebar";
 
 export default function WithdrawalPage() {
@@ -112,9 +111,7 @@ export default function WithdrawalPage() {
 
     return (
         <div className="min-h-screen bg-black">
-            <Topbar />
             <Sidebar isOpen={sidebarOpen} onClose={() => setSidebarOpen(false)} />
-
             <main className="lg:ml-64 pt-2">
                 <div className="p-3 max-w-4xl mx-auto">
                     <h1 className="text-2xl font-bold text-white mb-3">Withdrawal</h1>

@@ -4,7 +4,6 @@ import { useState, useEffect } from "react";
 import { useRouter } from "next/navigation";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { ChevronDown, ChevronUp } from "lucide-react";
-import Topbar from "@/components/Topbar";
 import Sidebar from "@/components/Sidebar";
 
 type FAQItem = {
@@ -76,9 +75,7 @@ export default function FAQPage() {
 
     return (
         <div className="min-h-screen bg-black">
-            <Topbar />
             <Sidebar isOpen={sidebarOpen} onClose={() => setSidebarOpen(false)} />
-
             <main className="lg:ml-64 pt-2">
                 <div className="p-3">
                     <h1 className="text-2xl font-bold text-white mb-3">Frequently Asked Questions</h1>

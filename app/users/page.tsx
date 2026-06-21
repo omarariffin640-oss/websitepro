@@ -6,7 +6,6 @@ import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
-import Topbar from "@/components/Topbar";
 import Sidebar from "@/components/Sidebar";
 import Papa from "papaparse";
 import { Download, Eye, Edit, UserCog } from "lucide-react";
@@ -117,9 +116,7 @@ export default function UsersPage() {
 
     return (
         <div className="min-h-screen bg-black">
-            <Topbar />
             <Sidebar isOpen={sidebarOpen} onClose={() => setSidebarOpen(false)} />
-
             <main className="lg:ml-64 pt-2">
                 <div className="p-3">
                     {/* Header - Search & Export */}

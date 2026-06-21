@@ -5,7 +5,6 @@ import { useRouter } from "next/navigation";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
-import Topbar from "@/components/Topbar";
 import Sidebar from "@/components/Sidebar";
 import { Award, Download, Calendar, CheckCircle, Clock } from "lucide-react";
 
@@ -78,9 +77,7 @@ export default function CertificatesPage() {
 
     return (
         <div className="min-h-screen bg-black">
-            <Topbar />
             <Sidebar isOpen={sidebarOpen} onClose={() => setSidebarOpen(false)} />
-
             <main className="lg:ml-64 pt-2">
                 <div className="p-3 max-w-5xl mx-auto">
                     <div className="flex justify-between items-center mb-4">

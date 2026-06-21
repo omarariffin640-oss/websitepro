@@ -6,7 +6,6 @@ import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
-import Topbar from "@/components/Topbar";
 import Sidebar from "@/components/Sidebar";
 import { Search, ArrowUpRight, ArrowDownRight, Clock } from "lucide-react";
 
@@ -71,9 +70,7 @@ export default function OrdersPage() {
 
     return (
         <div className="min-h-screen bg-black">
-            <Topbar />
             <Sidebar isOpen={sidebarOpen} onClose={() => setSidebarOpen(false)} />
-
             <main className="lg:ml-64 pt-2">
                 <div className="p-3 max-w-7xl mx-auto">
                     <div className="flex flex-col md:flex-row justify-between items-start md:items-center gap-3 mb-4">
