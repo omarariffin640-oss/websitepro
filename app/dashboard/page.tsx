@@ -197,9 +197,7 @@ export default function DashboardPage() {
 
     return (
         <div className="min-h-screen bg-black">
-            <Topbar />
             <Sidebar isOpen={sidebarOpen} onClose={() => setSidebarOpen(false)} />
-
             <main className="lg:ml-64 pt-3">
                 <div className="p-3">
                     <h1 className="text-2xl font-bold text-white mb-3">Dashboard</h1>
