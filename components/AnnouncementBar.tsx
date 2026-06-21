@@ -12,7 +12,7 @@ export default function AnnouncementBar() {
         minutes: 26,
         seconds: 16
     });
-    const [isRunning, setIsRunning] = useState(false);
+    const [isRunning, setIsRunning] = useState(true);
 
     useEffect(() => {
         if (!isRunning) return;
