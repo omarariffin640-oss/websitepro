@@ -4,7 +4,7 @@ import Link from "next/link";
 import { usePathname, useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
 import { Button } from "@/components/ui/button";
-import { ChevronDown, ChevronRight, LogOut, X } from "lucide-react";
+import { ChevronDown, ChevronRight, LogOut, X, User } from "lucide-react";
 import { getMenuItems, MenuItem } from "@/lib/menuItems";
 
 interface SidebarProps {
@@ -128,35 +128,38 @@ export default function Sidebar({ isOpen, onClose }: SidebarProps) {
                 lg:translate-x-0
                 ${isOpen ? "translate-x-0" : "-translate-x-full"}
             `}>
-                {/* Logo - Icon NF sahaja */}
+                {/* Logo - NF Icon sahaja */}
                 <div className="flex items-center justify-between p-4 border-b border-gray-800">
-                    <div className="flex items-center justify-center">
+                    <div className="flex items-center justify-center w-full">
                         <div className="w-10 h-10 bg-gradient-to-br from-purple-500 to-purple-600 rounded-xl flex items-center justify-center shadow-lg shadow-purple-500/20">
-                            <span className="text-white font-bold text-lg">NF</span>
+                            <span className="text-white font-bold text-lg">✦</span>
                         </div>
                     </div>
-                    <Button variant="ghost" size="icon" onClick={onClose} className="lg:hidden text-gray-400 hover:text-white">
+                    <Button variant="ghost" size="icon" onClick={onClose} className="lg:hidden text-gray-400 hover:text-white absolute right-2">
                         <X className="h-5 w-5" />
                     </Button>
                 </div>
 
-                {/* Profile Section */}
-                <div className="p-3 border-b border-gray-800">
-                    <div className="flex items-center gap-3 p-2 rounded-lg hover:bg-gray-800/50 transition-colors">
-                        <div className="w-10 h-10 rounded-full bg-purple-500 flex items-center justify-center text-white font-bold">
-                            {userEmail?.charAt(0).toUpperCase() || "U"}
-                        </div>
-                        <div>
-                            <p className="text-white text-sm font-medium">Trader</p>
-                            <p className="text-gray-400 text-xs truncate max-w-[120px]">{userEmail}</p>
-                        </div>
-                    </div>
-                </div>
-
+                {/* Menu Items */}
                 <nav className="p-3 space-y-1 overflow-y-auto" style={{ height: "calc(100% - 200px)" }}>
                     {menuItems.map(item => renderMenuItem(item))}
                 </nav>
 
+                {/* Profile Section - di bawah menu, atas Logout */}
+                <div className="absolute bottom-16 left-0 right-0 p-3 border-t border-gray-800 bg-darknavy/95">
+                    <div className="flex items-center gap-3 p-2 rounded-lg hover:bg-gray-800/50 transition-colors cursor-pointer">
+                        <div className="w-9 h-9 rounded-full bg-purple-500 flex items-center justify-center text-white font-bold text-sm">
+                            {userEmail?.charAt(0).toUpperCase() || "U"}
+                        </div>
+                        <div className="flex-1 min-w-0">
+                            <p className="text-white text-sm font-medium truncate">Trader</p>
+                            <p className="text-gray-400 text-xs truncate">{userEmail}</p>
+                        </div>
+                        <User className="h-4 w-4 text-gray-400" />
+                    </div>
+                </div>
+
+                {/* Logout - bawah sekali */}
                 <div className="absolute bottom-0 left-0 right-0 p-3 border-t border-gray-800 bg-darknavy/95">
                     <button
                         onClick={handleLogout}

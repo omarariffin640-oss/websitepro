@@ -1,6 +1,6 @@
 export default function Hero() {
     return (
-        <section className="text-center py-20">
+        <section className="text-center py-20 bg-black">
             <h1 className="text-5xl font-bold mb-4 text-white">
                 Trade With Funded Capital
             </h1>
