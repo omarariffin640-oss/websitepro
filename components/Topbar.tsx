@@ -4,7 +4,7 @@ import { useState, useEffect } from "react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { Button } from "@/components/ui/button";
-import { Menu, X, ChevronDown, Circle, Disc, Send } from "lucide-react";
+import { Menu, X, ChevronDown, Disc, Send } from "lucide-react";
 
 export default function Topbar() {
     const [isOpen, setIsOpen] = useState(false);
@@ -29,8 +29,8 @@ export default function Topbar() {
     ];
 
     return (
-        <header className="fixed top-0 left-0 right-0 z-50 bg-black/95 backdrop-blur-xl border-b border-gray-800/50 h-[76px]">
-            <div className="container mx-auto px-4">
+        <header className="fixed top-0 left-0 right-0 z-50 transition-all duration-300 bg-black/95 backdrop-blur-xl border-b border-gray-800/50">
+            <div className="container mx-auto px-4 pt-[38px]">
                 <div className="flex items-center justify-between h-20">
                     {/* Logo */}
                     <Link href="/" className="flex items-center gap-3 shrink-0">
@@ -44,7 +44,7 @@ export default function Topbar() {
                     </Link>
 
                     {/* Desktop Navigation */}
-                    <nav className="hidden lg:flex items-center gap-12">
+                    <nav className="hidden lg:flex items-center gap-8">
                         {navLinks.map((link) => (
                             <div key={link.name} className="relative group">
                                 <Link
@@ -68,7 +68,6 @@ export default function Topbar() {
 
                     {/* Right Side: Social, Auth */}
                     <div className="hidden lg:flex items-center gap-6">
-                        {/* Social Icons */}
                         <div className="flex items-center gap-3">
                             <a href="#" className="text-gray-400 hover:text-purple-400 transition-colors">
                                 <Disc className="h-5 w-5" />
@@ -80,7 +79,6 @@ export default function Topbar() {
 
                         <div className="w-px h-6 bg-gray-700"></div>
 
-                        {/* Auth Buttons */}
                         <div className="flex items-center gap-3">
                             <Link href="/login">
                                 <Button variant="ghost" className="text-gray-300 hover:text-white hover:bg-gray-800/50">
