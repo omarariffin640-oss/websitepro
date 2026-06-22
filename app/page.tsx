@@ -11,7 +11,7 @@ import {
   LayoutDashboard, FolderKanban, Award, Wallet, FileText,
   Settings, LogOut, User, TrendingUp, TrendingDown,
   ChevronDown, ArrowRight, Zap, Headset, BarChart3,
-  Twitter, FacebookIcon, YoutubeIcon, LinkedinIcon, Send
+  Twitter, Facebook, Youtube, Linkedin, Send
 } from "lucide-react";
 
 export default function HomePage() {
@@ -147,7 +147,7 @@ export default function HomePage() {
               transition={{ duration: 0.8, delay: 0.2 }}
               className="relative"
             >
-              <div className="glass rounded-2xl p-4 border border-purple-500/20">
+              <div className="bg-white/5 backdrop-blur-sm border border-purple-500/20 rounded-2xl p-4">
                 {/* Dashboard Header */}
                 <div className="flex items-center justify-between mb-4">
                   <div className="flex items-center gap-2">
@@ -248,7 +248,7 @@ export default function HomePage() {
       </section>
 
       {/* ===== CHALLENGES SECTION ===== */}
-      <section className="py-20 bg-darknavy/50">
+      <section className="py-20 bg-gray-900/50">
         <div className="container mx-auto px-4">
           <motion.div
             initial={{ opacity: 0, y: 20 }}
@@ -275,7 +275,7 @@ export default function HomePage() {
                   <CardContent className="space-y-4">
                     <div className="flex items-baseline gap-2">
                       <span className="text-3xl font-bold text-white">${challenge.price}</span>
-                      <span className="text-gray-400 line-through">${challenge.originalPrice}</span>
+                      <span className="text-gray-400">${challenge.originalPrice}</span>
                     </div>
                     <div className="space-y-2 text-sm">
                       <div className="flex justify-between">
@@ -350,7 +350,7 @@ export default function HomePage() {
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ duration: 0.5, delay: i * 0.1 }}
               >
-                <Card className="glass-card text-center hover:border-purple-500/30 transition-all duration-300">
+                <Card className="bg-white/5 backdrop-blur-sm border border-white/10 text-center hover:border-purple-500/30 transition-all duration-300">
                   <CardContent className="pt-6">
                     <div className="w-12 h-12 bg-purple-500/20 rounded-full flex items-center justify-center mx-auto mb-3">
                       <feature.icon className="h-6 w-6 text-purple-400" />
@@ -366,7 +366,7 @@ export default function HomePage() {
       </section>
 
       {/* ===== FOOTER ===== */}
-      <footer className="border-t border-gray-800 py-12">
+      <footer className="py-12">
         <div className="container mx-auto px-4">
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-5 gap-8">
             {/* Logo & Description */}
@@ -379,13 +379,17 @@ export default function HomePage() {
               </div>
               <p className="text-gray-400 text-sm mb-4">Empowering traders worldwide. Trade. Prove. Get Funded.</p>
               <div className="flex items-center gap-3">
-                <a href="#" className="text-gray-400 hover:text-purple-400 transition-colors"><Twitter className="h-5 w-5" />
+                <a href="#" className="text-gray-400 hover:text-purple-400 transition-colors">
+                  <Twitter className="h-5 w-5" />
                 </a>
-                <a href="#" className="text-gray-400 hover:text-purple-400 transition-colors"><FacebookIcon className="h-5 w-5" />
+                <a href="#" className="text-gray-400 hover:text-purple-400 transition-colors">
+                  <Facebook className="h-5 w-5" />
                 </a>
-                <a href="#" className="text-gray-400 hover:text-purple-400 transition-colors"><YoutubeIcon className="h-5 w-5" />
+                <a href="#" className="text-gray-400 hover:text-purple-400 transition-colors">
+                  <Youtube className="h-5 w-5" />
                 </a>
-                <a href="#" className="text-gray-400 hover:text-purple-400 transition-colors"><LinkedinIcon className="h-5 w-5" />
+                <a href="#" className="text-gray-400 hover:text-purple-400 transition-colors">
+                  <Linkedin className="h-5 w-5" />
                 </a>
               </div>
             </div>
