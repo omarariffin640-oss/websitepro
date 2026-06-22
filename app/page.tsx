@@ -7,11 +7,35 @@ import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import {
-  Star, Users, DollarSign, Globe, Shield, Clock,
-  LayoutDashboard, FolderKanban, Award, Wallet, FileText,
-  Settings, LogOut, User, TrendingUp, TrendingDown,
-  ChevronDown, ArrowRight, Zap, Headset, BarChart3,
-  Twitter, Facebook, Youtube, Linkedin, Send
+  Star,
+  Users,
+  DollarSign,
+  Globe,
+  Shield,
+  Clock,
+  LayoutDashboard,
+  FolderKanban,
+  Award,
+  Wallet,
+  FileText,
+  Settings,
+  LogOut,
+  User,
+  TrendingUp,
+  TrendingDown,
+  ChevronDown,
+  ArrowRight,
+  Zap,
+  Headset,
+  BarChart3
+} from "lucide-react";
+
+import {
+  Twitter,
+  Facebook,
+  Youtube,
+  Linkedin,
+  Send
 } from "lucide-react";
 
 export default function HomePage() {
