@@ -1,121 +1,98 @@
 "use client";
 
-import { Globe, Sun, Moon, Eye, ChevronDown } from "lucide-react";
-import { useTheme } from "next-themes";
-import { useState, useEffect } from "react";
+import { Clock, Zap } from "lucide-react";
+import { useEffect, useState } from "react";
 
 export default function AnnouncementBar() {
-    const { theme, setTheme } = useTheme();
-    const [lang, setLang] = useState("EN");
-    const [isLangOpen, setIsLangOpen] = useState(false);
-    const [status, setStatus] = useState("All Systems Operational");
     const [timeLeft, setTimeLeft] = useState({
         days: 2,
         hours: 14,
         minutes: 36,
-        seconds: 16
+        seconds: 16,
     });
-    const [isRunning, setIsRunning] = useState(false); // ← tukar true/false untuk stop/start
 
     useEffect(() => {
-        if (!isRunning) return;
         const timer = setInterval(() => {
-            setTimeLeft(prev => {
+            setTimeLeft((prev) => {
                 let { days, hours, minutes, seconds } = prev;
+
                 seconds--;
-                if (seconds < 0) { seconds = 59; minutes--; }
-                if (minutes < 0) { minutes = 59; hours--; }
-                if (hours < 0) { hours = 23; days--; }
-                if (days < 0) { days = 0; hours = 0; minutes = 0; seconds = 0; clearInterval(timer); }
+
+                if (seconds < 0) {
+                    seconds = 59;
+                    minutes--;
+                }
+
+                if (minutes < 0) {
+                    minutes = 59;
+                    hours--;
+                }
+
+                if (hours < 0) {
+                    hours = 23;
+                    days--;
+                }
+
+                if (days < 0) {
+                    clearInterval(timer);
+                    return { days: 0, hours: 0, minutes: 0, seconds: 0 };
+                }
+
                 return { days, hours, minutes, seconds };
             });
         }, 1000);
+
         return () => clearInterval(timer);
-    }, [isRunning]);
+    }, []);
 
     return (
-        <div className="fixed top-0 left-0 right-0 z-50 w-full bg-gradient-to-r from-purple-600/10 via-black to-blue-600/10 border-b border-purple-500/20 backdrop-blur-sm py-2.5">
+        <div className="fixed left-0 right-0 top-0 z-50 border-b border-purple-500/20 bg-black/95 backdrop-blur-xl">
             <div className="container mx-auto px-4">
-                <div className="flex flex-wrap items-center justify-between gap-3 text-xs sm:text-sm">
-                    {/* Left: Sale & Timer */}
-                    <div className="flex items-center gap-3 flex-wrap">
-                        <span className="text-orange-400 font-bold text-base">🔥</span>
-                        <span className="text-white font-semibold">WEEKEND SALE</span>
-                        <span className="text-purple-400 font-bold">|</span>
-                        <span className="text-purple-400 font-bold">20% Off</span>
-                        <span className="text-gray-300">All Challenges - Limited time only!</span>
-                        <div className="flex items-center gap-1 font-mono text-white">
-                            <span className="bg-purple-500/20 px-2 py-0.5 rounded">{String(timeLeft.days).padStart(2, '0')}d</span>
-                            <span className="text-purple-400">:</span>
-                            <span className="bg-purple-500/20 px-2 py-0.5 rounded">{String(timeLeft.hours).padStart(2, '0')}h</span>
-                            <span className="text-purple-400">:</span>
-                            <span className="bg-purple-500/20 px-2 py-0.5 rounded">{String(timeLeft.minutes).padStart(2, '0')}m</span>
-                            <span className="text-purple-400">:</span>
-                            <span className="bg-purple-500/20 px-2 py-0.5 rounded">{String(timeLeft.seconds).padStart(2, '0')}s</span>
-                        </div>
+                <div className="flex min-h-[48px] flex-wrap items-center justify-center gap-3 text-center text-xs sm:justify-between sm:text-sm">
+                    <div className="flex flex-wrap items-center justify-center gap-2">
+                        <span className="rounded-full bg-purple-500/20 px-2 py-1 text-purple-300">
+                            <Zap className="inline h-3.5 w-3.5" /> WEEKEND SALE
+                        </span>
+
+                        <span className="font-semibold text-white">
+                            20% OFF All Challenges
+                        </span>
+
+                        <span className="hidden text-gray-400 sm:inline">
+                            Use code
+                        </span>
+
+                        <span className="rounded-md border border-purple-500/30 bg-purple-500/10 px-2 py-1 font-mono font-bold text-purple-300">
+                            NOOR20
+                        </span>
                     </div>
 
-                    {/* Right: Live, Status, Language, Dark */}
-                    <div className="flex items-center gap-3">
-                        {/* Live Status */}
-                        <div className="flex items-center gap-2">
-                            <span className="relative flex h-2 w-2">
-                                <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-green-400 opacity-75"></span>
-                                <span className="relative inline-flex rounded-full h-2 w-2 bg-green-500"></span>
-                            </span>
-                            <span className="text-green-400 text-xs font-medium">Live Payouts</span>
-                        </div>
+                    <div className="flex items-center justify-center gap-2 font-mono text-xs text-white">
+                        <Clock className="h-3.5 w-3.5 text-purple-400" />
 
-                        <div className="h-4 w-px bg-gray-700"></div>
+                        <span className="rounded bg-purple-500/20 px-2 py-1">
+                            {String(timeLeft.days).padStart(2, "0")}d
+                        </span>
+                        <span className="text-purple-400">:</span>
+                        <span className="rounded bg-purple-500/20 px-2 py-1">
+                            {String(timeLeft.hours).padStart(2, "0")}h
+                        </span>
+                        <span className="text-purple-400">:</span>
+                        <span className="rounded bg-purple-500/20 px-2 py-1">
+                            {String(timeLeft.minutes).padStart(2, "0")}m
+                        </span>
+                        <span className="hidden text-purple-400 sm:inline">:</span>
+                        <span className="hidden rounded bg-purple-500/20 px-2 py-1 sm:inline">
+                            {String(timeLeft.seconds).padStart(2, "0")}s
+                        </span>
+                    </div>
 
-                        {/* Status Button - toggle */}
-                        <button
-                            onClick={() => setStatus(status === "All Systems Operational" ? "Maintenance Mode" : "All Systems Operational")}
-                            className="flex items-center gap-1 text-gray-400 hover:text-white transition-colors"
-                        >
-                            <Eye className="h-3.5 w-3.5" />
-                            <span className="text-xs">{status}</span>
-                        </button>
-
-                        <div className="h-4 w-px bg-gray-700"></div>
-
-                        {/* Language Selector with Dropdown */}
-                        <div className="relative">
-                            <button
-                                onClick={() => setIsLangOpen(!isLangOpen)}
-                                className="flex items-center gap-1 text-gray-400 hover:text-white transition-colors"
-                            >
-                                <Globe className="h-3.5 w-3.5" />
-                                <span className="text-xs">{lang}</span>
-                                <ChevronDown className="h-3 w-3" />
-                            </button>
-                            {isLangOpen && (
-                                <div className="absolute top-full left-0 mt-1 bg-black border border-gray-700 rounded-lg shadow-lg z-50 min-w-[100px]">
-                                    <button
-                                        onClick={() => { setLang("EN"); setIsLangOpen(false); }}
-                                        className="block w-full px-4 py-2 text-xs text-gray-300 hover:bg-gray-800 hover:text-white text-left"
-                                    >
-                                        English
-                                    </button>
-                                    <button
-                                        onClick={() => { setLang("MS"); setIsLangOpen(false); }}
-                                        className="block w-full px-4 py-2 text-xs text-gray-300 hover:bg-gray-800 hover:text-white text-left"
-                                    >
-                                        Malay
-                                    </button>
-                                </div>
-                            )}
-                        </div>
-
-                        <div className="h-4 w-px bg-gray-700"></div>
-
-                        {/* Dark Mode */}
-                        <button
-                            onClick={() => setTheme(theme === "dark" ? "light" : "dark")}
-                            className="text-gray-400 hover:text-white transition-colors"
-                        >
-                            {theme === "dark" ? <Sun className="h-4 w-4" /> : <Moon className="h-4 w-4" />}
-                        </button>
+                    <div className="hidden items-center gap-2 text-green-400 lg:flex">
+                        <span className="relative flex h-2 w-2">
+                            <span className="absolute inline-flex h-full w-full animate-ping rounded-full bg-green-400 opacity-75" />
+                            <span className="relative inline-flex h-2 w-2 rounded-full bg-green-500" />
+                        </span>
+                        <span className="text-xs font-medium">Live Payouts</span>
                     </div>
                 </div>
             </div>
