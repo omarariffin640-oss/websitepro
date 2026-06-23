@@ -164,6 +164,23 @@ export default function HomePage() {
     return fee === 0 ? "Free" : `${data.symbol}${fee}`;
   };
 
+  const parsePercent = (value: string) => {
+    const match = value.match(/\d+/);
+    return match ? Number(match[0]) : 0;
+  };
+
+  const formatAmount = (accountSize: string, percentText: string) => {
+    const account = Number(accountSize.replace(/[$,]/g, ""));
+    const percent = parsePercent(percentText);
+
+    if (!percent || !account) return "-";
+
+    const amount = account * (percent / 100);
+    const data = currencyData[currency];
+
+    return `${data.symbol}${Math.round(amount * data.rate).toLocaleString()}`;
+  };
+
   if (loading) {
     return (
       <div className="flex min-h-screen items-center justify-center bg-black">
