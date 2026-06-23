@@ -27,7 +27,6 @@ import {
   Headset,
   BarChart3,
   Eye,
-  TrendingUp,
   Twitter,
   Facebook,
   Youtube,
@@ -125,7 +124,7 @@ export default function HomePage() {
       rewards: "Up To 90%",
       feeMultiplier: 1,
     },
-    "Instant": {
+    Instant: {
       phase1: "Instant",
       phase2: "-",
       target: "-",
@@ -215,7 +214,7 @@ export default function HomePage() {
                 Choose Free Trial, Step 1, Step 2, Instant, or Noor Funding accounts with clear rules, fast payouts, and up to 90% profit split.
               </p>
 
-              <div className="mb-8 flex flex-wrap justify-center gap-4">
+              <div className="mb-8 flex flex-wrap justify-center gap-4 lg:justify-start">
                 <Link href="/register">
                   <Button className="rounded-xl bg-purple-500 px-8 py-6 text-lg text-white hover:bg-purple-600">
                     Start Challenge <ArrowRight className="ml-2 h-5 w-5" />
@@ -223,16 +222,13 @@ export default function HomePage() {
                 </Link>
 
                 <Link href="/instant-account">
-                  <Button
-                    variant="outline"
-                    className="rounded-xl border-purple-500/50 px-8 py-6 text-lg text-white hover:bg-purple-500/20"
-                  >
+                  <Button variant="outline" className="rounded-xl border-purple-500/50 px-8 py-6 text-lg text-white hover:bg-purple-500/20">
                     Instant Funding
                   </Button>
                 </Link>
               </div>
 
-              <div className="flex flex-wrap items-center gap-4">
+              <div className="flex flex-wrap items-center justify-center gap-4 lg:justify-start">
                 <div className="flex items-center gap-1">
                   {[...Array(5)].map((_, i) => (
                     <Star key={i} className="h-5 w-5 fill-green-500 text-green-500" />
@@ -265,10 +261,7 @@ export default function HomePage() {
 
                 <div className="mb-4 grid grid-cols-2 gap-2 sm:grid-cols-4">
                   {menuItems.map((item) => (
-                    <div
-                      key={item.label}
-                      className="flex items-center gap-2 rounded-xl border border-white/5 bg-gray-900/50 p-2.5 transition hover:border-purple-500/30 hover:bg-purple-500/10"
-                    >
+                    <div key={item.label} className="flex items-center gap-2 rounded-xl border border-white/5 bg-gray-900/50 p-2.5 transition hover:border-purple-500/30 hover:bg-purple-500/10">
                       <item.icon className="h-4 w-4 text-purple-400" />
                       <span className="text-xs text-gray-300">{item.label}</span>
                     </div>
@@ -281,9 +274,7 @@ export default function HomePage() {
                       <p className="text-sm font-medium text-white">Welcome back, Trader!</p>
                       <p className="text-xs text-gray-400">Here is your account performance.</p>
                     </div>
-                    <Badge className="border-green-500/30 bg-green-500/20 text-green-400">
-                      Live
-                    </Badge>
+                    <Badge className="border-green-500/30 bg-green-500/20 text-green-400">Live</Badge>
                   </div>
 
                   <div className="mb-4 grid grid-cols-3 gap-3">
@@ -324,9 +315,7 @@ export default function HomePage() {
                       <span className="text-gray-400">{acc.type}</span>
                       <span className="text-white">${acc.balance}</span>
                       <span className="text-green-400">${acc.equity}</span>
-                      <Badge className="justify-center border-green-500/30 bg-green-500/20 text-[10px] text-green-400">
-                        {acc.status}
-                      </Badge>
+                      <Badge className="justify-center border-green-500/30 bg-green-500/20 text-[10px] text-green-400">{acc.status}</Badge>
                     </div>
                   ))}
                 </div>
@@ -353,17 +342,11 @@ export default function HomePage() {
       <section className="bg-gray-950/80 py-20">
         <div className="container mx-auto px-4">
           <div className="mb-10 text-center">
-            <div>
-              <Badge className="mb-3 border-purple-500/30 bg-purple-500/20 text-purple-300">
-                Funding Programs
-              </Badge>
-              <h2 className="text-3xl font-bold text-white md:text-4xl">
-                Choose Your Noor Challenge
-              </h2>
-              <p className="text-gray-400 max-w-2xl mx-auto text-center mt-3 mb-8">
-                Select capital size and program type. Every capital account includes Free Trial, Step 1, Step 2, Instant, and Noor Funding options.
-              </p>
-            </div>
+            <Badge className="mb-3 border-purple-500/30 bg-purple-500/20 text-purple-300">Funding Programs</Badge>
+            <h2 className="text-3xl font-bold text-white md:text-4xl">Choose Your Noor Challenge</h2>
+            <p className="mx-auto mb-8 mt-3 max-w-2xl text-center text-gray-400">
+              Select capital size and program type. Every capital account includes Free Trial, Step 1, Step 2, Instant, and Noor Funding options.
+            </p>
 
             <div className="mb-10 flex flex-wrap justify-center gap-2">
               {["USD", "GBP", "EUR"].map((cur) => (
@@ -377,11 +360,7 @@ export default function HomePage() {
                 </Button>
               ))}
 
-              <Button
-                variant="outline"
-                onClick={() => setShowAmounts(!showAmounts)}
-                className="border-gray-700 text-gray-300 hover:bg-purple-500/20"
-              >
+              <Button variant="outline" onClick={() => setShowAmounts(!showAmounts)} className="border-gray-700 text-gray-300 hover:bg-purple-500/20">
                 <Eye className="mr-2 h-4 w-4" />
                 {showAmounts ? "Hide Amounts" : "Show Amounts"}
               </Button>
@@ -394,8 +373,8 @@ export default function HomePage() {
                 key={program}
                 onClick={() => setSelectedProgram(program)}
                 className={`rounded-xl border px-4 py-2 text-sm font-medium transition ${selectedProgram === program
-                  ? "border-purple-500 bg-purple-500 text-white"
-                  : "border-gray-800 bg-black/40 text-gray-400 hover:border-purple-500/50 hover:text-white"
+                    ? "border-purple-500 bg-purple-500 text-white"
+                    : "border-gray-800 bg-black/40 text-gray-400 hover:border-purple-500/50 hover:text-white"
                   }`}
               >
                 {program}
@@ -408,24 +387,17 @@ export default function HomePage() {
               const rule = programRules[selectedProgram];
 
               return (
-                <motion.div
-                  key={capital.size}
-                  initial={{ opacity: 0, y: 18 }}
-                  animate={{ opacity: 1, y: 0 }}
-                  transition={{ duration: 0.4, delay: i * 0.08 }}
-                >
+                <motion.div key={capital.size} initial={{ opacity: 0, y: 18 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.4, delay: i * 0.08 }}>
                   <Card
                     className={`h-full transition-all duration-300 hover:-translate-y-2 hover:shadow-2xl hover:shadow-purple-500/20 ${capital.size === "$100,000"
-                      ? "border-purple-500/60 bg-gradient-to-b from-purple-500/25 via-purple-950/30 to-black"
-                      : "border-purple-500/20 bg-gradient-to-b from-purple-500/10 to-black hover:border-purple-500/50"
+                        ? "border-purple-500/60 bg-gradient-to-b from-purple-500/25 via-purple-950/30 to-black"
+                        : "border-purple-500/20 bg-gradient-to-b from-purple-500/10 to-black hover:border-purple-500/50"
                       }`}
                   >
                     <CardHeader className="space-y-4">
                       <div className="flex items-center justify-between">
                         <Badge
-                          className={`text-white ${capital.size === "$100,000"
-                            ? "bg-gradient-to-r from-purple-500 to-blue-500"
-                            : "bg-purple-500"
+                          className={`text-white ${capital.size === "$100,000" ? "bg-gradient-to-r from-purple-500 to-blue-500" : "bg-purple-500"
                             }`}
                         >
                           {capital.size === "$100,000" ? "MOST POPULAR" : "20% OFF"}
@@ -435,13 +407,8 @@ export default function HomePage() {
                       </div>
 
                       <div>
-                        <CardTitle className="text-3xl font-bold text-white">
-                          {capital.size}
-                        </CardTitle>
-
-                        <p className="mt-1 text-sm text-purple-300">
-                          {selectedProgram}
-                        </p>
+                        <CardTitle className="text-3xl font-bold text-white">{capital.size}</CardTitle>
+                        <p className="mt-1 text-sm text-purple-300">{selectedProgram}</p>
                       </div>
 
                       <div className="rounded-xl border border-purple-500/20 bg-black/40 p-3">
@@ -449,26 +416,18 @@ export default function HomePage() {
 
                         <div className="mt-2 flex items-end justify-between gap-3">
                           <div>
-                            <p className="text-sm text-gray-500 line-through">
-                              {formatFee(capital.baseFee)}
-                            </p>
-                            <p className="text-3xl font-bold text-white">
-                              {formatFee(capital.baseFee * 0.8)}
-                            </p>
+                            <p className="text-sm text-gray-500 line-through">{formatFee(capital.baseFee)}</p>
+                            <p className="text-3xl font-bold text-white">{formatFee(capital.baseFee * 0.8)}</p>
                           </div>
 
-                          <p className="text-right text-xs text-green-400">
-                            {capital.avgReward} Avg. Reward
-                          </p>
+                          <p className="text-right text-xs text-green-400">{capital.avgReward} Avg. Reward</p>
                         </div>
                       </div>
                     </CardHeader>
 
                     <CardContent className="space-y-4">
                       <div className="rounded-xl border border-purple-500/20 bg-black/40 p-3">
-                        <p className="mb-2 text-xs font-bold uppercase tracking-wide text-purple-300">
-                          Account Includes
-                        </p>
+                        <p className="mb-2 text-xs font-bold uppercase tracking-wide text-purple-300">Account Includes</p>
 
                         <div className="space-y-1.5 text-xs text-gray-300">
                           <div>✓ No Consistency Rule</div>
@@ -479,18 +438,16 @@ export default function HomePage() {
                         </div>
                       </div>
 
-                      {showAmounts && (
-                        <div className="grid grid-cols-2 gap-2">
-                          <div className="rounded-xl bg-black/40 p-3">
-                            <p className="text-xs text-gray-400">Phase 1</p>
-                            <p className="font-semibold text-white">{rule.phase1}</p>
-                          </div>
-                          <div className="rounded-xl bg-black/40 p-3">
-                            <p className="text-xs text-gray-400">Phase 2</p>
-                            <p className="font-semibold text-white">{rule.phase2}</p>
-                          </div>
+                      <div className="grid grid-cols-2 gap-2">
+                        <div className="rounded-xl bg-black/40 p-3">
+                          <p className="text-xs text-gray-400">Phase 1</p>
+                          <p className="font-semibold text-white">{rule.phase1}</p>
                         </div>
-                      )}
+                        <div className="rounded-xl bg-black/40 p-3">
+                          <p className="text-xs text-gray-400">Phase 2</p>
+                          <p className="font-semibold text-white">{rule.phase2}</p>
+                        </div>
+                      </div>
 
                       <div className="space-y-2 text-sm">
                         {[
@@ -502,20 +459,22 @@ export default function HomePage() {
                           ["Refund", rule.refund],
                           ["Rewards", rule.rewards],
                         ].map(([label, value]) => (
-                          <div
-                            key={label}
-                            className="flex justify-between gap-3 border-b border-white/5 pb-2"
-                          >
+                          <div key={label} className="flex justify-between gap-3 border-b border-white/5 pb-2">
                             <span className="text-gray-400">{label}</span>
-                            <span className="text-right font-medium text-white">{value}</span>
+
+                            <span className="text-right font-medium text-white">
+                              {value}
+
+                              {showAmounts && ["Profit Target", "Max Daily Loss", "Max Loss"].includes(label) && (
+                                <span className="block text-xs text-purple-300">{formatAmount(capital.size, value)}</span>
+                              )}
+                            </span>
                           </div>
                         ))}
                       </div>
 
                       <Link href="/register" className="block">
-                        <Button className="w-full rounded-xl bg-purple-500 text-white hover:bg-purple-600">
-                          Start Challenge
-                        </Button>
+                        <Button className="w-full rounded-xl bg-purple-500 text-white hover:bg-purple-600">Start Challenge</Button>
                       </Link>
                     </CardContent>
                   </Card>
@@ -529,12 +488,8 @@ export default function HomePage() {
       <section className="py-24">
         <div className="container mx-auto px-4">
           <div className="mb-12 text-center">
-            <Badge className="mb-3 border-purple-500/30 bg-purple-500/20 text-purple-300">
-              Features
-            </Badge>
-            <h2 className="text-3xl font-bold text-white md:text-4xl">
-              Why Choose Noor Funding
-            </h2>
+            <Badge className="mb-3 border-purple-500/30 bg-purple-500/20 text-purple-300">Features</Badge>
+            <h2 className="text-3xl font-bold text-white md:text-4xl">Why Choose Noor Funding</h2>
           </div>
 
           <div className="grid grid-cols-1 gap-6 md:grid-cols-5">
@@ -567,9 +522,7 @@ export default function HomePage() {
                   NOOR <span className="text-purple-400">FUNDING</span>
                 </span>
               </div>
-              <p className="mb-4 text-sm text-gray-400">
-                Empowering traders worldwide. Trade. Prove. Get Funded.
-              </p>
+              <p className="mb-4 text-sm text-gray-400">Empowering traders worldwide. Trade. Prove. Get Funded.</p>
               <div className="flex items-center gap-3">
                 {[Twitter, Facebook, Youtube, Linkedin].map((Icon, i) => (
                   <a key={i} href="#" className="text-gray-400 transition hover:text-purple-400">
@@ -600,9 +553,7 @@ export default function HomePage() {
 
             <div>
               <h4 className="mb-3 font-semibold text-white">Stay Updated</h4>
-              <p className="mb-3 text-sm text-gray-400">
-                Subscribe to get the latest news and offers.
-              </p>
+              <p className="mb-3 text-sm text-gray-400">Subscribe to get the latest news and offers.</p>
               <div className="flex flex-col gap-2">
                 <input
                   type="email"
