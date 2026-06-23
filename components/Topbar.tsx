@@ -1,112 +1,177 @@
 "use client";
 
 import Link from "next/link";
-import { Button } from "@/components/ui/button";
-import { Input } from "@/components/ui/input";
-import { Menu, X, ChevronDown, Search, Disc, Send, Bell } from "lucide-react";
 import { useState } from "react";
+import { useTheme } from "next-themes";
+import {
+    Menu,
+    X,
+    ChevronDown,
+    Globe,
+    Sun,
+    Moon,
+} from "lucide-react";
+import { Button } from "@/components/ui/button";
 
 export default function Topbar() {
     const [isOpen, setIsOpen] = useState(false);
+    const [lang, setLang] = useState("EN");
+    const [isLangOpen, setIsLangOpen] = useState(false);
+    const { theme, setTheme } = useTheme();
+
+    const navLinks = [
+        { label: "Home", href: "/" },
+        { label: "Challenges", href: "/challenges", hasDropdown: true },
+        { label: "Instant", href: "/instant-account" },
+        { label: "Payouts", href: "/payouts" },
+        { label: "Marketplace", href: "/marketplace" },
+        { label: "Blog", href: "/blog" },
+        { label: "FAQ", href: "/faq" },
+    ];
 
     return (
         <>
-            {/* Topbar */}
-            <div className="fixed top-[48px] left-0 right-0 z-50 bg-black border-b border-gray-800 h-16 flex items-center px-4">
-                <div className="container mx-auto flex items-center justify-between gap-4">
-                    {/* Logo */}
-                    <Link href="/" className="flex items-center gap-2 shrink-0">
-                        <div className="w-8 h-8 bg-purple-500 rounded-lg flex items-center justify-center">
-                            <span className="text-white font-bold text-sm">NF</span>
+            <header className="fixed left-0 right-0 top-[48px] z-50 border-b border-gray-800 bg-black/90 backdrop-blur-xl">
+                <div className="container mx-auto flex h-16 items-center justify-between gap-4 px-4">
+                    <Link href="/" className="flex shrink-0 items-center gap-2">
+                        <div className="flex h-9 w-9 items-center justify-center rounded-xl bg-purple-500 shadow-lg shadow-purple-500/20">
+                            <span className="text-sm font-bold text-white">NF</span>
                         </div>
-                        <span className="font-bold text-white hidden sm:block">NOOR <span className="text-purple-400">FUNDING</span></span>
+                        <span className="hidden text-sm font-bold tracking-wide text-white sm:block">
+                            NOOR <span className="text-purple-400">FUNDING</span>
+                        </span>
                     </Link>
 
-                    {/* Search Bar */}
-                    <div className="hidden lg:flex items-center flex-1 max-w-xs">
-                        <div className="relative w-full">
-                            <Search className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-gray-500" />
-                            <Input
-                                type="text"
-                                placeholder="Search..."
-                                className="w-full pl-9 bg-gray-900 border-gray-700 text-white placeholder:text-gray-500 h-9 rounded-lg"
-                            />
+                    <nav className="hidden items-center gap-6 lg:flex">
+                        {navLinks.map((link) => (
+                            <Link
+                                key={link.label}
+                                href={link.href}
+                                className="flex items-center gap-1 text-sm font-medium text-gray-300 transition hover:text-white"
+                            >
+                                {link.label}
+                                {link.hasDropdown && <ChevronDown className="h-3.5 w-3.5" />}
+                            </Link>
+                        ))}
+                    </nav>
+
+                    <div className="hidden items-center gap-3 lg:flex">
+                        <div className="relative">
+                            <button
+                                onClick={() => setIsLangOpen(!isLangOpen)}
+                                className="flex items-center gap-1 rounded-lg border border-gray-800 bg-gray-900/70 px-3 py-2 text-xs text-gray-300 transition hover:border-purple-500/40 hover:text-white"
+                            >
+                                <Globe className="h-3.5 w-3.5" />
+                                {lang}
+                                <ChevronDown className="h-3 w-3" />
+                            </button>
+
+                            {isLangOpen && (
+                                <div className="absolute right-0 top-full mt-2 w-28 overflow-hidden rounded-xl border border-gray-800 bg-black shadow-xl">
+                                    {["EN", "MS"].map((item) => (
+                                        <button
+                                            key={item}
+                                            onClick={() => {
+                                                setLang(item);
+                                                setIsLangOpen(false);
+                                            }}
+                                            className="block w-full px-4 py-2 text-left text-xs text-gray-300 transition hover:bg-gray-900 hover:text-white"
+                                        >
+                                            {item === "EN" ? "English" : "Malay"}
+                                        </button>
+                                    ))}
+                                </div>
+                            )}
                         </div>
-                    </div>
 
-                    {/* Navigation */}
-                    <div className="hidden lg:flex items-center gap-5">
-                        <Link href="/" className="text-gray-300 hover:text-white text-sm">Home</Link>
-                        <Link href="/challenges" className="text-gray-300 hover:text-white text-sm flex items-center gap-1">
-                            Challenges <ChevronDown className="h-3 w-3" />
-                        </Link>
-                        <Link href="/instant-account" className="text-gray-300 hover:text-white text-sm">Instant</Link>
-                        <Link href="/payouts" className="text-gray-300 hover:text-white text-sm">Payouts</Link>
-                        <Link href="/faq" className="text-gray-300 hover:text-white text-sm">FAQ</Link>
-                        <Link href="/news" className="text-gray-300 hover:text-white text-sm flex items-center gap-1">
-                            Announcements
-                            <span className="text-[10px] font-bold bg-purple-500 text-white px-1.5 py-0.5 rounded-full animate-pulse">New</span>
-                        </Link>
-                    </div>
-
-                    {/* Right: Social, Notif, Auth */}
-                    <div className="hidden lg:flex items-center gap-3">
-                        {/* Notification Bell */}
-                        <button className="relative text-gray-400 hover:text-white transition-colors">
-                            <Bell className="h-5 w-5" />
-                            <span className="absolute -top-1 -right-1 h-4 w-4 bg-red-500 rounded-full text-white text-[10px] flex items-center justify-center">3</span>
+                        <button
+                            onClick={() => setTheme(theme === "dark" ? "light" : "dark")}
+                            className="flex h-9 w-9 items-center justify-center rounded-lg border border-gray-800 bg-gray-900/70 text-gray-300 transition hover:border-purple-500/40 hover:text-white"
+                        >
+                            {theme === "dark" ? (
+                                <Sun className="h-4 w-4" />
+                            ) : (
+                                <Moon className="h-4 w-4" />
+                            )}
                         </button>
 
-                        {/* Social Icons */}
-                        <a href="#" className="text-gray-400 hover:text-purple-400 transition-colors">
-                            <Disc className="h-5 w-5" />
-                        </a>
-                        <a href="#" className="text-gray-400 hover:text-purple-400 transition-colors">
-                            <Send className="h-5 w-5" />
-                        </a>
-
-                        <div className="w-px h-6 bg-gray-700"></div>
-
-                        {/* Auth */}
                         <Link href="/login">
-                            <Button variant="ghost" className="text-gray-300 hover:text-white text-sm">Login</Button>
+                            <Button
+                                variant="ghost"
+                                className="text-sm text-gray-300 hover:text-white"
+                            >
+                                Login
+                            </Button>
                         </Link>
+
                         <Link href="/register">
-                            <Button className="bg-purple-500 hover:bg-purple-600 text-white text-sm px-5">Register</Button>
+                            <Button className="rounded-xl bg-purple-500 px-5 text-sm text-white hover:bg-purple-600">
+                                Register
+                            </Button>
                         </Link>
                     </div>
 
-                    {/* Mobile button */}
-                    <button onClick={() => setIsOpen(!isOpen)} className="lg:hidden text-white">
-                        {isOpen ? <X /> : <Menu />}
+                    <button
+                        onClick={() => setIsOpen(!isOpen)}
+                        className="flex h-10 w-10 items-center justify-center rounded-lg border border-gray-800 text-white lg:hidden"
+                    >
+                        {isOpen ? <X className="h-5 w-5" /> : <Menu className="h-5 w-5" />}
                     </button>
                 </div>
-            </div>
+            </header>
 
-            {/* Mobile menu */}
             {isOpen && (
-                <div className="fixed top-[112px] left-0 right-0 z-50 bg-black border-b border-gray-800 lg:hidden p-4">
+                <div className="fixed left-0 right-0 top-[112px] z-50 border-b border-gray-800 bg-black/95 p-4 backdrop-blur-xl lg:hidden">
                     <div className="flex flex-col gap-3">
-                        <Link href="/" className="text-gray-300 hover:text-white">Home</Link>
-                        <Link href="/challenges" className="text-gray-300 hover:text-white">Challenges</Link>
-                        <Link href="/instant-account" className="text-gray-300 hover:text-white">Instant</Link>
-                        <Link href="/payouts" className="text-gray-300 hover:text-white">Payouts</Link>
-                        <Link href="/faq" className="text-gray-300 hover:text-white">FAQ</Link>
-                        <Link href="/news" className="text-gray-300 hover:text-white flex items-center gap-1">
-                            Announcements
-                            <span className="text-[10px] font-bold bg-purple-500 text-white px-1.5 py-0.5 rounded-full">New</span>
-                        </Link>
-                        <div className="flex items-center gap-4 pt-2 border-t border-gray-800">
-                            <a href="#" className="text-gray-400 hover:text-purple-400"><Disc className="h-5 w-5" /></a>
-                            <a href="#" className="text-gray-400 hover:text-purple-400"><Send className="h-5 w-5" /></a>
-                            <button className="relative text-gray-400 hover:text-white">
-                                <Bell className="h-5 w-5" />
-                                <span className="absolute -top-1 -right-1 h-4 w-4 bg-red-500 rounded-full text-white text-[10px] flex items-center justify-center">3</span>
+                        {navLinks.map((link) => (
+                            <Link
+                                key={link.label}
+                                href={link.href}
+                                onClick={() => setIsOpen(false)}
+                                className="flex items-center justify-between rounded-lg px-3 py-2 text-gray-300 transition hover:bg-gray-900 hover:text-white"
+                            >
+                                {link.label}
+                                {link.hasDropdown && <ChevronDown className="h-4 w-4" />}
+                            </Link>
+                        ))}
+
+                        <div className="mt-2 flex items-center gap-2 border-t border-gray-800 pt-4">
+                            <button
+                                onClick={() => setLang(lang === "EN" ? "MS" : "EN")}
+                                className="flex flex-1 items-center justify-center gap-2 rounded-lg border border-gray-800 bg-gray-900 px-3 py-2 text-sm text-gray-300"
+                            >
+                                <Globe className="h-4 w-4" />
+                                {lang}
+                            </button>
+
+                            <button
+                                onClick={() => setTheme(theme === "dark" ? "light" : "dark")}
+                                className="flex flex-1 items-center justify-center gap-2 rounded-lg border border-gray-800 bg-gray-900 px-3 py-2 text-sm text-gray-300"
+                            >
+                                {theme === "dark" ? (
+                                    <Sun className="h-4 w-4" />
+                                ) : (
+                                    <Moon className="h-4 w-4" />
+                                )}
+                                Theme
                             </button>
                         </div>
-                        <div className="flex flex-col gap-2 pt-2">
-                            <Link href="/login" className="text-gray-300">Login</Link>
-                            <Link href="/register" className="text-purple-400">Register</Link>
+
+                        <div className="grid grid-cols-2 gap-2 pt-2">
+                            <Link href="/login" onClick={() => setIsOpen(false)}>
+                                <Button
+                                    variant="outline"
+                                    className="w-full border-gray-700 text-white hover:bg-gray-900"
+                                >
+                                    Login
+                                </Button>
+                            </Link>
+
+                            <Link href="/register" onClick={() => setIsOpen(false)}>
+                                <Button className="w-full bg-purple-500 text-white hover:bg-purple-600">
+                                    Register
+                                </Button>
+                            </Link>
                         </div>
                     </div>
                 </div>
