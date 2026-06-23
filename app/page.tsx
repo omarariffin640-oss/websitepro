@@ -399,16 +399,16 @@ export default function HomePage() {
                 >
                   <Card
                     className={`h-full transition-all duration-300 hover:-translate-y-2 hover:shadow-2xl hover:shadow-purple-500/20 ${capital.size === "$100,000"
-                      ? "border-purple-500/60 bg-gradient-to-b from-purple-500/25 via-purple-950/30 to-black"
-                      : "border-purple-500/20 bg-gradient-to-b from-purple-500/10 to-black hover:border-purple-500/50"
+                        ? "border-purple-500/60 bg-gradient-to-b from-purple-500/25 via-purple-950/30 to-black"
+                        : "border-purple-500/20 bg-gradient-to-b from-purple-500/10 to-black hover:border-purple-500/50"
                       }`}
                   >
-                    <CardHeader className="space-y-3">
+                    <CardHeader className="space-y-4">
                       <div className="flex items-center justify-between">
                         <Badge
                           className={`text-white ${capital.size === "$100,000"
-                            ? "bg-gradient-to-r from-purple-500 to-blue-500"
-                            : "bg-purple-500"
+                              ? "bg-gradient-to-r from-purple-500 to-blue-500"
+                              : "bg-purple-500"
                             }`}
                         >
                           {capital.size === "$100,000" ? "MOST POPULAR" : "20% OFF"}
@@ -426,6 +426,25 @@ export default function HomePage() {
                           {selectedProgram}
                         </p>
                       </div>
+
+                      <div className="rounded-xl border border-purple-500/20 bg-black/40 p-3">
+                        <p className="text-xs text-gray-400">One-time refundable fee from</p>
+
+                        <div className="mt-2 flex items-end justify-between gap-3">
+                          <div>
+                            <p className="text-sm text-gray-500 line-through">
+                              {formatFee(capital.baseFee)}
+                            </p>
+                            <p className="text-3xl font-bold text-white">
+                              {formatFee(capital.baseFee * 0.8)}
+                            </p>
+                          </div>
+
+                          <p className="text-right text-xs text-green-400">
+                            {capital.avgReward} Avg. Reward
+                          </p>
+                        </div>
+                      </div>
                     </CardHeader>
 
                     <CardContent className="space-y-4">
@@ -442,6 +461,7 @@ export default function HomePage() {
                           <div>✓ Platform 5 Trading</div>
                         </div>
                       </div>
+
                       {showPhases && (
                         <div className="grid grid-cols-2 gap-2">
                           <div className="rounded-xl bg-black/40 p-3">
@@ -465,19 +485,14 @@ export default function HomePage() {
                           ["Refund", rule.refund],
                           ["Rewards", rule.rewards],
                         ].map(([label, value]) => (
-                          <div key={label} className="flex justify-between gap-3 border-b border-white/5 pb-2">
+                          <div
+                            key={label}
+                            className="flex justify-between gap-3 border-b border-white/5 pb-2"
+                          >
                             <span className="text-gray-400">{label}</span>
                             <span className="text-right font-medium text-white">{value}</span>
                           </div>
                         ))}
-                      </div>
-
-                      <div className="rounded-xl bg-black/40 p-3">
-                        <p className="text-xs text-gray-400">One-time refundable fee from</p>
-                        <div className="mt-1 flex items-end justify-between">
-                          <p className="text-3xl font-bold text-white">{formatFee(capital.baseFee)}</p>
-                          <p className="text-xs text-green-400">{capital.avgReward} Avg. Reward</p>
-                        </div>
                       </div>
 
                       <Link href="/register" className="block">
