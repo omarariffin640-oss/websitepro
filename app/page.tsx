@@ -174,7 +174,7 @@ export default function HomePage() {
 
   return (
     <div className="min-h-screen bg-black text-white">
-      <section className="relative overflow-hidden py-20 lg:py-24">
+      <section className="relative overflow-hidden py-12 lg:py-16">
         <div className="absolute inset-0 bg-gradient-to-br from-purple-950/30 via-black to-blue-950/20" />
         <div className="absolute -top-32 right-10 h-96 w-96 rounded-full bg-purple-500/10 blur-3xl" />
         <div className="absolute bottom-0 left-10 h-72 w-72 rounded-full bg-blue-500/10 blur-3xl" />
@@ -183,7 +183,7 @@ export default function HomePage() {
           <div className="grid grid-cols-1 items-center gap-12 lg:grid-cols-2">
             <motion.div initial={{ opacity: 0, x: -30 }} animate={{ opacity: 1, x: 0 }} transition={{ duration: 0.7 }}>
               <Badge className="mb-4 border-purple-500/30 bg-purple-500/20 text-purple-300">
-                TRUSTED TRADERS WORLDWIDE
+                PROP FIRM FUNDING PROGRAM
               </Badge>
 
               <h1 className="mb-5 text-4xl font-bold leading-tight text-white md:text-5xl lg:text-6xl">
@@ -198,7 +198,7 @@ export default function HomePage() {
                 Pass the challenge, prove your trading skill, and get funded with Noor Funding.
               </p>
 
-              <div className="mb-8 flex flex-wrap gap-4">
+              <div className="mb-8 flex flex-wrap justify-center gap-4">
                 <Link href="/register">
                   <Button className="rounded-xl bg-purple-500 px-8 py-6 text-lg text-white hover:bg-purple-600">
                     Start Challenge <ArrowRight className="ml-2 h-5 w-5" />
@@ -335,7 +335,7 @@ export default function HomePage() {
 
       <section className="bg-gray-950/80 py-20">
         <div className="container mx-auto px-4">
-          <div className="mb-10 flex flex-col gap-6 lg:flex-row lg:items-end lg:justify-between">
+          <div className="mb-10 text-center">
             <div>
               <Badge className="mb-3 border-purple-500/30 bg-purple-500/20 text-purple-300">
                 Funding Programs
@@ -377,8 +377,8 @@ export default function HomePage() {
                 key={program}
                 onClick={() => setSelectedProgram(program)}
                 className={`rounded-xl border px-4 py-2 text-sm font-medium transition ${selectedProgram === program
-                    ? "border-purple-500 bg-purple-500 text-white"
-                    : "border-gray-800 bg-black/40 text-gray-400 hover:border-purple-500/50 hover:text-white"
+                  ? "border-purple-500 bg-purple-500 text-white"
+                  : "border-gray-800 bg-black/40 text-gray-400 hover:border-purple-500/50 hover:text-white"
                   }`}
               >
                 {program}
