@@ -39,7 +39,7 @@ export default function HomePage() {
   const [loading, setLoading] = useState(true);
   const [currency, setCurrency] = useState("USD");
   const [selectedProgram, setSelectedProgram] = useState("Step 2");
-  const [showPhases, setShowPhases] = useState(true);
+  const [showAmounts, setShowAmounts] = useState(false);
 
   useEffect(() => {
     setLoading(false);
@@ -362,11 +362,11 @@ export default function HomePage() {
 
               <Button
                 variant="outline"
-                onClick={() => setShowPhases(!showPhases)}
+                onClick={() => setShowAmounts(!showAmounts)}
                 className="border-gray-700 text-gray-300 hover:bg-purple-500/20"
               >
                 <Eye className="mr-2 h-4 w-4" />
-                {showPhases ? "Hide Phases" : "Show Phases"}
+                {showAmounts ? "Hide Amounts" : "Show Amounts"}
               </Button>
             </div>
           </div>
@@ -399,16 +399,16 @@ export default function HomePage() {
                 >
                   <Card
                     className={`h-full transition-all duration-300 hover:-translate-y-2 hover:shadow-2xl hover:shadow-purple-500/20 ${capital.size === "$100,000"
-                        ? "border-purple-500/60 bg-gradient-to-b from-purple-500/25 via-purple-950/30 to-black"
-                        : "border-purple-500/20 bg-gradient-to-b from-purple-500/10 to-black hover:border-purple-500/50"
+                      ? "border-purple-500/60 bg-gradient-to-b from-purple-500/25 via-purple-950/30 to-black"
+                      : "border-purple-500/20 bg-gradient-to-b from-purple-500/10 to-black hover:border-purple-500/50"
                       }`}
                   >
                     <CardHeader className="space-y-4">
                       <div className="flex items-center justify-between">
                         <Badge
                           className={`text-white ${capital.size === "$100,000"
-                              ? "bg-gradient-to-r from-purple-500 to-blue-500"
-                              : "bg-purple-500"
+                            ? "bg-gradient-to-r from-purple-500 to-blue-500"
+                            : "bg-purple-500"
                             }`}
                         >
                           {capital.size === "$100,000" ? "MOST POPULAR" : "20% OFF"}
@@ -462,7 +462,7 @@ export default function HomePage() {
                         </div>
                       </div>
 
-                      {showPhases && (
+                      {showAmounts && (
                         <div className="grid grid-cols-2 gap-2">
                           <div className="rounded-xl bg-black/40 p-3">
                             <p className="text-xs text-gray-400">Phase 1</p>
