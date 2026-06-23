@@ -195,7 +195,7 @@ export default function HomePage() {
               </h1>
 
               <p className="mb-8 max-w-xl text-lg text-gray-300 md:text-xl">
-                Pass the challenge, prove your trading skill, and get funded with Noor Funding.
+                Choose Free Trial, Step 1, Step 2, Instant, or Noor Funding accounts with clear rules, fast payouts, and up to 90% profit split.
               </p>
 
               <div className="mb-8 flex flex-wrap justify-center gap-4">
@@ -399,16 +399,16 @@ export default function HomePage() {
                 >
                   <Card
                     className={`h-full transition-all duration-300 hover:-translate-y-2 hover:shadow-2xl hover:shadow-purple-500/20 ${capital.size === "$100,000"
-                        ? "border-purple-500/60 bg-gradient-to-b from-purple-500/25 via-purple-950/30 to-black"
-                        : "border-purple-500/20 bg-gradient-to-b from-purple-500/10 to-black hover:border-purple-500/50"
+                      ? "border-purple-500/60 bg-gradient-to-b from-purple-500/25 via-purple-950/30 to-black"
+                      : "border-purple-500/20 bg-gradient-to-b from-purple-500/10 to-black hover:border-purple-500/50"
                       }`}
                   >
                     <CardHeader className="space-y-3">
                       <div className="flex items-center justify-between">
                         <Badge
                           className={`text-white ${capital.size === "$100,000"
-                              ? "bg-gradient-to-r from-purple-500 to-blue-500"
-                              : "bg-purple-500"
+                            ? "bg-gradient-to-r from-purple-500 to-blue-500"
+                            : "bg-purple-500"
                             }`}
                         >
                           {capital.size === "$100,000" ? "MOST POPULAR" : "20% OFF"}
@@ -429,6 +429,19 @@ export default function HomePage() {
                     </CardHeader>
 
                     <CardContent className="space-y-4">
+                      <div className="rounded-xl border border-purple-500/20 bg-black/40 p-3">
+                        <p className="mb-2 text-xs font-bold uppercase tracking-wide text-purple-300">
+                          Account Includes
+                        </p>
+
+                        <div className="space-y-1.5 text-xs text-gray-300">
+                          <div>✓ No Consistency Rule</div>
+                          <div>✓ Up To 90% Profit Split</div>
+                          <div>✓ Fast Payout Review</div>
+                          <div>✓ EAs Allowed</div>
+                          <div>✓ Platform 5 Trading</div>
+                        </div>
+                      </div>
                       {showPhases && (
                         <div className="grid grid-cols-2 gap-2">
                           <div className="rounded-xl bg-black/40 p-3">
