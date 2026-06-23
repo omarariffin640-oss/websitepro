@@ -348,7 +348,7 @@ export default function HomePage() {
               </p>
             </div>
 
-            <div className="flex flex-wrap gap-2">
+            <div className="mb-8 flex flex-wrap justify-center gap-2">
               {["USD", "GBP", "EUR"].map((cur) => (
                 <Button
                   key={cur}
@@ -371,7 +371,7 @@ export default function HomePage() {
             </div>
           </div>
 
-          <div className="mb-8 flex flex-wrap gap-2">
+          <div className="mb-10 flex flex-wrap justify-center gap-3">
             {programs.map((program) => (
               <button
                 key={program}
@@ -467,7 +467,7 @@ export default function HomePage() {
         </div>
       </section>
 
-      <section className="py-20">
+      <section className="py-24">
         <div className="container mx-auto px-4">
           <div className="mb-12 text-center">
             <Badge className="mb-3 border-purple-500/30 bg-purple-500/20 text-purple-300">
