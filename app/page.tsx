@@ -343,12 +343,12 @@ export default function HomePage() {
               <h2 className="text-3xl font-bold text-white md:text-4xl">
                 Choose Your Noor Challenge
               </h2>
-              <p className="mt-3 max-w-2xl text-gray-400">
+              <p className="text-gray-400 max-w-2xl mx-auto text-center mt-3 mb-8">
                 Select capital size and program type. Every capital account includes Free Trial, Step 1, Step 2, Instant, and Noor Funding options.
               </p>
             </div>
 
-            <div className="mb-8 flex flex-wrap justify-center gap-2">
+            <div className="mb-10 flex flex-wrap justify-center gap-2">
               {["USD", "GBP", "EUR"].map((cur) => (
                 <Button
                   key={cur}
