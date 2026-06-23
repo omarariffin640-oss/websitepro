@@ -397,12 +397,23 @@ export default function HomePage() {
                   animate={{ opacity: 1, y: 0 }}
                   transition={{ duration: 0.4, delay: i * 0.08 }}
                 >
-                  <Card className="h-full border-purple-500/20 bg-gradient-to-b from-purple-500/15 to-black transition hover:-translate-y-1 hover:border-purple-500/50 hover:shadow-xl hover:shadow-purple-500/10">
+                  <Card
+                    className={`h-full transition-all duration-300 hover:-translate-y-2 hover:shadow-2xl hover:shadow-purple-500/20 ${capital.size === "$100,000"
+                        ? "border-purple-500/60 bg-gradient-to-b from-purple-500/25 via-purple-950/30 to-black"
+                        : "border-purple-500/20 bg-gradient-to-b from-purple-500/10 to-black hover:border-purple-500/50"
+                      }`}
+                  >
                     <CardHeader className="space-y-3">
                       <div className="flex items-center justify-between">
-                        <Badge className="border-purple-500/30 bg-purple-500 text-white">
-                          20% OFF
+                        <Badge
+                          className={`text-white ${capital.size === "$100,000"
+                              ? "bg-gradient-to-r from-purple-500 to-blue-500"
+                              : "bg-purple-500"
+                            }`}
+                        >
+                          {capital.size === "$100,000" ? "MOST POPULAR" : "20% OFF"}
                         </Badge>
+
                         <span className="text-xs text-gray-400">{currency}</span>
                       </div>
 
@@ -410,7 +421,10 @@ export default function HomePage() {
                         <CardTitle className="text-3xl font-bold text-white">
                           {capital.size}
                         </CardTitle>
-                        <p className="mt-1 text-sm text-purple-300">{selectedProgram}</p>
+
+                        <p className="mt-1 text-sm text-purple-300">
+                          {selectedProgram}
+                        </p>
                       </div>
                     </CardHeader>
 
