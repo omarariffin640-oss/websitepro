@@ -41,6 +41,8 @@ export default function ProfilePage() {
     const [avatarUrl, setAvatarUrl] = useState("");
     const [message, setMessage] = useState("");
 
+    const [avatarFile, setAvatarFile] = useState<File | null>(null);
+
     useEffect(() => {
         const userEmail = localStorage.getItem("userEmail");
 
@@ -141,6 +143,46 @@ export default function ProfilePage() {
         }
     };
 
+    const uploadAvatar = async () => {
+        if (!profile?.email || !avatarFile) {
+            setMessage("Please choose an image first.");
+            return;
+        }
+
+        setSaving(true);
+        setMessage("");
+
+        const formData = new FormData();
+        formData.append("email", profile.email);
+        formData.append("avatar", avatarFile);
+
+        try {
+            const res = await fetch(`${API_URL}/profile/upload-avatar`, {
+                method: "POST",
+                body: formData,
+            });
+
+            const data = await res.json();
+
+            if (!data.success) {
+                setMessage(data.message || "Failed to upload avatar.");
+                return;
+            }
+
+            setAvatarUrl(data.avatarUrl);
+            setProfile({
+                ...profile,
+                avatar_url: data.avatarUrl,
+            });
+
+            setMessage("Avatar uploaded successfully.");
+        } catch {
+            setMessage("Failed to upload avatar.");
+        } finally {
+            setSaving(false);
+        }
+    };
+
     if (loading) {
         return (
             <div className="flex min-h-screen items-center justify-center bg-black">
@@ -228,26 +270,32 @@ export default function ProfilePage() {
 
                                 <div className="rounded-xl border border-white/10 bg-black/40 p-4">
                                     <label className="mb-2 block text-sm text-gray-400">
-                                        Avatar URL
+                                        Upload Avatar
                                     </label>
 
                                     <div className="flex flex-col gap-3 md:flex-row">
                                         <input
-                                            value={avatarUrl}
-                                            onChange={(e) => setAvatarUrl(e.target.value)}
-                                            placeholder="Paste avatar image URL"
-                                            className="w-full rounded-xl border border-gray-800 bg-black/50 px-4 py-3 text-white outline-none focus:border-purple-500"
+                                            type="file"
+                                            accept="image/*"
+                                            onChange={(e) => setAvatarFile(e.target.files?.[0] || null)}
+                                            className="w-full rounded-xl border border-gray-800 bg-black/50 px-4 py-3 text-white file:mr-4 file:rounded-lg file:border-0 file:bg-purple-500 file:px-4 file:py-2 file:text-white hover:file:bg-purple-600"
                                         />
 
                                         <Button
-                                            onClick={saveProfile}
-                                            disabled={saving}
+                                            onClick={uploadAvatar}
+                                            disabled={saving || !avatarFile}
                                             className="rounded-xl bg-purple-500 text-white hover:bg-purple-600"
                                         >
                                             <ImagePlus className="mr-2 h-4 w-4" />
-                                            Update
+                                            Upload
                                         </Button>
                                     </div>
+
+                                    {profile.avatar_url && (
+                                        <p className="mt-3 break-all text-xs text-gray-500">
+                                            Current avatar saved.
+                                        </p>
+                                    )}
 
                                     <Button
                                         onClick={deleteAvatar}
