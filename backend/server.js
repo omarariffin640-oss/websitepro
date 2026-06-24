@@ -106,20 +106,26 @@ app.post("/login", async (req, res) => {
 
 // UPDATE PROFILE
 app.put("/profile/update", async (req, res) => {
-    console.log("UPDATE PROFILE HIT:", req.body);
-
     const { email, name } = req.body;
 
-    const { data, error } = await supabase
+    const { error } = await supabase
         .from("users")
-        .update({ name: name || null })
+        .update({
+            name
+        })
         .eq("email", email);
 
     if (error) {
-        return res.status(500).json({ success: false, message: error.message });
+        return res.status(500).json({
+            success: false,
+            message: error.message
+        });
     }
 
-    res.json({ success: true, message: "Profile updated" });
+    res.json({
+        success: true,
+        message: "Profile updated"
+    });
 });
 
 // FORGOT PASSWORD - Send reset email
@@ -497,6 +503,25 @@ app.post("/request-withdrawal", async (req, res) => {
 
     if (error) return res.status(500).json({ success: false, message: error.message });
     res.json({ success: true, message: "Withdrawal request submitted" });
+});
+
+app.get("/profile", async (req, res) => {
+    const { email } = req.query;
+
+    const { data, error } = await supabase
+        .from("users")
+        .select("id, name, email, avatar_url, role")
+        .eq("email", email)
+        .single();
+
+    if (error) {
+        return res.status(500).json({
+            success: false,
+            message: error.message
+        });
+    }
+
+    res.json(data);
 });
 
 // START SERVER
