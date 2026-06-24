@@ -2,11 +2,21 @@
 
 import { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
+import Sidebar from "@/components/Sidebar";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
-import Sidebar from "@/components/Sidebar";
-import { Award, Download, Calendar, CheckCircle, Clock } from "lucide-react";
+import {
+    Award,
+    Download,
+    Calendar,
+    CheckCircle,
+    Trophy,
+    ShieldCheck,
+    Star,
+    FileBadge,
+    ArrowUpRight,
+} from "lucide-react";
 
 type Certificate = {
     id: number;
@@ -19,15 +29,18 @@ type Certificate = {
 
 export default function CertificatesPage() {
     const router = useRouter();
+
     const [sidebarOpen, setSidebarOpen] = useState(false);
     const [loading, setLoading] = useState(true);
 
     useEffect(() => {
         const email = localStorage.getItem("userEmail");
+
         if (!email) {
             router.push("/login");
             return;
         }
+
         setLoading(false);
     }, [router]);
 
@@ -38,7 +51,7 @@ export default function CertificatesPage() {
             type: "challenge",
             issueDate: "2026-06-15",
             status: "active",
-            description: "Successfully completed Step 1 challenge with 8% profit target"
+            description: "Successfully completed Step 1 challenge with 8% profit target.",
         },
         {
             id: 2,
@@ -46,7 +59,7 @@ export default function CertificatesPage() {
             type: "funded",
             issueDate: "2026-06-10",
             status: "active",
-            description: "Approved for funding with $10,000 account"
+            description: "Approved for funding with a Noor Funding trading account.",
         },
         {
             id: 3,
@@ -54,17 +67,47 @@ export default function CertificatesPage() {
             type: "achievement",
             issueDate: "2026-06-01",
             status: "active",
-            description: "Achieved 5 consecutive profitable weeks"
-        }
+            description: "Achieved consistent performance across multiple trading weeks.",
+        },
     ];
 
-    const getTypeBadge = (type: string) => {
+    const activeCount = certificates.filter((cert) => cert.status === "active").length;
+    const fundedCount = certificates.filter((cert) => cert.type === "funded").length;
+    const achievementCount = certificates.filter((cert) => cert.type === "achievement").length;
+
+    const getTypeBadge = (type: Certificate["type"]) => {
         switch (type) {
-            case "challenge": return <Badge className="bg-purple-500/20 text-purple-400 border-purple-500/30">Challenge</Badge>;
-            case "funded": return <Badge className="bg-green-500/20 text-green-400 border-green-500/30">Funded</Badge>;
-            case "achievement": return <Badge className="bg-yellow-500/20 text-yellow-400 border-yellow-500/30">Achievement</Badge>;
-            default: return <Badge className="bg-gray-500/20 text-gray-400">Unknown</Badge>;
+            case "challenge":
+                return (
+                    <Badge className="border-purple-500/30 bg-purple-500/20 text-purple-300">
+                        Challenge
+                    </Badge>
+                );
+            case "funded":
+                return (
+                    <Badge className="border-green-500/30 bg-green-500/20 text-green-400">
+                        Funded
+                    </Badge>
+                );
+            case "achievement":
+                return (
+                    <Badge className="border-yellow-500/30 bg-yellow-500/20 text-yellow-400">
+                        Achievement
+                    </Badge>
+                );
+            default:
+                return (
+                    <Badge className="border-gray-500/30 bg-gray-500/20 text-gray-400">
+                        Unknown
+                    </Badge>
+                );
         }
+    };
+
+    const getTypeIcon = (type: Certificate["type"]) => {
+        if (type === "funded") return Trophy;
+        if (type === "achievement") return Star;
+        return Award;
     };
 
     if (loading) {
@@ -76,55 +119,157 @@ export default function CertificatesPage() {
     }
 
     return (
-        <div className="min-h-screen bg-black">
+        <div className="min-h-screen bg-black text-white">
             <Sidebar isOpen={sidebarOpen} onClose={() => setSidebarOpen(false)} />
-            <main className="lg:ml-64 pt-2">
-                <div className="p-3 max-w-5xl mx-auto">
-                    <div className="flex justify-between items-center mb-4">
-                        <div>
-                            <h1 className="text-2xl font-bold text-white">📜 Certificates</h1>
-                            <p className="text-sm text-gray-400">View your achievements and certifications</p>
+
+            <main className="pt-6 lg:ml-64">
+                <div className="mx-auto max-w-7xl px-4 pb-12">
+                    <section className="relative mb-8 overflow-hidden rounded-3xl border border-purple-500/20 bg-gradient-to-br from-purple-950/30 via-gray-950 to-black p-6 md:p-8">
+                        <div className="absolute -right-20 -top-20 h-72 w-72 rounded-full bg-purple-500/10 blur-3xl" />
+                        <div className="absolute -bottom-20 left-10 h-72 w-72 rounded-full bg-blue-500/10 blur-3xl" />
+
+                        <div className="relative z-10 flex flex-col gap-6 md:flex-row md:items-center md:justify-between">
+                            <div>
+                                <div className="mb-3 inline-flex items-center gap-2 rounded-full border border-purple-500/30 bg-purple-500/10 px-3 py-1 text-sm text-purple-300">
+                                    <FileBadge className="h-4 w-4" />
+                                    Certificate Center
+                                </div>
+
+                                <h1 className="text-3xl font-bold md:text-4xl">
+                                    Your Certificates
+                                </h1>
+
+                                <p className="mt-3 max-w-2xl text-gray-400">
+                                    View your challenge achievements, funded trader status, and performance milestones.
+                                </p>
+                            </div>
+
+                            <Button className="rounded-xl bg-purple-500 px-6 py-6 text-white hover:bg-purple-600">
+                                View All
+                                <ArrowUpRight className="ml-2 h-4 w-4" />
+                            </Button>
                         </div>
-                        <Badge className="bg-green-500/20 text-green-400 border-green-500/30">{certificates.length} Active</Badge>
+                    </section>
+
+                    <div className="mb-8 grid grid-cols-1 gap-5 md:grid-cols-3">
+                        <SummaryCard
+                            icon={CheckCircle}
+                            title="Active Certificates"
+                            value={activeCount.toString()}
+                            color="text-green-400"
+                        />
+                        <SummaryCard
+                            icon={Trophy}
+                            title="Funded Status"
+                            value={fundedCount.toString()}
+                            color="text-purple-400"
+                        />
+                        <SummaryCard
+                            icon={Star}
+                            title="Achievements"
+                            value={achievementCount.toString()}
+                            color="text-yellow-400"
+                        />
                     </div>
 
-                    <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                        {certificates.map((cert) => (
-                            <Card key={cert.id} className="bg-[#1A1A1A] border-gray-800 hover:border-purple-500/30 transition-colors">
-                                <CardHeader className="pb-2">
-                                    <div className="flex justify-between items-start">
-                                        <div className="flex items-center gap-3">
-                                            <div className="p-2 rounded-lg bg-purple-500/20">
-                                                <Award className="h-5 w-5 text-purple-400" />
+                    <div className="grid grid-cols-1 gap-6 md:grid-cols-2 xl:grid-cols-3">
+                        {certificates.map((cert) => {
+                            const TypeIcon = getTypeIcon(cert.type);
+
+                            return (
+                                <Card
+                                    key={cert.id}
+                                    className="border-purple-500/20 bg-gradient-to-b from-purple-500/10 to-gray-950 transition hover:-translate-y-1 hover:border-purple-500/50 hover:shadow-xl hover:shadow-purple-500/10"
+                                >
+                                    <CardHeader>
+                                        <div className="mb-4 flex items-start justify-between gap-3">
+                                            <div className="flex h-12 w-12 items-center justify-center rounded-xl bg-purple-500/20">
+                                                <TypeIcon className="h-6 w-6 text-purple-400" />
                                             </div>
-                                            <div>
-                                                <CardTitle className="text-white text-base">{cert.name}</CardTitle>
-                                                {getTypeBadge(cert.type)}
-                                            </div>
+
+                                            <Badge
+                                                className={
+                                                    cert.status === "active"
+                                                        ? "border-green-500/30 bg-green-500/20 text-green-400"
+                                                        : "border-red-500/30 bg-red-500/20 text-red-400"
+                                                }
+                                            >
+                                                {cert.status.toUpperCase()}
+                                            </Badge>
                                         </div>
-                                        <Badge className={cert.status === "active" ? "bg-green-500/20 text-green-500 border-green-500/30" : "bg-red-500/20 text-red-500 border-red-500/30"}>
-                                            {cert.status.toUpperCase()}
-                                        </Badge>
-                                    </div>
-                                </CardHeader>
-                                <CardContent>
-                                    <p className="text-gray-400 text-sm mb-3">{cert.description}</p>
-                                    <div className="flex justify-between items-center">
-                                        <div className="flex items-center gap-2 text-gray-500 text-sm">
-                                            <Calendar className="h-4 w-4" />
-                                            <span>Issued: {cert.issueDate}</span>
+
+                                        <CardTitle className="text-white">{cert.name}</CardTitle>
+
+                                        <div className="mt-2">{getTypeBadge(cert.type)}</div>
+                                    </CardHeader>
+
+                                    <CardContent className="space-y-4">
+                                        <p className="text-sm leading-relaxed text-gray-400">
+                                            {cert.description}
+                                        </p>
+
+                                        <div className="flex items-center gap-2 rounded-xl border border-white/10 bg-black/40 p-3 text-sm text-gray-400">
+                                            <Calendar className="h-4 w-4 text-purple-400" />
+                                            Issued: {new Date(cert.issueDate).toLocaleDateString()}
                                         </div>
-                                        <Button variant="ghost" size="sm" className="text-purple-400 hover:text-purple-300">
-                                            <Download className="h-4 w-4 mr-1" />
-                                            Download
+
+                                        <Button
+                                            variant="outline"
+                                            className="w-full rounded-xl border-purple-500/30 text-white hover:bg-purple-500/20"
+                                        >
+                                            <Download className="mr-2 h-4 w-4" />
+                                            Download Certificate
                                         </Button>
-                                    </div>
-                                </CardContent>
-                            </Card>
-                        ))}
+                                    </CardContent>
+                                </Card>
+                            );
+                        })}
                     </div>
+
+                    {certificates.length === 0 && (
+                        <Card className="border-white/10 bg-white/5">
+                            <CardContent className="p-8 text-center">
+                                <div className="mx-auto mb-4 flex h-16 w-16 items-center justify-center rounded-2xl bg-purple-500/20">
+                                    <Award className="h-8 w-8 text-purple-400" />
+                                </div>
+
+                                <h2 className="text-2xl font-bold text-white">
+                                    No Certificates Yet
+                                </h2>
+
+                                <p className="mt-2 text-gray-400">
+                                    Complete a challenge or milestone to unlock your first certificate.
+                                </p>
+                            </CardContent>
+                        </Card>
+                    )}
                 </div>
             </main>
         </div>
+    );
+}
+
+function SummaryCard({
+    icon: Icon,
+    title,
+    value,
+    color,
+}: {
+    icon: any;
+    title: string;
+    value: string;
+    color: string;
+}) {
+    return (
+        <Card className="border-white/10 bg-white/5 transition hover:border-purple-500/40 hover:bg-purple-500/10">
+            <CardContent className="p-5">
+                <div className="mb-4 flex h-12 w-12 items-center justify-center rounded-xl bg-purple-500/20">
+                    <Icon className={`h-6 w-6 ${color}`} />
+                </div>
+
+                <p className="text-sm text-gray-400">{title}</p>
+                <p className={`mt-1 text-2xl font-bold ${color}`}>{value}</p>
+            </CardContent>
+        </Card>
     );
 }
