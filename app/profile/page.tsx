@@ -14,14 +14,32 @@ import {
     Wallet,
     CheckCircle,
     Settings,
+    ImagePlus,
+    Trash2,
+    Save,
 } from "lucide-react";
+
+type Profile = {
+    id: number;
+    name: string | null;
+    email: string;
+    avatar_url: string | null;
+    role: string;
+};
+
+const API_URL = "https://websitepro-d5cu.onrender.com";
 
 export default function ProfilePage() {
     const router = useRouter();
 
     const [sidebarOpen, setSidebarOpen] = useState(false);
     const [loading, setLoading] = useState(true);
-    const [email, setEmail] = useState("");
+    const [saving, setSaving] = useState(false);
+
+    const [profile, setProfile] = useState<Profile | null>(null);
+    const [name, setName] = useState("");
+    const [avatarUrl, setAvatarUrl] = useState("");
+    const [message, setMessage] = useState("");
 
     useEffect(() => {
         const userEmail = localStorage.getItem("userEmail");
@@ -31,14 +49,110 @@ export default function ProfilePage() {
             return;
         }
 
-        setEmail(userEmail);
-        setLoading(false);
+        fetchProfile(userEmail);
     }, [router]);
+
+    const fetchProfile = async (email: string) => {
+        try {
+            const res = await fetch(`${API_URL}/profile?email=${email}`);
+            const data = await res.json();
+
+            setProfile(data);
+            setName(data.name || "");
+            setAvatarUrl(data.avatar_url || "");
+        } catch {
+            setMessage("Failed to load profile.");
+        } finally {
+            setLoading(false);
+        }
+    };
+
+    const saveProfile = async () => {
+        if (!profile?.email) return;
+
+        setSaving(true);
+        setMessage("");
+
+        try {
+            await fetch(`${API_URL}/profile/update`, {
+                method: "PUT",
+                headers: {
+                    "Content-Type": "application/json",
+                },
+                body: JSON.stringify({
+                    email: profile.email,
+                    name,
+                }),
+            });
+
+            await fetch(`${API_URL}/profile/update-avatar`, {
+                method: "PUT",
+                headers: {
+                    "Content-Type": "application/json",
+                },
+                body: JSON.stringify({
+                    email: profile.email,
+                    avatarUrl,
+                }),
+            });
+
+            setProfile({
+                ...profile,
+                name,
+                avatar_url: avatarUrl,
+            });
+
+            setMessage("Profile updated successfully.");
+        } catch {
+            setMessage("Failed to update profile.");
+        } finally {
+            setSaving(false);
+        }
+    };
+
+    const deleteAvatar = async () => {
+        if (!profile?.email) return;
+
+        setSaving(true);
+        setMessage("");
+
+        try {
+            await fetch(`${API_URL}/profile/avatar`, {
+                method: "DELETE",
+                headers: {
+                    "Content-Type": "application/json",
+                },
+                body: JSON.stringify({
+                    email: profile.email,
+                }),
+            });
+
+            setAvatarUrl("");
+            setProfile({
+                ...profile,
+                avatar_url: null,
+            });
+
+            setMessage("Avatar deleted successfully.");
+        } catch {
+            setMessage("Failed to delete avatar.");
+        } finally {
+            setSaving(false);
+        }
+    };
 
     if (loading) {
         return (
             <div className="flex min-h-screen items-center justify-center bg-black">
                 <p className="text-gray-400">Loading profile...</p>
+            </div>
+        );
+    }
+
+    if (!profile) {
+        return (
+            <div className="flex min-h-screen items-center justify-center bg-black">
+                <p className="text-red-400">Profile not found.</p>
             </div>
         );
     }
@@ -54,69 +168,105 @@ export default function ProfilePage() {
 
                         <div className="relative z-10 flex flex-col gap-5 md:flex-row md:items-center md:justify-between">
                             <div className="flex items-center gap-5">
-                                <div className="flex h-24 w-24 items-center justify-center rounded-full bg-purple-500/20 border border-purple-500/30">
-                                    <User className="h-10 w-10 text-purple-400" />
+                                <div className="flex h-24 w-24 items-center justify-center overflow-hidden rounded-full border border-purple-500/30 bg-purple-500/20">
+                                    {profile.avatar_url ? (
+                                        <img
+                                            src={profile.avatar_url}
+                                            alt="Profile avatar"
+                                            className="h-full w-full object-cover"
+                                        />
+                                    ) : (
+                                        <User className="h-10 w-10 text-purple-400" />
+                                    )}
                                 </div>
 
                                 <div>
-                                    <h1 className="text-3xl font-bold">My Profile</h1>
+                                    <h1 className="text-3xl font-bold">
+                                        {profile.name || "Noor Funding Trader"}
+                                    </h1>
                                     <p className="mt-2 text-gray-400">
                                         Manage your Noor Funding account information.
                                     </p>
                                 </div>
                             </div>
 
-                            <Button className="bg-purple-500 hover:bg-purple-600">
-                                <Settings className="mr-2 h-4 w-4" />
-                                Edit Profile
+                            <Button
+                                onClick={saveProfile}
+                                disabled={saving}
+                                className="bg-purple-500 hover:bg-purple-600"
+                            >
+                                <Save className="mr-2 h-4 w-4" />
+                                {saving ? "Saving..." : "Save Profile"}
                             </Button>
                         </div>
                     </section>
 
+                    {message && (
+                        <div className="mb-6 rounded-xl border border-purple-500/30 bg-purple-500/10 p-4 text-purple-200">
+                            {message}
+                        </div>
+                    )}
+
                     <div className="grid grid-cols-1 gap-6 xl:grid-cols-3">
                         <Card className="xl:col-span-2 border-purple-500/20 bg-gradient-to-b from-purple-500/10 to-gray-950">
                             <CardHeader>
-                                <CardTitle>Account Information</CardTitle>
+                                <CardTitle className="text-white">Edit Profile</CardTitle>
                             </CardHeader>
 
-                            <CardContent>
+                            <CardContent className="space-y-4">
+                                <div className="rounded-xl border border-white/10 bg-black/40 p-4">
+                                    <label className="mb-2 block text-sm text-gray-400">
+                                        Full Name
+                                    </label>
+                                    <input
+                                        value={name}
+                                        onChange={(e) => setName(e.target.value)}
+                                        placeholder="Enter your name"
+                                        className="w-full rounded-xl border border-gray-800 bg-black/50 px-4 py-3 text-white outline-none focus:border-purple-500"
+                                    />
+                                </div>
+
+                                <div className="rounded-xl border border-white/10 bg-black/40 p-4">
+                                    <label className="mb-2 block text-sm text-gray-400">
+                                        Avatar URL
+                                    </label>
+
+                                    <div className="flex flex-col gap-3 md:flex-row">
+                                        <input
+                                            value={avatarUrl}
+                                            onChange={(e) => setAvatarUrl(e.target.value)}
+                                            placeholder="Paste avatar image URL"
+                                            className="w-full rounded-xl border border-gray-800 bg-black/50 px-4 py-3 text-white outline-none focus:border-purple-500"
+                                        />
+
+                                        <Button
+                                            onClick={saveProfile}
+                                            disabled={saving}
+                                            className="rounded-xl bg-purple-500 text-white hover:bg-purple-600"
+                                        >
+                                            <ImagePlus className="mr-2 h-4 w-4" />
+                                            Update
+                                        </Button>
+                                    </div>
+
+                                    <Button
+                                        onClick={deleteAvatar}
+                                        disabled={saving || !profile.avatar_url}
+                                        variant="outline"
+                                        className="mt-3 rounded-xl border-red-500/30 text-red-400 hover:bg-red-500/10"
+                                    >
+                                        <Trash2 className="mr-2 h-4 w-4" />
+                                        Delete Avatar
+                                    </Button>
+                                </div>
+
                                 <div className="grid grid-cols-1 gap-4 md:grid-cols-2">
-                                    <InfoBox
-                                        icon={User}
-                                        label="Full Name"
-                                        value="Noor Funding Trader"
-                                    />
-
-                                    <InfoBox
-                                        icon={Mail}
-                                        label="Email Address"
-                                        value={email}
-                                    />
-
-                                    <InfoBox
-                                        icon={Shield}
-                                        label="Account Status"
-                                        value="Verified"
-                                        green
-                                    />
-
-                                    <InfoBox
-                                        icon={Trophy}
-                                        label="Challenge Status"
-                                        value="Active"
-                                    />
-
-                                    <InfoBox
-                                        icon={Calendar}
-                                        label="Member Since"
-                                        value="2026"
-                                    />
-
-                                    <InfoBox
-                                        icon={Wallet}
-                                        label="Account Type"
-                                        value="Funded Trader"
-                                    />
+                                    <InfoBox icon={Mail} label="Email Address" value={profile.email} />
+                                    <InfoBox icon={Shield} label="Role" value={profile.role || "trader"} green />
+                                    <InfoBox icon={Trophy} label="Challenge Status" value="Active" />
+                                    <InfoBox icon={Wallet} label="Account Type" value="Funded Trader" />
+                                    <InfoBox icon={Calendar} label="Member Since" value="2026" />
+                                    <InfoBox icon={Settings} label="Profile ID" value={`#${profile.id}`} />
                                 </div>
                             </CardContent>
                         </Card>
@@ -192,13 +342,7 @@ function InfoBox({
     );
 }
 
-function StatBox({
-    title,
-    value,
-}: {
-    title: string;
-    value: string;
-}) {
+function StatBox({ title, value }: { title: string; value: string }) {
     return (
         <div className="rounded-xl border border-white/10 bg-black/40 p-4">
             <p className="text-sm text-gray-400">{title}</p>
