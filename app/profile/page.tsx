@@ -175,6 +175,8 @@ export default function ProfilePage() {
                 avatar_url: data.avatarUrl,
             });
 
+            await fetchProfile(profile.email);
+
             setMessage("Avatar uploaded successfully.");
         } catch {
             setMessage("Failed to upload avatar.");
@@ -299,7 +301,7 @@ export default function ProfilePage() {
 
                                     <Button
                                         onClick={deleteAvatar}
-                                        disabled={saving || !profile.avatar_url}
+                                        disabled={saving}
                                         variant="outline"
                                         className="mt-3 rounded-xl border-red-500/30 text-red-400 hover:bg-red-500/10"
                                     >
