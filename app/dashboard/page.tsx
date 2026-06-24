@@ -3,9 +3,9 @@
 import { motion } from "framer-motion";
 import { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
+import Sidebar from "@/components/Sidebar";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
-import Sidebar from "@/components/Sidebar";
 import {
     Chart as ChartJS,
     CategoryScale,
@@ -13,13 +13,23 @@ import {
     PointElement,
     LineElement,
     BarElement,
-    Title,
     Tooltip,
     Legend,
-    Filler
-} from 'chart.js';
-import { Line, Bar } from 'react-chartjs-2';
-import { Wallet, TrendingUp, TrendingDown, Trophy, Calendar, Clock, Users } from "lucide-react";
+    Filler,
+} from "chart.js";
+import { Line, Bar } from "react-chartjs-2";
+import {
+    Wallet,
+    TrendingUp,
+    TrendingDown,
+    Trophy,
+    Clock,
+    Activity,
+    Target,
+    Shield,
+    Calendar,
+    CheckCircle,
+} from "lucide-react";
 
 ChartJS.register(
     CategoryScale,
@@ -27,7 +37,6 @@ ChartJS.register(
     PointElement,
     LineElement,
     BarElement,
-    Title,
     Tooltip,
     Legend,
     Filler
@@ -59,8 +68,8 @@ type Challenge = {
 
 export default function DashboardPage() {
     const router = useRouter();
+
     const [sidebarOpen, setSidebarOpen] = useState(false);
-    const [users, setUsers] = useState<User[]>([]);
     const [userEmail, setUserEmail] = useState("");
     const [loading, setLoading] = useState(true);
     const [trades, setTrades] = useState<Trade[]>([]);
@@ -70,43 +79,139 @@ export default function DashboardPage() {
 
     useEffect(() => {
         const email = localStorage.getItem("userEmail");
+
         if (!email) {
             router.push("/login");
             return;
         }
+
         setUserEmail(email);
         fetchData(email);
     }, [router]);
 
     const fetchData = async (email: string) => {
         try {
-            // Fetch users
-            const usersRes = await fetch("https://websitepro-d5cu.onrender.com/users");
-            const usersData = await usersRes.json();
-            setUsers(usersData);
-
-            // Fetch trades
-            const tradesRes = await fetch(`https://websitepro-d5cu.onrender.com/trades?email=${email}`);
+            const tradesRes = await fetch(
+                `https://websitepro-d5cu.onrender.com/trades?email=${email}`
+            );
             const tradesData = await tradesRes.json();
-            setTrades(tradesData || []);
+            const safeTrades = Array.isArray(tradesData) ? tradesData : [];
 
-            // Calculate total profit
-            const profit = tradesData.reduce((sum: number, t: Trade) => sum + t.profit, 0);
+            setTrades(safeTrades);
+
+            const profit = safeTrades.reduce(
+                (sum: number, trade: Trade) => sum + Number(trade.profit || 0),
+                0
+            );
             setTotalProfit(profit);
 
-            // Calculate win rate
-            const wins = tradesData.filter((t: Trade) => t.profit > 0).length;
-            setWinRate(tradesData.length > 0 ? (wins / tradesData.length) * 100 : 0);
+            const wins = safeTrades.filter((trade: Trade) => Number(trade.profit) > 0).length;
+            setWinRate(safeTrades.length > 0 ? (wins / safeTrades.length) * 100 : 0);
 
-            // Fetch active challenge
-            const challengeRes = await fetch(`https://websitepro-d5cu.onrender.com/active-challenge?email=${email}`);
+            const challengeRes = await fetch(
+                `https://websitepro-d5cu.onrender.com/active-challenge?email=${email}`
+            );
             const challengeData = await challengeRes.json();
-            setActiveChallenge(challengeData);
+
+            if (challengeData && challengeData.id) {
+                setActiveChallenge(challengeData);
+            }
         } catch (err) {
             console.log(err);
+        } finally {
+            setLoading(false);
         }
-        setLoading(false);
     };
+
+    const currentBalance = activeChallenge?.current_balance || 10000;
+    const currentProfit = activeChallenge?.current_profit || 0;
+    const targetProfit = activeChallenge?.target_profit || 10;
+    const remainingTarget = Math.max(targetProfit - currentProfit, 0);
+    const progressPercent = Math.min((currentProfit / targetProfit) * 100, 100);
+
+    const performanceData = {
+        labels:
+            trades.length > 0
+                ? trades.slice(-10).map((_, i) => `Trade ${i + 1}`)
+                : ["T1", "T2", "T3", "T4", "T5", "T6"],
+        datasets: [
+            {
+                label: "Profit / Loss",
+                data:
+                    trades.length > 0
+                        ? trades.slice(-10).map((trade) => trade.profit)
+                        : [250, -120, 380, 640, -90, 820],
+                borderColor: "#A855F7",
+                backgroundColor: "rgba(168, 85, 247, 0.12)",
+                tension: 0.4,
+                fill: true,
+                pointBackgroundColor: "#A855F7",
+                pointBorderColor: "#ffffff",
+                pointRadius: 4,
+            },
+        ],
+    };
+
+    const weeklyProfitData = {
+        labels: ["Mon", "Tue", "Wed", "Thu", "Fri", "Sat", "Sun"],
+        datasets: [
+            {
+                label: "Weekly Profit",
+                data: [500, 750, 600, 900, 1200, 800, 450],
+                backgroundColor: "#A855F7",
+                borderRadius: 8,
+                barPercentage: 0.7,
+            },
+        ],
+    };
+
+    const chartOptions = {
+        responsive: true,
+        maintainAspectRatio: false,
+        plugins: {
+            legend: {
+                labels: { color: "#9CA3AF" },
+            },
+            tooltip: { mode: "index" as const },
+        },
+        scales: {
+            x: {
+                ticks: { color: "#9CA3AF" },
+                grid: { color: "rgba(55, 65, 81, 0.35)" },
+            },
+            y: {
+                ticks: { color: "#9CA3AF" },
+                grid: { color: "rgba(55, 65, 81, 0.35)" },
+            },
+        },
+    };
+
+    const overviewStats = [
+        {
+            title: "Current Balance",
+            value: `$${currentBalance.toLocaleString()}`,
+            icon: Wallet,
+            color: "text-purple-400",
+        },
+        {
+            title: "Total Profit",
+            value: `$${totalProfit.toFixed(2)}`,
+            icon: totalProfit >= 0 ? TrendingUp : TrendingDown,
+            color: totalProfit >= 0 ? "text-green-400" : "text-red-400",
+        },
+        {
+            title: "Win Rate",
+            value: `${winRate.toFixed(1)}%`,
+            icon: Trophy,
+            color: "text-yellow-400",
+        },
+        {
+            title: "Total Trades",
+            value: trades.length,
+            icon: Activity,
+            color: "text-blue-400",
+        },
+    ];
 
     if (loading) {
         return (
@@ -116,246 +221,160 @@ export default function DashboardPage() {
         );
     }
 
-    // Stats for cards
-    const stats = [
-        { title: "Total Users", value: users.length, icon: Users, color: "border-purple-500", textColor: "text-purple-500" },
-        { title: "Total Accounts", value: 0, icon: Wallet, color: "border-purple-500", textColor: "text-purple-500" },
-        { title: "Active Challenges", value: activeChallenge ? 1 : 0, icon: Trophy, color: "border-purple-500", textColor: "text-purple-500" },
-        { title: "Pending Payouts", value: 0, icon: Wallet, color: "border-purple-500", textColor: "text-purple-500" },
-    ];
-
-    // Personal Stats
-    const personalStats = [
-        { title: "Total Profit", value: `$${totalProfit.toFixed(2)}`, icon: totalProfit >= 0 ? TrendingUp : TrendingDown, color: totalProfit >= 0 ? "text-green-500" : "text-red-500" },
-        { title: "Win Rate", value: `${winRate.toFixed(1)}%`, icon: Trophy, color: "text-yellow-500" },
-        { title: "Trades", value: trades.length, icon: Clock, color: "text-blue-500" },
-    ];
-
-    // Chart Data - User Growth
-    const userGrowthData = {
-        labels: ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun'],
-        datasets: [
-            {
-                label: 'Total Users',
-                data: [10, 25, 45, 70, 100, users.length],
-                borderColor: '#3B82F6',
-                backgroundColor: 'rgba(59, 130, 246, 0.1)',
-                tension: 0.4,
-                fill: true,
-                pointBackgroundColor: '#3B82F6',
-                pointBorderColor: '#fff',
-                pointRadius: 4,
-            }
-        ]
-    };
-
-    const weeklyProfitData = {
-        labels: ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun'],
-        datasets: [
-            {
-                label: 'Profit ($)',
-                data: [500, 750, 600, 900, 1200, 800, 450],
-                backgroundColor: '#10B981',
-                borderRadius: 8,
-                barPercentage: 0.7,
-            }
-        ]
-    };
-
-    const performanceData = {
-        labels: trades.slice(-10).map((_, i) => `Trade ${i + 1}`),
-        datasets: [
-            {
-                label: 'Profit/Loss',
-                data: trades.slice(-10).map(t => t.profit),
-                borderColor: '#8B5CF6',
-                backgroundColor: 'rgba(139, 92, 246, 0.1)',
-                tension: 0.4,
-                fill: true,
-                pointBackgroundColor: '#8B5CF6',
-                pointBorderColor: '#fff',
-                pointRadius: 4,
-            }
-        ]
-    };
-
-    const chartOptions = {
-        responsive: true,
-        maintainAspectRatio: false,
-        plugins: {
-            legend: {
-                labels: { color: '#9CA3AF' }
-            },
-            tooltip: { mode: 'index' as const }
-        },
-        scales: {
-            x: { ticks: { color: '#9CA3AF' }, grid: { color: '#374151' } },
-            y: { ticks: { color: '#9CA3AF' }, grid: { color: '#374151' } }
-        }
-    };
-
     return (
-        <div className="min-h-screen bg-black">
+        <div className="min-h-screen bg-black text-white">
             <Sidebar isOpen={sidebarOpen} onClose={() => setSidebarOpen(false)} />
-            <main className="lg:ml-64 pt-3">
-                <div className="p-3">
-                    <h1 className="text-2xl font-bold text-white mb-3">Dashboard</h1>
+
+            <main className="pt-6 lg:ml-64">
+                <div className="mx-auto max-w-7xl px-4 pb-12">
+                    <section className="relative mb-8 overflow-hidden rounded-3xl border border-purple-500/20 bg-gradient-to-br from-purple-950/30 via-gray-950 to-black p-6 md:p-8">
+                        <div className="absolute -right-20 -top-20 h-72 w-72 rounded-full bg-purple-500/10 blur-3xl" />
+                        <div className="absolute -bottom-20 left-10 h-72 w-72 rounded-full bg-blue-500/10 blur-3xl" />
+
+                        <div className="relative z-10 flex flex-col gap-6 md:flex-row md:items-center md:justify-between">
+                            <div>
+                                <div className="mb-3 inline-flex items-center gap-2 rounded-full border border-purple-500/30 bg-purple-500/10 px-3 py-1 text-sm text-purple-300">
+                                    <Activity className="h-4 w-4" />
+                                    Trader Dashboard
+                                </div>
+
+                                <h1 className="text-3xl font-bold md:text-4xl">
+                                    Welcome Back, Trader
+                                </h1>
+
+                                <p className="mt-3 max-w-2xl text-gray-400">
+                                    Track your active challenge, account performance, trading history, and payout progress.
+                                </p>
+                            </div>
+
+                            <div className="rounded-2xl border border-white/10 bg-black/40 p-4 text-sm">
+                                <p className="text-gray-400">Signed In</p>
+                                <p className="mt-1 max-w-[220px] truncate font-semibold text-white">
+                                    {userEmail}
+                                </p>
+                            </div>
+                        </div>
+                    </section>
 
                     {activeChallenge && (
-                        <Card className="mb-6 bg-gradient-to-r from-purple-500/20 to-purple-500/20 border border-purple-500/30">
-                            <CardContent className="pt-6">
-                                <div className="flex items-center justify-between flex-wrap gap-4">
-                                    <div>
-                                        <p className="text-sm text-gray-400">Active Challenge</p>
-                                        <p className="text-2xl font-bold text-white">Step {activeChallenge.step}</p>
+                        <Card className="mb-8 border-purple-500/30 bg-purple-500/10">
+                            <CardHeader>
+                                <CardTitle className="flex items-center gap-2 text-white">
+                                    <Trophy className="h-5 w-5 text-purple-400" />
+                                    Active Challenge Progress
+                                </CardTitle>
+                            </CardHeader>
+
+                            <CardContent className="space-y-5">
+                                <div className="grid grid-cols-2 gap-4 md:grid-cols-4">
+                                    <InfoBox label="Step" value={`Step ${activeChallenge.step}`} />
+                                    <InfoBox label="Target Profit" value={`${targetProfit}%`} green />
+                                    <InfoBox
+                                        label="Current Profit"
+                                        value={`${currentProfit.toFixed(2)}%`}
+                                        green={currentProfit >= 0}
+                                        red={currentProfit < 0}
+                                    />
+                                    <InfoBox label="Remaining" value={`${remainingTarget.toFixed(2)}%`} />
+                                </div>
+
+                                <div>
+                                    <div className="mb-2 flex items-center justify-between text-sm">
+                                        <span className="text-gray-400">Progress To Target</span>
+                                        <span className="font-semibold text-purple-300">
+                                            {progressPercent.toFixed(1)}%
+                                        </span>
                                     </div>
-                                    <div className="flex items-center gap-6">
-                                        <div>
-                                            <p className="text-sm text-gray-400">Target Profit</p>
-                                            <p className="text-xl font-bold text-green-500">{activeChallenge.target_profit}%</p>
-                                        </div>
-                                        <div>
-                                            <p className="text-sm text-gray-400">Current Profit</p>
-                                            <p className={`text-xl font-bold ${(activeChallenge.current_profit || 0) >= 0 ? "text-green-500" : "text-red-500"}`}>
-                                                {(activeChallenge.current_profit || 0).toFixed(2)}%
-                                            </p>
-                                        </div>
-                                        <div>
-                                            <p className="text-sm text-gray-400">Balance</p>
-                                            <p className="text-xl font-bold text-white">${(activeChallenge.current_balance || 10000).toLocaleString()}</p>
-                                        </div>
+
+                                    <div className="h-3 overflow-hidden rounded-full bg-black/50">
+                                        <div
+                                            className="h-full rounded-full bg-gradient-to-r from-purple-500 to-blue-500"
+                                            style={{ width: `${progressPercent}%` }}
+                                        />
                                     </div>
-                                    <Badge className="bg-green-500/20 text-green-400 border-green-500/30">Active</Badge>
                                 </div>
                             </CardContent>
                         </Card>
                     )}
 
-                    <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
-                        {stats.map((stat, index) => (
+                    <div className="mb-8 grid grid-cols-1 gap-5 md:grid-cols-2 xl:grid-cols-4">
+                        {overviewStats.map((stat, index) => (
                             <motion.div
                                 key={stat.title}
-                                initial={{ opacity: 0, y: 20 }}
+                                initial={{ opacity: 0, y: 18 }}
                                 animate={{ opacity: 1, y: 0 }}
-                                transition={{ duration: 0.5, delay: index * 0.1 }}
-                                whileHover={{ scale: 1.02 }}
+                                transition={{ duration: 0.4, delay: index * 0.08 }}
                             >
-                                <Card className={`bg-darkcard border-l-4 ${stat.color}`}>
-                                    <CardHeader className="pb-2">
-                                        <CardTitle className={`text-sm font-medium ${stat.textColor}`}>
-                                            {stat.title}
-                                        </CardTitle>
-                                    </CardHeader>
-                                    <CardContent>
-                                        <p className="text-3xl font-bold text-white">{stat.value}</p>
-                                    </CardContent>
-                                </Card>
-                            </motion.div>
-                        ))}
-                    </div>
-
-                    <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mt-6">
-                        {personalStats.map((stat, index) => (
-                            <motion.div
-                                key={stat.title}
-                                initial={{ opacity: 0, y: 20 }}
-                                animate={{ opacity: 1, y: 0 }}
-                                transition={{ duration: 0.5, delay: 0.2 + index * 0.1 }}
-                            >
-                                <Card className="bg-darkcard border-gray-800">
-                                    <CardContent className="pt-6">
-                                        <div className="flex items-center gap-4">
-                                            <div className={`p-3 rounded-full bg-gray-800/50`}>
-                                                <stat.icon className={`h-6 w-6 ${stat.color}`} />
-                                            </div>
-                                            <div>
-                                                <p className="text-gray-400 text-sm">{stat.title}</p>
-                                                <p className={`text-2xl font-bold ${stat.color}`}>{stat.value}</p>
-                                            </div>
+                                <Card className="h-full border-white/10 bg-white/5 transition hover:border-purple-500/40 hover:bg-purple-500/10">
+                                    <CardContent className="p-5">
+                                        <div className="mb-4 flex h-12 w-12 items-center justify-center rounded-xl bg-purple-500/20">
+                                            <stat.icon className={`h-6 w-6 ${stat.color}`} />
                                         </div>
+                                        <p className="text-sm text-gray-400">{stat.title}</p>
+                                        <p className={`mt-1 text-2xl font-bold ${stat.color}`}>
+                                            {stat.value}
+                                        </p>
                                     </CardContent>
                                 </Card>
                             </motion.div>
                         ))}
                     </div>
 
-                    <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 mt-6">
-                        <motion.div
-                            initial={{ opacity: 0, y: 20 }}
-                            animate={{ opacity: 1, y: 0 }}
-                            transition={{ duration: 0.5, delay: 0.4 }}
-                        >
-                            <Card className="bg-darkcard">
-                                <CardHeader>
-                                    <CardTitle className="text-white">User Growth</CardTitle>
-                                </CardHeader>
-                                <CardContent>
-                                    <div style={{ height: '300px' }}>
-                                        <Line data={userGrowthData} options={chartOptions} />
-                                    </div>
-                                </CardContent>
-                            </Card>
-                        </motion.div>
-
-                        <motion.div
-                            initial={{ opacity: 0, y: 20 }}
-                            animate={{ opacity: 1, y: 0 }}
-                            transition={{ duration: 0.5, delay: 0.5 }}
-                        >
-                            <Card className="bg-darkcard">
-                                <CardHeader>
-                                    <CardTitle className="text-white">Weekly Profit ($)</CardTitle>
-                                </CardHeader>
-                                <CardContent>
-                                    <div style={{ height: '300px' }}>
-                                        <Bar data={weeklyProfitData} options={chartOptions} />
-                                    </div>
-                                </CardContent>
-                            </Card>
-                        </motion.div>
-                    </div>
-
-                    {trades.length > 0 && (
-                        <motion.div
-                            initial={{ opacity: 0, y: 20 }}
-                            animate={{ opacity: 1, y: 0 }}
-                            transition={{ duration: 0.5, delay: 0.6 }}
-                        >
-                            <Card className="mt-6 bg-darkcard">
-                                <CardHeader>
-                                    <CardTitle className="text-white">Your Performance (Last 10 Trades)</CardTitle>
-                                </CardHeader>
-                                <CardContent>
-                                    <div style={{ height: '250px' }}>
-                                        <Line data={performanceData} options={chartOptions} />
-                                    </div>
-                                </CardContent>
-                            </Card>
-                        </motion.div>
-                    )}
-
-                    <motion.div
-                        initial={{ opacity: 0, y: 20 }}
-                        animate={{ opacity: 1, y: 0 }}
-                        transition={{ duration: 0.5, delay: 0.7 }}
-                    >
-                        <Card className="mt-6 bg-darkcard">
+                    <div className="grid grid-cols-1 gap-6 xl:grid-cols-2">
+                        <Card className="border-purple-500/20 bg-gradient-to-b from-purple-500/10 to-gray-950">
                             <CardHeader>
-                                <CardTitle className="text-white">Your Recent Trades</CardTitle>
+                                <CardTitle className="text-white">Performance Analytics</CardTitle>
                             </CardHeader>
                             <CardContent>
+                                <div className="h-[300px]">
+                                    <Line data={performanceData} options={chartOptions} />
+                                </div>
+                            </CardContent>
+                        </Card>
+
+                        <Card className="border-white/10 bg-white/5">
+                            <CardHeader>
+                                <CardTitle className="text-white">Weekly Profit</CardTitle>
+                            </CardHeader>
+                            <CardContent>
+                                <div className="h-[300px]">
+                                    <Bar data={weeklyProfitData} options={chartOptions} />
+                                </div>
+                            </CardContent>
+                        </Card>
+                    </div>
+
+                    <div className="mt-8 grid grid-cols-1 gap-6 xl:grid-cols-3">
+                        <Card className="xl:col-span-2 border-white/10 bg-white/5">
+                            <CardHeader>
+                                <CardTitle className="text-white">Recent Trades</CardTitle>
+                            </CardHeader>
+
+                            <CardContent>
                                 {trades.length === 0 ? (
-                                    <p className="text-gray-400 text-center">No trades yet. Start trading to see your performance.</p>
+                                    <div className="rounded-xl border border-white/10 bg-black/40 p-6 text-center text-gray-400">
+                                        No trades yet. Start trading to see your performance.
+                                    </div>
                                 ) : (
                                     <div className="space-y-3">
-                                        {trades.slice(0, 5).map((trade) => (
-                                            <div key={trade.id} className="flex items-center justify-between p-3 rounded-lg bg-darknavy/50">
+                                        {trades.slice(0, 6).map((trade) => (
+                                            <div
+                                                key={trade.id}
+                                                className="flex items-center justify-between rounded-xl border border-white/10 bg-black/40 p-3"
+                                            >
                                                 <div>
                                                     <p className="font-medium text-white">{trade.symbol}</p>
-                                                    <p className="text-xs text-gray-500">{new Date(trade.created_at).toLocaleString()}</p>
+                                                    <p className="text-xs text-gray-500">
+                                                        {new Date(trade.created_at).toLocaleString()}
+                                                    </p>
                                                 </div>
-                                                <div className={`font-bold ${trade.profit >= 0 ? "text-green-500" : "text-red-500"}`}>
-                                                    {trade.profit >= 0 ? "+" : ""}{trade.profit}
+
+                                                <div
+                                                    className={`font-bold ${trade.profit >= 0 ? "text-green-400" : "text-red-400"
+                                                        }`}
+                                                >
+                                                    {trade.profit >= 0 ? "+" : ""}
+                                                    ${Number(trade.profit).toFixed(2)}
                                                 </div>
                                             </div>
                                         ))}
@@ -363,9 +382,67 @@ export default function DashboardPage() {
                                 )}
                             </CardContent>
                         </Card>
-                    </motion.div>
+
+                        <Card className="border-white/10 bg-white/5">
+                            <CardHeader>
+                                <CardTitle className="text-white">Account Overview</CardTitle>
+                            </CardHeader>
+
+                            <CardContent className="space-y-3 text-sm">
+                                <OverviewRow icon={Shield} label="Account Status" value={activeChallenge ? "Active" : "No Active Challenge"} />
+                                <OverviewRow icon={Target} label="Target Profit" value={`${targetProfit}%`} />
+                                <OverviewRow icon={Calendar} label="Started" value={activeChallenge ? new Date(activeChallenge.started_at).toLocaleDateString() : "-"} />
+                                <OverviewRow icon={Clock} label="Trading Period" value="Unlimited" />
+                                <OverviewRow icon={CheckCircle} label="Payout Review" value="24h" />
+                            </CardContent>
+                        </Card>
+                    </div>
                 </div>
             </main>
+        </div>
+    );
+}
+
+function InfoBox({
+    label,
+    value,
+    green,
+    red,
+}: {
+    label: string;
+    value: string;
+    green?: boolean;
+    red?: boolean;
+}) {
+    return (
+        <div className="rounded-xl bg-black/40 p-4">
+            <p className="text-sm text-gray-400">{label}</p>
+            <p
+                className={`mt-1 text-xl font-bold ${green ? "text-green-400" : red ? "text-red-400" : "text-white"
+                    }`}
+            >
+                {value}
+            </p>
+        </div>
+    );
+}
+
+function OverviewRow({
+    icon: Icon,
+    label,
+    value,
+}: {
+    icon: any;
+    label: string;
+    value: string;
+}) {
+    return (
+        <div className="flex items-center justify-between gap-3 rounded-xl border border-white/10 bg-black/40 p-3">
+            <div className="flex items-center gap-2 text-gray-400">
+                <Icon className="h-4 w-4 text-purple-400" />
+                <span>{label}</span>
+            </div>
+            <span className="font-medium text-white">{value}</span>
         </div>
     );
 }
