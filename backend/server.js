@@ -1,3 +1,4 @@
+const multer = require("multer");
 const express = require("express");
 const cors = require("cors");
 const { createClient } = require("@supabase/supabase-js");
@@ -10,6 +11,10 @@ app.use(cors({
     allowedHeaders: ['Content-Type', 'Authorization']
 }));
 app.use(express.json());
+
+const upload = multer({
+    storage: multer.memoryStorage()
+});
 
 // --- Gunakan Hardcode untuk Ujian ---
 const supabaseUrl = "https://mxaanohwaafzshwksqrt.supabase.co";
@@ -194,6 +199,83 @@ app.put("/profile/update-avatar", async (req, res) => {
     const { error } = await supabase.from("users").update({ avatar_url: avatarUrl }).eq("email", email);
     if (error) return res.status(500).json({ success: false, message: error.message });
     res.json({ success: true, message: "Avatar updated" });
+});
+
+// UPLOAD AVATAR FILE
+app.post("/profile/upload-avatar", upload.single("avatar"), async (req, res) => {
+    const { email } = req.body;
+
+    if (!email || !req.file) {
+        return res.status(400).json({
+            success: false,
+            message: "Missing email or avatar file"
+        });
+    }
+
+    const fileExt = req.file.originalname.split(".").pop();
+    const fileName = `${email}-${Date.now()}.${fileExt}`;
+    const filePath = `profiles/${fileName}`;
+
+    const { error: uploadError } = await supabase.storage
+        .from("avatars")
+        .upload(filePath, req.file.buffer, {
+            contentType: req.file.mimetype,
+            upsert: true
+        });
+
+    if (uploadError) {
+        return res.status(500).json({
+            success: false,
+            message: uploadError.message
+        });
+    }
+
+    const { data } = supabase.storage
+        .from("avatars")
+        .getPublicUrl(filePath);
+
+    const avatarUrl = data.publicUrl;
+
+    const { error: updateError } = await supabase
+        .from("users")
+        .update({ avatar_url: avatarUrl })
+        .eq("email", email);
+
+    if (updateError) {
+        return res.status(500).json({
+            success: false,
+            message: updateError.message
+        });
+    }
+
+    res.json({
+        success: true,
+        avatarUrl
+    });
+});
+
+// DELETE AVATAR
+app.delete("/profile/avatar", async (req, res) => {
+    const { email } = req.body;
+
+    const { error } = await supabase
+        .from("users")
+        .update({
+            avatar_url: null
+        })
+        .eq("email", email);
+
+    if (error) {
+        return res.status(500).json({
+            success: false,
+            message: error.message
+        });
+    }
+
+    res.json({
+        success: true,
+        message: "Avatar deleted"
+    });
 });
 
 // GET ACCOUNTS
