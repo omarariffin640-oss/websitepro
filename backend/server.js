@@ -868,6 +868,71 @@ app.get("/admin/orders", async (req, res) => {
     res.json(data);
 });
 
+// ADMIN GET ALL PAYOUTS
+app.get("/admin/payouts", async (req, res) => {
+    const { data, error } = await supabase
+        .from("payouts")
+        .select("*")
+        .order("created_at", { ascending: false });
+
+    if (error) {
+        return res.status(500).json({
+            success: false,
+            message: error.message
+        });
+    }
+
+    res.json(data);
+});
+
+// ADMIN APPROVE PAYOUT
+app.post("/admin/payouts/:id/approve", async (req, res) => {
+    const { id } = req.params;
+
+    const { error } = await supabase
+        .from("payouts")
+        .update({
+            status: "approved"
+        })
+        .eq("id", id);
+
+    if (error) {
+        return res.status(500).json({
+            success: false,
+            message: error.message
+        });
+    }
+
+    res.json({
+        success: true,
+        message: "Payout approved."
+    });
+});
+
+// ADMIN REJECT PAYOUT
+app.post("/admin/payouts/:id/reject", async (req, res) => {
+    const { id } = req.params;
+
+    const { error } = await supabase
+        .from("payouts")
+        .update({
+            status: "rejected"
+        })
+        .eq("id", id);
+
+    if (error) {
+        return res.status(500).json({
+            success: false,
+            message: error.message
+        });
+    }
+
+    res.json({
+        success: true,
+        message: "Payout rejected."
+    });
+});
+
 // START SERVER
 const port = process.env.PORT || 5000;
 app.listen(port, "0.0.0.0", () => {
