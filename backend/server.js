@@ -915,6 +915,57 @@ app.put("/admin/payouts/:id/status", async (req, res) => {
     });
 });
 
+// ADMIN GET ALL CERTIFICATES
+app.get("/admin/certificates", async (req, res) => {
+    const { data, error } = await supabase
+        .from("certificates")
+        .select("*")
+        .order("created_at", { ascending: false });
+
+    if (error) {
+        return res.status(500).json({
+            success: false,
+            message: error.message
+        });
+    }
+
+    res.json(data);
+});
+
+// ADMIN ISSUE CERTIFICATE
+app.post("/admin/certificates/issue", async (req, res) => {
+    const { email, name, type, description } = req.body;
+
+    if (!email || !name) {
+        return res.status(400).json({
+            success: false,
+            message: "Missing certificate data"
+        });
+    }
+
+    const { error } = await supabase
+        .from("certificates")
+        .insert([{
+            user_email: email,
+            name,
+            type: type || "funded",
+            description: description || "Certificate issued by Noor Funding",
+            status: "active"
+        }]);
+
+    if (error) {
+        return res.status(500).json({
+            success: false,
+            message: error.message
+        });
+    }
+
+    res.json({
+        success: true,
+        message: "Certificate issued"
+    });
+});
+
 // START SERVER
 const port = process.env.PORT || 5000;
 app.listen(port, "0.0.0.0", () => {
