@@ -790,6 +790,33 @@ app.get("/payouts", async (req, res) => {
     res.json(data);
 });
 
+// ADMIN STATS
+app.get("/admin/stats", async (req, res) => {
+    const { count: usersCount } = await supabase
+        .from("users")
+        .select("*", { count: "exact", head: true });
+
+    const { count: accountsCount } = await supabase
+        .from("accounts")
+        .select("*", { count: "exact", head: true });
+
+    const { count: ordersCount } = await supabase
+        .from("orders")
+        .select("*", { count: "exact", head: true });
+
+    const { count: pendingPayoutsCount } = await supabase
+        .from("payouts")
+        .select("*", { count: "exact", head: true })
+        .eq("status", "pending");
+
+    res.json({
+        users: usersCount || 0,
+        accounts: accountsCount || 0,
+        orders: ordersCount || 0,
+        pendingPayouts: pendingPayoutsCount || 0
+    });
+});
+
 // START SERVER
 const port = process.env.PORT || 5000;
 app.listen(port, "0.0.0.0", () => {
