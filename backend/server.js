@@ -655,6 +655,17 @@ app.post("/purchase-account", async (req, res) => {
         });
     }
 
+    // CREATE ORDER RECORD
+    await supabase
+        .from("orders")
+        .insert([{
+            user_email: email,
+            account_name,
+            amount: balance,
+            status: "active",
+            payment_status: "paid"
+        }]);
+
     const { data: rules } = await supabase
         .from("challenge_rules")
         .select("*")
@@ -696,6 +707,28 @@ app.post("/purchase-account", async (req, res) => {
         message: "Account purchased successfully",
         login
     });
+});
+
+// GET ORDERS
+app.get("/orders", async (req, res) => {
+    const { email } = req.query;
+
+    let query = supabase
+        .from("orders")
+        .select("*")
+        .order("created_at", { ascending: false });
+
+    if (email) {
+        query = query.eq("user_email", email);
+    }
+
+    const { data, error } = await query;
+
+    if (error) {
+        return res.status(500).json({ error: error.message });
+    }
+
+    res.json(data);
 });
 
 // START SERVER
