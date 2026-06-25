@@ -96,6 +96,41 @@ export default function PayoutsPage() {
         return Clock;
     };
 
+    const requestPayout = async () => {
+        const email = localStorage.getItem("userEmail");
+
+        if (!email) {
+            router.push("/login");
+            return;
+        }
+
+        const amount = prompt("Enter payout amount:");
+
+        if (!amount) return;
+
+        const res = await fetch("https://websitepro-d5cu.onrender.com/request-payout", {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json",
+            },
+            body: JSON.stringify({
+                email,
+                amount: Number(amount),
+                method: "bank",
+                note: "User payout request",
+            }),
+        });
+
+        const data = await res.json();
+
+        if (data.success) {
+            alert("Payout request submitted.");
+            location.reload();
+        } else {
+            alert(data.message || "Failed to request payout.");
+        }
+    };
+
     if (loading) {
         return (
             <div className="flex min-h-screen items-center justify-center bg-black">
@@ -130,7 +165,10 @@ export default function PayoutsPage() {
                                 </p>
                             </div>
 
-                            <Button className="rounded-xl bg-purple-500 px-6 py-6 text-white hover:bg-purple-600">
+                            <Button
+                                onClick={requestPayout}
+                                className="rounded-xl bg-purple-500 px-6 py-6 text-white hover:bg-purple-600"
+                            >
                                 Request Payout
                                 <ArrowUpRight className="ml-2 h-4 w-4" />
                             </Button>
