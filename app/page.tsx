@@ -1,5 +1,6 @@
 "use client";
 
+import { useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
 import Link from "next/link";
 import { motion } from "framer-motion";
@@ -35,6 +36,8 @@ import {
 } from "lucide-react";
 
 export default function HomePage() {
+  const router = useRouter();
+
   const [loading, setLoading] = useState(true);
   const [currency, setCurrency] = useState("USD");
   const [selectedProgram, setSelectedProgram] = useState("Step 2");
@@ -178,6 +181,51 @@ export default function HomePage() {
     const data = currencyData[currency];
 
     return `${data.symbol}${Math.round(amount * data.rate).toLocaleString()}`;
+  };
+
+  const purchaseAccount = async (
+    accountSize: string,
+    program: string
+  ) => {
+    const email = localStorage.getItem("userEmail");
+
+    if (!email) {
+      router.push("/login");
+      return;
+    }
+
+    try {
+      const balance = Number(accountSize.replace(/[$,]/g, ""));
+      const step = program === "Step 1" ? 1 : 2;
+
+      const res = await fetch(
+        "https://websitepro-d5cu.onrender.com/purchase-account",
+        {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({
+            email,
+            account_name: `Noor ${accountSize} ${program}`,
+            balance,
+            step,
+          }),
+        }
+      );
+
+      const data = await res.json();
+
+      if (data.success) {
+        alert("Account purchased successfully!");
+        router.push("/accounts");
+      } else {
+        alert(data.message || "Purchase failed.");
+      }
+    } catch (error) {
+      console.error(error);
+      alert("Server error.");
+    }
   };
 
   if (loading) {
@@ -373,8 +421,8 @@ export default function HomePage() {
                 key={program}
                 onClick={() => setSelectedProgram(program)}
                 className={`rounded-xl border px-4 py-2 text-sm font-medium transition ${selectedProgram === program
-                    ? "border-purple-500 bg-purple-500 text-white"
-                    : "border-gray-800 bg-black/40 text-gray-400 hover:border-purple-500/50 hover:text-white"
+                  ? "border-purple-500 bg-purple-500 text-white"
+                  : "border-gray-800 bg-black/40 text-gray-400 hover:border-purple-500/50 hover:text-white"
                   }`}
               >
                 {program}
@@ -390,8 +438,8 @@ export default function HomePage() {
                 <motion.div key={capital.size} initial={{ opacity: 0, y: 18 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.4, delay: i * 0.08 }}>
                   <Card
                     className={`h-full transition-all duration-300 hover:-translate-y-2 hover:shadow-2xl hover:shadow-purple-500/20 ${capital.size === "$100,000"
-                        ? "border-purple-500/60 bg-gradient-to-b from-purple-500/25 via-purple-950/30 to-black"
-                        : "border-purple-500/20 bg-gradient-to-b from-purple-500/10 to-black hover:border-purple-500/50"
+                      ? "border-purple-500/60 bg-gradient-to-b from-purple-500/25 via-purple-950/30 to-black"
+                      : "border-purple-500/20 bg-gradient-to-b from-purple-500/10 to-black hover:border-purple-500/50"
                       }`}
                   >
                     <CardHeader className="space-y-4">
@@ -473,9 +521,12 @@ export default function HomePage() {
                         ))}
                       </div>
 
-                      <Link href="/register" className="block">
-                        <Button className="w-full rounded-xl bg-purple-500 text-white hover:bg-purple-600">Start Challenge</Button>
-                      </Link>
+                      <Button
+                        onClick={() => purchaseAccount(capital.size, selectedProgram)}
+                        className="w-full rounded-xl bg-purple-500 text-white hover:bg-purple-600"
+                      >
+                        Start Challenge
+                      </Button>
                     </CardContent>
                   </Card>
                 </motion.div>
