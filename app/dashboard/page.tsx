@@ -76,6 +76,7 @@ export default function DashboardPage() {
     const [activeChallenge, setActiveChallenge] = useState<Challenge | null>(null);
     const [totalProfit, setTotalProfit] = useState(0);
     const [winRate, setWinRate] = useState(0);
+    const [accounts, setAccounts] = useState<any[]>([]);
 
     useEffect(() => {
         const email = localStorage.getItem("userEmail");
@@ -98,6 +99,18 @@ export default function DashboardPage() {
             const safeTrades = Array.isArray(tradesData) ? tradesData : [];
 
             setTrades(safeTrades);
+
+            const accountsRes = await fetch(
+                `https://websitepro-d5cu.onrender.com/accounts?email=${email}`
+            );
+
+            const accountsData = await accountsRes.json();
+
+            const safeAccounts = Array.isArray(accountsData)
+                ? accountsData
+                : [];
+
+            setAccounts(safeAccounts);
 
             const profit = safeTrades.reduce(
                 (sum: number, trade: Trade) => sum + Number(trade.profit || 0),
@@ -123,7 +136,8 @@ export default function DashboardPage() {
         }
     };
 
-    const currentBalance = activeChallenge?.current_balance || 10000;
+    const currentBalance =
+        accounts[0]?.balance || activeChallenge?.current_balance || 10000;
     const currentProfit = activeChallenge?.current_profit || 0;
     const targetProfit = activeChallenge?.target_profit || 10;
     const remainingTarget = Math.max(targetProfit - currentProfit, 0);
