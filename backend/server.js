@@ -731,6 +731,65 @@ app.get("/orders", async (req, res) => {
     res.json(data);
 });
 
+// REQUEST PAYOUT
+app.post("/request-payout", async (req, res) => {
+    const { email, amount, method, note } = req.body;
+
+    if (!email || !amount) {
+        return res.status(400).json({
+            success: false,
+            message: "Missing payout data"
+        });
+    }
+
+    const { error } = await supabase
+        .from("payouts")
+        .insert([{
+            user_email: email,
+            amount,
+            method: method || "bank",
+            note: note || "",
+            status: "pending"
+        }]);
+
+    if (error) {
+        return res.status(500).json({
+            success: false,
+            message: error.message
+        });
+    }
+
+    res.json({
+        success: true,
+        message: "Payout request submitted."
+    });
+});
+
+// GET PAYOUTS
+app.get("/payouts", async (req, res) => {
+    const { email } = req.query;
+
+    let query = supabase
+        .from("payouts")
+        .select("*")
+        .order("created_at", { ascending: false });
+
+    if (email) {
+        query = query.eq("user_email", email);
+    }
+
+    const { data, error } = await query;
+
+    if (error) {
+        return res.status(500).json({
+            success: false,
+            message: error.message
+        });
+    }
+
+    res.json(data);
+});
+
 // START SERVER
 const port = process.env.PORT || 5000;
 app.listen(port, "0.0.0.0", () => {
