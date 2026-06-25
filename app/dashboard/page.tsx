@@ -137,7 +137,7 @@ export default function DashboardPage() {
     };
 
     const currentBalance =
-        accounts[0]?.balance || activeChallenge?.current_balance || 10000;
+        Number(accounts[0]?.balance || activeChallenge?.current_balance || 10000);
     const currentProfit = activeChallenge?.current_profit || 0;
     const targetProfit = activeChallenge?.target_profit || 10;
     const remainingTarget = Math.max(targetProfit - currentProfit, 0);
@@ -270,7 +270,7 @@ export default function DashboardPage() {
                         </div>
                     </section>
 
-                    {activeChallenge && (
+                    {(activeChallenge || accounts.length > 0) && (
                         <Card className="mb-8 border-purple-500/30 bg-purple-500/10">
                             <CardHeader>
                                 <CardTitle className="flex items-center gap-2 text-white">
@@ -281,7 +281,7 @@ export default function DashboardPage() {
 
                             <CardContent className="space-y-5">
                                 <div className="grid grid-cols-2 gap-4 md:grid-cols-4">
-                                    <InfoBox label="Step" value={`Step ${activeChallenge.step}`} />
+                                    <InfoBox label="Step" value={`Step ${activeChallenge?.step || 2}`} />
                                     <InfoBox label="Target Profit" value={`${targetProfit}%`} green />
                                     <InfoBox
                                         label="Current Profit"
