@@ -834,6 +834,23 @@ app.get("/admin/users", async (req, res) => {
     res.json(data);
 });
 
+// ADMIN GET ALL ACCOUNTS
+app.get("/admin/accounts", async (req, res) => {
+    const { data, error } = await supabase
+        .from("accounts")
+        .select("*")
+        .order("created_at", { ascending: false });
+
+    if (error) {
+        return res.status(500).json({
+            success: false,
+            message: error.message
+        });
+    }
+
+    res.json(data);
+});
+
 // START SERVER
 const port = process.env.PORT || 5000;
 app.listen(port, "0.0.0.0", () => {
