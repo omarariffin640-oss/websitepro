@@ -1,5 +1,6 @@
 "use client";
 
+import Link from "next/link";
 import { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
 import Sidebar from "@/components/Sidebar";
@@ -222,10 +223,13 @@ export default function AccountsPage() {
                                             />
                                         </div>
 
-                                        <button className="flex w-full items-center justify-center gap-2 rounded-xl border border-purple-500/30 px-4 py-3 text-sm font-medium text-white transition hover:bg-purple-500/20">
+                                        <Link
+                                            href={`/accounts/${account.id}`}
+                                            className="flex w-full items-center justify-center gap-2 rounded-xl border border-purple-500/30 px-4 py-3 text-sm font-medium text-white transition hover:bg-purple-500/20"
+                                        >
                                             View Details
                                             <ArrowUpRight className="h-4 w-4" />
-                                        </button>
+                                        </Link>
                                     </CardContent>
                                 </Card>
                             ))}
