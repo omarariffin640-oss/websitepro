@@ -606,6 +606,81 @@ app.get("/profile", async (req, res) => {
     res.json(data);
 });
 
+// PURCHASE ACCOUNT
+app.post("/purchase-account", async (req, res) => {
+    const { email, account_name, balance, step } = req.body;
+
+    if (!email || !account_name || !balance || !step) {
+        return res.status(400).json({
+            success: false,
+            message: "Missing purchase data"
+        });
+    }
+
+    const login = "NF" + Math.floor(10000000 + Math.random() * 90000000);
+
+    const { error: accountError } = await supabase
+        .from("accounts")
+        .insert([{
+            user_email: email,
+            account_name,
+            balance,
+            status: "active",
+            platform: "MT5",
+            login,
+            server: "NoorFunding-Demo"
+        }]);
+
+    if (accountError) {
+        return res.status(500).json({
+            success: false,
+            message: accountError.message
+        });
+    }
+
+    const { data: rules } = await supabase
+        .from("challenge_rules")
+        .select("*")
+        .eq("step", step)
+        .single();
+
+    const { error: challengeError } = await supabase
+        .from("challenges")
+        .insert([{
+            user_email: email,
+            step,
+            starting_balance: balance,
+            current_balance: balance,
+            current_profit: 0,
+            target_profit: rules?.target_profit || 10,
+            max_daily_loss: rules?.max_daily_loss || 5,
+            max_total_loss: rules?.max_total_loss || 10,
+            min_trading_days: rules?.min_trading_days || 5,
+            status: "active"
+        }]);
+
+    if (challengeError) {
+        return res.status(500).json({
+            success: false,
+            message: challengeError.message
+        });
+    }
+
+    await supabase
+        .from("users")
+        .update({
+            challenge_status: "Active",
+            account_type: "Challenge Trader"
+        })
+        .eq("email", email);
+
+    res.json({
+        success: true,
+        message: "Account purchased successfully",
+        login
+    });
+});
+
 // START SERVER
 const port = process.env.PORT || 5000;
 app.listen(port, "0.0.0.0", () => {
