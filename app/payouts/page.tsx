@@ -23,7 +23,7 @@ type Payout = {
     created_at: string;
     method: string;
     note: string;
-    status: "pending" | "approved" | "paid";
+    status: "pending" | "approved" | "paid" | "rejected";
 };
 
 export default function PayoutsPage() {
@@ -51,15 +51,15 @@ export default function PayoutsPage() {
 
     const totalPaid = payouts
         .filter((payout) => payout.status === "paid")
-        .reduce((sum, payout) => sum + payout.amount, 0);
+        .reduce((sum, payout) => sum + Number(payout.amount || 0), 0);
 
     const pendingAmount = payouts
         .filter((payout) => payout.status === "pending")
-        .reduce((sum, payout) => sum + payout.amount, 0);
+        .reduce((sum, payout) => sum + Number(payout.amount || 0), 0);
 
     const approvedAmount = payouts
         .filter((payout) => payout.status === "approved")
-        .reduce((sum, payout) => sum + payout.amount, 0);
+        .reduce((sum, payout) => sum + Number(payout.amount || 0), 0);
 
     const getStatusBadge = (status: Payout["status"]) => {
         switch (status) {
@@ -69,18 +69,28 @@ export default function PayoutsPage() {
                         Pending
                     </Badge>
                 );
+
             case "approved":
                 return (
                     <Badge className="border-purple-500/30 bg-purple-500/20 text-purple-300">
                         Approved
                     </Badge>
                 );
+
             case "paid":
                 return (
                     <Badge className="border-green-500/30 bg-green-500/20 text-green-400">
                         Paid
                     </Badge>
                 );
+
+            case "rejected":
+                return (
+                    <Badge className="border-red-500/30 bg-red-500/20 text-red-400">
+                        Rejected
+                    </Badge>
+                );
+
             default:
                 return (
                     <Badge className="border-gray-500/30 bg-gray-500/20 text-gray-400">
@@ -231,7 +241,7 @@ export default function PayoutsPage() {
                                                             </p>
                                                             <p className="flex items-center gap-1 text-sm text-gray-400">
                                                                 <CalendarDays className="h-3.5 w-3.5" />
-                                                                {new Date(payout.created_at).toLocaleDateString()}
+                                                                {payout.created_at ? new Date(payout.created_at).toLocaleDateString() : "-"}
                                                             </p>
                                                         </div>
                                                     </div>
