@@ -44,7 +44,7 @@ export default function UsersPage() {
             return;
         }
 
-        fetch("https://websitepro-d5cu.onrender.com/users")
+        fetch("https://websitepro-d5cu.onrender.com/admin/users")
             .then(res => res.json())
             .then(data => {
                 setUsers(data);
