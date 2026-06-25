@@ -15,16 +15,33 @@ import {
 
 export default function AdminDashboardPage() {
     const router = useRouter();
+
     const [sidebarOpen, setSidebarOpen] = useState(false);
     const [loading, setLoading] = useState(true);
 
+    const [stats, setStats] = useState({
+        users: 0,
+        accounts: 0,
+        orders: 0,
+        pendingPayouts: 0,
+    });
+
     useEffect(() => {
         const email = localStorage.getItem("userEmail");
+
         if (!email) {
             router.push("/login");
             return;
         }
-        setLoading(false);
+
+        fetch("https://websitepro-d5cu.onrender.com/admin/stats")
+            .then((res) => res.json())
+            .then((data) => {
+                setStats(data);
+                setLoading(false);
+            })
+            .catch(() => setLoading(false));
+
     }, [router]);
 
     if (loading) {
@@ -54,10 +71,10 @@ export default function AdminDashboardPage() {
                     </section>
 
                     <div className="grid grid-cols-1 gap-5 md:grid-cols-2 xl:grid-cols-4">
-                        <AdminCard icon={Users} title="Users" value="Manage" />
-                        <AdminCard icon={Wallet} title="Accounts" value="Active" />
-                        <AdminCard icon={ShoppingCart} title="Orders" value="Review" />
-                        <AdminCard icon={DollarSign} title="Payouts" value="Pending" />
+                        <AdminCard icon={Users} title="Users" value={stats.users.toString()} />
+                        <AdminCard icon={Wallet} title="Accounts" value={stats.accounts.toString()} />
+                        <AdminCard icon={ShoppingCart} title="Orders" value={stats.orders.toString()} />
+                        <AdminCard icon={DollarSign} title="Pending Payouts" value={stats.pendingPayouts.toString()} />
                     </div>
 
                     <Card className="mt-8 border-white/10 bg-white/5">
