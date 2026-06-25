@@ -20,7 +20,9 @@ import {
 type Payout = {
     id: number;
     amount: number;
-    date: string;
+    created_at: string;
+    method: string;
+    note: string;
     status: "pending" | "approved" | "paid";
 };
 
@@ -38,13 +40,13 @@ export default function PayoutsPage() {
             return;
         }
 
-        setPayouts([
-            { id: 1, amount: 500, date: "2026-06-01", status: "pending" },
-            { id: 2, amount: 1200, date: "2026-05-15", status: "approved" },
-            { id: 3, amount: 800, date: "2026-05-01", status: "paid" },
-        ]);
-
-        setLoading(false);
+        fetch(`https://websitepro-d5cu.onrender.com/payouts?email=${email}`)
+            .then((res) => res.json())
+            .then((data) => {
+                setPayouts(Array.isArray(data) ? data : []);
+                setLoading(false);
+            })
+            .catch(() => setLoading(false));
     }, [router]);
 
     const totalPaid = payouts
@@ -191,7 +193,7 @@ export default function PayoutsPage() {
                                                             </p>
                                                             <p className="flex items-center gap-1 text-sm text-gray-400">
                                                                 <CalendarDays className="h-3.5 w-3.5" />
-                                                                {new Date(payout.date).toLocaleDateString()}
+                                                                {new Date(payout.created_at).toLocaleDateString()}
                                                             </p>
                                                         </div>
                                                     </div>
