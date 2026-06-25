@@ -885,15 +885,21 @@ app.get("/admin/payouts", async (req, res) => {
     res.json(data);
 });
 
-// ADMIN APPROVE PAYOUT
-app.post("/admin/payouts/:id/approve", async (req, res) => {
+// ADMIN UPDATE PAYOUT STATUS
+app.put("/admin/payouts/:id/status", async (req, res) => {
     const { id } = req.params;
+    const { status } = req.body;
+
+    if (!["pending", "approved", "rejected", "paid"].includes(status)) {
+        return res.status(400).json({
+            success: false,
+            message: "Invalid payout status"
+        });
+    }
 
     const { error } = await supabase
         .from("payouts")
-        .update({
-            status: "approved"
-        })
+        .update({ status })
         .eq("id", id);
 
     if (error) {
@@ -905,31 +911,7 @@ app.post("/admin/payouts/:id/approve", async (req, res) => {
 
     res.json({
         success: true,
-        message: "Payout approved."
-    });
-});
-
-// ADMIN REJECT PAYOUT
-app.post("/admin/payouts/:id/reject", async (req, res) => {
-    const { id } = req.params;
-
-    const { error } = await supabase
-        .from("payouts")
-        .update({
-            status: "rejected"
-        })
-        .eq("id", id);
-
-    if (error) {
-        return res.status(500).json({
-            success: false,
-            message: error.message
-        });
-    }
-
-    res.json({
-        success: true,
-        message: "Payout rejected."
+        message: "Payout status updated"
     });
 });
 
