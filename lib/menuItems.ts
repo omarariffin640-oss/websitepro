@@ -68,6 +68,8 @@ const traderMenus: MenuItem[] = [
 ];
 
 const adminMenus: MenuItem[] = [
+    { section: "Admin", name: "Admin Dashboard", icon: LayoutDashboard, href: "/admin", color: "text-purple-400", adminOnly: true },
+
     {
         section: "Admin",
         name: "User Management",
@@ -79,6 +81,7 @@ const adminMenus: MenuItem[] = [
             { name: "KYC Verification", icon: ShieldCheck, href: "/admin/kyc", color: "text-yellow-400" },
         ],
     },
+    { section: "Admin", name: "Admin Dashboard", icon: LayoutDashboard, href: "/admin", color: "text-purple-400", adminOnly: true },
     { section: "Admin", name: "Account Approval", icon: CheckCircle, href: "/admin/account-approval", color: "text-blue-400", adminOnly: true },
     { section: "Admin", name: "Payout Approval", icon: Wallet, href: "/admin/payout-approval", color: "text-emerald-400", adminOnly: true },
     { section: "Admin", name: "Revenue Reports", icon: BarChart3, href: "/admin/revenue", color: "text-purple-400", adminOnly: true },
