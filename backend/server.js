@@ -610,6 +610,7 @@ app.get("/profile", async (req, res) => {
 app.post("/purchase-account", async (req, res) => {
     const { email, account_name, balance, step } = req.body;
 
+    // 1. Check input
     if (!email || !account_name || !balance || !step) {
         return res.status(400).json({
             success: false,
@@ -617,6 +618,22 @@ app.post("/purchase-account", async (req, res) => {
         });
     }
 
+    // 2. Check duplicate active account
+    const { data: existingAccount } = await supabase
+        .from("accounts")
+        .select("id, account_name, status")
+        .eq("user_email", email)
+        .eq("status", "active")
+        .maybeSingle();
+
+    if (existingAccount) {
+        return res.status(400).json({
+            success: false,
+            message: "You already have an active account"
+        });
+    }
+
+    // 3. Generate login
     const login = "NF" + Math.floor(10000000 + Math.random() * 90000000);
 
     const { error: accountError } = await supabase
