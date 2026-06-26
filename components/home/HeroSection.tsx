@@ -6,10 +6,10 @@ import { Button } from "@/components/ui/button";
 
 export default function HeroSection() {
     return (
-        <section className="relative overflow-hidden bg-black px-4 pb-20 pt-28 text-white">
+        <section className="relative overflow-hidden bg-black px-4 pb-20 text-white">
             <div className="absolute left-1/2 top-0 h-[500px] w-[500px] -translate-x-1/2 rounded-full bg-purple-600/20 blur-[120px]" />
 
-            <div className="relative mx-auto grid max-w-7xl items-center gap-12 lg:grid-cols-2">
+            <div className="relative mx-auto grid max-w-7xl items-center gap-10 lg:min-h-[620px] lg:grid-cols-[1.05fr_0.95fr]">
                 <div>
                     <div className="mb-5 inline-flex rounded-full border border-purple-500/30 bg-purple-500/10 px-4 py-2 text-sm text-purple-300">
                         Trade. Prove. Get Funded.
