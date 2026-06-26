@@ -99,7 +99,7 @@ export default function NewsPage() {
 
     return (
         <div className="min-h-screen bg-black">
-            <Sidebar isOpen={sidebarOpen} onClose={() => setSidebarOpen(false)} />
+            <Sidebar isOpen={sidebarOpen} onClose={() => setSidebarOpen(false)} onOpen={() => setSidebarOpen(true)} />
             <main className="lg:ml-64 pt-2">
                 <div className="p-4 max-w-4xl mx-auto">
                     <div className="flex items-center gap-3 mb-4">

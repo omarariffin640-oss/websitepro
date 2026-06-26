@@ -8,17 +8,20 @@ import {
     ChevronDown,
     ChevronRight,
     LogOut,
+    Menu,
     X,
     User,
 } from "lucide-react";
 import { getMenuItems, MenuItem } from "@/lib/menuItems";
+import { API_BASE } from "@/lib/api";
 
 interface SidebarProps {
-    isOpen: boolean;
-    onClose: () => void;
+    isOpen?: boolean;
+    onClose?: () => void;
+    onOpen?: () => void;
 }
 
-export default function Sidebar({ isOpen, onClose }: SidebarProps) {
+export default function Sidebar({ isOpen = false, onClose, onOpen }: SidebarProps) {
     const router = useRouter();
     const pathname = usePathname();
 
@@ -37,10 +40,10 @@ export default function Sidebar({ isOpen, onClose }: SidebarProps) {
 
         setUserEmail(email);
 
-        fetch("https://websitepro-d5cu.onrender.com/users")
+        fetch(`${API_BASE}/users`)
             .then((res) => res.json())
             .then((users) => {
-                const currentUser = users.find((u: any) => u.email === email);
+                const currentUser = users.find((u: { email: string; role?: string }) => u.email === email);
 
                 if (currentUser) {
                     setUserRole(currentUser.role || "trader");
@@ -79,6 +82,14 @@ export default function Sidebar({ isOpen, onClose }: SidebarProps) {
     const handleLogout = () => {
         localStorage.removeItem("userEmail");
         router.push("/login");
+    };
+
+    const handleClose = () => {
+        onClose?.();
+    };
+
+    const handleOpen = () => {
+        onOpen?.();
     };
 
     const isActive = (href?: string) => {
@@ -127,7 +138,7 @@ export default function Sidebar({ isOpen, onClose }: SidebarProps) {
             <Link
                 key={item.name}
                 href={item.href || "#"}
-                onClick={onClose}
+                onClick={handleClose}
                 className={`flex items-center gap-3 rounded-xl px-3 py-2.5 transition ${itemIsActive
                         ? "border border-purple-500/30 bg-purple-500/20 text-white"
                         : "text-gray-400 hover:bg-purple-500/10 hover:text-white"
@@ -154,10 +165,20 @@ export default function Sidebar({ isOpen, onClose }: SidebarProps) {
 
     return (
         <>
+            {!isOpen && onOpen && (
+                <button
+                    onClick={handleOpen}
+                    className="fixed bottom-6 left-4 z-50 flex h-12 w-12 items-center justify-center rounded-2xl border border-purple-500/30 bg-purple-600 text-white shadow-lg shadow-purple-500/20 transition hover:bg-purple-500 lg:hidden"
+                    aria-label="Open navigation menu"
+                >
+                    <Menu className="h-5 w-5" />
+                </button>
+            )}
+
             {isOpen && (
                 <div
                     className="fixed inset-0 z-50 bg-black/70 backdrop-blur-sm lg:hidden"
-                    onClick={onClose}
+                    onClick={handleClose}
                 />
             )}
 
@@ -166,20 +187,22 @@ export default function Sidebar({ isOpen, onClose }: SidebarProps) {
                     }`}
             >
                 <div className="flex items-center justify-between border-b border-gray-800 px-4 py-4">
-                    <Link href="/dashboard" className="flex items-center gap-2">
+                    <Link href="/dashboard" className="flex items-center gap-2" onClick={handleClose}>
                         <div className="flex h-9 w-9 items-center justify-center rounded-xl bg-purple-500 shadow-lg shadow-purple-500/20">
                             <span className="text-sm font-bold text-white">NF</span>
                         </div>
                         <div>
                             <p className="text-sm font-bold text-white">NOOR FUNDING</p>
-                            <p className="text-[11px] text-gray-500">Trader Area</p>
+                            <p className="text-[11px] text-gray-500">
+                                {userRole === "admin" ? "Admin Area" : "Trader Area"}
+                            </p>
                         </div>
                     </Link>
 
                     <Button
                         variant="ghost"
                         size="icon"
-                        onClick={onClose}
+                        onClick={handleClose}
                         className="text-gray-400 hover:text-white lg:hidden"
                     >
                         <X className="h-5 w-5" />
@@ -205,7 +228,7 @@ export default function Sidebar({ isOpen, onClose }: SidebarProps) {
                 <div className="absolute bottom-16 left-0 right-0 border-t border-gray-800 bg-black/95 p-3">
                     <Link
                         href="/profile"
-                        onClick={onClose}
+                        onClick={handleClose}
                         className="flex items-center gap-3 rounded-xl p-2 transition hover:bg-purple-500/10"
                     >
                         <div className="flex h-10 w-10 items-center justify-center rounded-full bg-purple-500 text-sm font-bold text-white">

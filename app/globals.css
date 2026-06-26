@@ -1,71 +1,114 @@
 @import "tailwindcss";
 
 @theme {
-  --color-background: #000000;
-  --color-foreground: #ffffff;
-  --color-card: #1A1A1A;
-  --color-card-foreground: #ffffff;
-  --color-primary: #8B5CF6;
+  --color-background: #030712;
+  --color-foreground: #f9fafb;
+  --color-card: #111827;
+  --color-card-foreground: #f9fafb;
+  --color-primary: #8b5cf6;
   --color-primary-foreground: #ffffff;
-  --color-border: #2A2A2A;
-  --color-input: #2A2A2A;
-  --color-ring: #8B5CF6;
+  --color-border: #1f2937;
+  --color-input: #1f2937;
+  --color-ring: #8b5cf6;
+  --color-muted: #6b7280;
+  --color-accent: #a855f7;
 }
 
 @layer base {
   * {
-    border-color: var(--color-border, #2A2A2A);
+    border-color: var(--color-border);
   }
 
   body {
-    background-color: var(--color-background, #000000);
-    color: var(--color-foreground, #ffffff);
+    background-color: var(--color-background);
+    color: var(--color-foreground);
+    font-feature-settings: "rlig" 1, "calt" 1;
+  }
+
+  ::selection {
+    background-color: rgb(139 92 246 / 0.35);
+    color: #fff;
   }
 }
 
-/* ===== KELAS KESELAMATAN ===== */
+@layer utilities {
+  .glass-panel {
+    @apply border border-gray-800/80 bg-gray-950/60 backdrop-blur-xl;
+  }
+
+  .gradient-border {
+    background: linear-gradient(#030712, #030712) padding-box,
+      linear-gradient(135deg, rgb(139 92 246 / 0.5), rgb(59 130 246 / 0.2)) border-box;
+    border: 1px solid transparent;
+  }
+
+  .stat-card {
+    @apply rounded-2xl border border-gray-800/80 bg-gradient-to-br from-gray-950/90 to-black p-5 transition hover:border-purple-500/30;
+  }
+
+  .page-container {
+    @apply mx-auto max-w-7xl px-4 pb-12;
+  }
+
+  .animate-fade-in {
+    animation: fadeIn 0.35s ease-out;
+  }
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(6px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* Legacy utility aliases used across pages */
 .bg-darknavy {
   background-color: #0a0e27;
 }
 
 .bg-darkcard {
-  background-color: #1A1A1A;
+  background-color: #111827;
 }
 
 .bg-purple-500 {
-  background-color: #8B5CF6;
+  background-color: #8b5cf6;
 }
 
 .text-purple-400 {
-  color: #A78BFA;
+  color: #a78bfa;
 }
 
 .border-purple-500 {
-  border-color: #8B5CF6;
+  border-color: #8b5cf6;
 }
 
 .text-green-500 {
-  color: #22C55E;
+  color: #22c55e;
 }
 
 .text-red-500 {
-  color: #EF4444;
+  color: #ef4444;
 }
 
 .text-gray-400 {
-  color: #9CA3AF;
+  color: #9ca3af;
 }
 
 .text-gray-500 {
-  color: #6B7280;
+  color: #6b7280;
 }
 
 .border-gray-800 {
-  border-color: #2A2A2A;
+  border-color: #1f2937;
 }
 
 .bg-black {
-  background-color: #000000;
+  background-color: #030712;
 }
 
 .text-white {

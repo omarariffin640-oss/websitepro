@@ -54,7 +54,7 @@ export default function AdminDashboardPage() {
 
     return (
         <div className="min-h-screen bg-black text-white">
-            <Sidebar isOpen={sidebarOpen} onClose={() => setSidebarOpen(false)} />
+            <Sidebar isOpen={sidebarOpen} onClose={() => setSidebarOpen(false)} onOpen={() => setSidebarOpen(true)} />
 
             <main className="pt-6 lg:ml-64">
                 <div className="mx-auto max-w-7xl px-4 pb-12">

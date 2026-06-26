@@ -76,7 +76,7 @@ export default function MarketplacePage() {
 
     return (
         <div className="min-h-screen bg-black">
-            <Sidebar isOpen={sidebarOpen} onClose={() => setSidebarOpen(false)} />
+            <Sidebar isOpen={sidebarOpen} onClose={() => setSidebarOpen(false)} onOpen={() => setSidebarOpen(true)} />
             <main className="lg:ml-64 pt-2">
                 <div className="p-4 max-w-7xl mx-auto">
                     <div className="flex justify-between items-center mb-4">

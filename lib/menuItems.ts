@@ -26,7 +26,7 @@ import {
 
 export type MenuItem = {
     name: string;
-    icon: any;
+    icon: React.ComponentType<{ className?: string }>;
     href?: string;
     color: string;
     section?: string;
@@ -40,6 +40,7 @@ const traderMenus: MenuItem[] = [
     { section: "Main", name: "Orders", icon: ClipboardList, href: "/orders", color: "text-cyan-400" },
     { section: "Main", name: "Challenges", icon: Trophy, href: "/challenges", color: "text-yellow-400" },
     { section: "Main", name: "Instant Account", icon: Zap, href: "/instant-account", color: "text-purple-400" },
+    { section: "Main", name: "Leaderboard", icon: Trophy, href: "/leaderboard", color: "text-amber-400" },
 
     { section: "Trading", name: "Trade Dashboard", icon: TrendingUp, href: "/trade-dashboard", color: "text-green-400" },
     { section: "Trading", name: "Live Prices", icon: TrendingUp, href: "/live-price", color: "text-sky-400" },
@@ -50,6 +51,7 @@ const traderMenus: MenuItem[] = [
         icon: Wallet,
         color: "text-emerald-400",
         children: [
+            { name: "Payout History", icon: Wallet, href: "/payouts", color: "text-emerald-400" },
             { name: "Withdrawal", icon: Wallet, href: "/withdrawal", color: "text-emerald-400" },
             { name: "Certificates", icon: Award, href: "/certificates", color: "text-yellow-400" },
         ],
@@ -81,13 +83,37 @@ const adminMenus: MenuItem[] = [
             { name: "KYC Verification", icon: ShieldCheck, href: "/admin/kyc", color: "text-yellow-400" },
         ],
     },
-    { section: "Admin", name: "Admin Dashboard", icon: LayoutDashboard, href: "/admin", color: "text-purple-400", adminOnly: true },
-    { section: "Admin", name: "Account Approval", icon: CheckCircle, href: "/admin/account-approval", color: "text-blue-400", adminOnly: true },
-    { section: "Admin", name: "Payout Approval", icon: Wallet, href: "/admin/payout-approval", color: "text-emerald-400", adminOnly: true },
-    { section: "Admin", name: "Revenue Reports", icon: BarChart3, href: "/admin/revenue", color: "text-purple-400", adminOnly: true },
+
+    {
+        section: "Admin",
+        name: "Operations",
+        icon: CheckCircle,
+        color: "text-blue-400",
+        adminOnly: true,
+        children: [
+            { name: "All Accounts", icon: FolderKanban, href: "/admin/accounts", color: "text-blue-400" },
+            { name: "All Orders", icon: ClipboardList, href: "/admin/orders", color: "text-cyan-400" },
+            { name: "Account Approval", icon: CheckCircle, href: "/admin/account-approval", color: "text-blue-400" },
+        ],
+    },
+
+    {
+        section: "Admin",
+        name: "Finance",
+        icon: Wallet,
+        color: "text-emerald-400",
+        adminOnly: true,
+        children: [
+            { name: "Payout Management", icon: Wallet, href: "/admin/payouts", color: "text-emerald-400" },
+            { name: "Certificates", icon: Award, href: "/admin/certificates", color: "text-yellow-400" },
+            { name: "Revenue Reports", icon: BarChart3, href: "/admin/revenue", color: "text-purple-400" },
+        ],
+    },
+
     { section: "Admin", name: "Coupons", icon: Tag, href: "/admin/coupons", color: "text-pink-400", adminOnly: true },
     { section: "Admin", name: "Email Templates", icon: Mail, href: "/admin/emails", color: "text-indigo-400", adminOnly: true },
     { section: "Admin", name: "Payment Gateway", icon: CreditCard, href: "/admin/payment", color: "text-cyan-400", adminOnly: true },
+    { section: "Admin", name: "News Management", icon: Megaphone, href: "/admin/news", color: "text-blue-400", adminOnly: true },
     { section: "Admin", name: "Admin Logs", icon: ClipboardList, href: "/admin/logs", color: "text-gray-400", adminOnly: true },
 ];
 

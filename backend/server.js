@@ -39,7 +39,7 @@ app.get("/users", async (req, res) => {
 
     const { data, error } = await supabase
         .from("users")
-        .select("id, email, created_at, name, avatar_url");
+        .select("id, email, created_at, name, avatar_url, role");
 
     if (error) {
         return res.status(500).json({ error: error.message });
@@ -291,6 +291,55 @@ app.get("/accounts", async (req, res) => {
     const { data, error } = await query;
     if (error) return res.status(500).json({ error: error.message });
     res.json(data);
+});
+
+// GET active challenge for a user
+app.get("/active-challenge", async (req, res) => {
+    const { email } = req.query;
+
+    if (!email) {
+        return res.status(400).json({ error: "Email is required" });
+    }
+
+    const { data, error } = await supabase
+        .from("challenges")
+        .select("*")
+        .eq("user_email", email)
+        .eq("status", "active")
+        .order("created_at", { ascending: false })
+        .limit(1)
+        .maybeSingle();
+
+    if (error) {
+        return res.status(500).json({ error: error.message });
+    }
+
+    if (!data) {
+        return res.json(null);
+    }
+
+    res.json(data);
+});
+
+// GET user certificates
+app.get("/certificates", async (req, res) => {
+    const { email } = req.query;
+
+    if (!email) {
+        return res.status(400).json({ error: "Email is required" });
+    }
+
+    const { data, error } = await supabase
+        .from("certificates")
+        .select("*")
+        .eq("user_email", email)
+        .order("created_at", { ascending: false });
+
+    if (error) {
+        return res.status(500).json({ error: error.message });
+    }
+
+    res.json(data || []);
 });
 
 // GET challenge rules

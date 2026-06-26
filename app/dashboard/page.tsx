@@ -4,6 +4,7 @@ import { motion } from "framer-motion";
 import { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
 import Sidebar from "@/components/Sidebar";
+import { API_BASE } from "@/lib/api";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import {
@@ -93,7 +94,7 @@ export default function DashboardPage() {
     const fetchData = async (email: string) => {
         try {
             const tradesRes = await fetch(
-                `https://websitepro-d5cu.onrender.com/trades?email=${email}`
+                `${API_BASE}/trades?email=${email}`
             );
             const tradesData = await tradesRes.json();
             const safeTrades = Array.isArray(tradesData) ? tradesData : [];
@@ -101,7 +102,7 @@ export default function DashboardPage() {
             setTrades(safeTrades);
 
             const accountsRes = await fetch(
-                `https://websitepro-d5cu.onrender.com/accounts?email=${email}`
+                `${API_BASE}/accounts?email=${email}`
             );
 
             const accountsData = await accountsRes.json();
@@ -122,7 +123,7 @@ export default function DashboardPage() {
             setWinRate(safeTrades.length > 0 ? (wins / safeTrades.length) * 100 : 0);
 
             const challengeRes = await fetch(
-                `https://websitepro-d5cu.onrender.com/active-challenge?email=${email}`
+                `${API_BASE}/active-challenge?email=${email}`
             );
             const challengeData = await challengeRes.json();
 
@@ -237,7 +238,7 @@ export default function DashboardPage() {
 
     return (
         <div className="min-h-screen bg-black text-white">
-            <Sidebar isOpen={sidebarOpen} onClose={() => setSidebarOpen(false)} />
+            <Sidebar isOpen={sidebarOpen} onClose={() => setSidebarOpen(false)} onOpen={() => setSidebarOpen(true)} />
 
             <main className="pt-6 lg:ml-64">
                 <div className="mx-auto max-w-7xl px-4 pb-12">

@@ -1,11 +1,15 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import { useRouter } from "next/navigation";
 import Sidebar from "@/components/Sidebar";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
-import { Users, Mail, Shield, Calendar } from "lucide-react";
+import { Input } from "@/components/ui/input";
+import { Button } from "@/components/ui/button";
+import { Users, Mail, Shield, Calendar, Download, Search } from "lucide-react";
+import Papa from "papaparse";
+import { API_BASE } from "@/lib/api";
 
 type User = {
     id: number;
@@ -20,6 +24,7 @@ export default function AdminUsersPage() {
     const router = useRouter();
     const [sidebarOpen, setSidebarOpen] = useState(false);
     const [users, setUsers] = useState<User[]>([]);
+    const [search, setSearch] = useState("");
     const [loading, setLoading] = useState(true);
 
     useEffect(() => {
@@ -29,7 +34,7 @@ export default function AdminUsersPage() {
             return;
         }
 
-        fetch("https://websitepro-d5cu.onrender.com/admin/users")
+        fetch(`${API_BASE}/admin/users`)
             .then((res) => res.json())
             .then((data) => {
                 setUsers(Array.isArray(data) ? data : []);
@@ -37,6 +42,37 @@ export default function AdminUsersPage() {
             })
             .catch(() => setLoading(false));
     }, [router]);
+
+    const filteredUsers = useMemo(() => {
+        const query = search.trim().toLowerCase();
+        if (!query) return users;
+
+        return users.filter(
+            (user) =>
+                user.email.toLowerCase().includes(query) ||
+                (user.name?.toLowerCase().includes(query) ?? false)
+        );
+    }, [users, search]);
+
+    const exportCsv = () => {
+        const csv = Papa.unparse(
+            filteredUsers.map((user) => ({
+                id: user.id,
+                name: user.name || "",
+                email: user.email,
+                role: user.role || "trader",
+                joined: user.created_at || "",
+            }))
+        );
+
+        const blob = new Blob([csv], { type: "text/csv;charset=utf-8;" });
+        const url = URL.createObjectURL(blob);
+        const link = document.createElement("a");
+        link.href = url;
+        link.download = "noor-funding-users.csv";
+        link.click();
+        URL.revokeObjectURL(url);
+    };
 
     if (loading) {
         return (
@@ -48,10 +84,10 @@ export default function AdminUsersPage() {
 
     return (
         <div className="min-h-screen bg-black text-white">
-            <Sidebar isOpen={sidebarOpen} onClose={() => setSidebarOpen(false)} />
+            <Sidebar isOpen={sidebarOpen} onClose={() => setSidebarOpen(false)} onOpen={() => setSidebarOpen(true)} />
 
             <main className="pt-6 lg:ml-64">
-                <div className="mx-auto max-w-7xl px-4 pb-12">
+                <div className="mx-auto max-w-7xl px-4 pb-12 animate-fade-in">
                     <section className="mb-8 rounded-3xl border border-purple-500/20 bg-gradient-to-br from-purple-950/30 via-gray-950 to-black p-6 md:p-8">
                         <div className="mb-3 inline-flex items-center gap-2 rounded-full border border-purple-500/30 bg-purple-500/10 px-3 py-1 text-sm text-purple-300">
                             <Users className="h-4 w-4" />
@@ -60,23 +96,45 @@ export default function AdminUsersPage() {
 
                         <h1 className="text-3xl font-bold md:text-4xl">User Management</h1>
                         <p className="mt-3 text-gray-400">
-                            View all registered traders and admins.
+                            Search, review, and export registered traders and admins.
                         </p>
                     </section>
 
+                    <div className="mb-4 flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
+                        <div className="relative max-w-md flex-1">
+                            <Search className="absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-gray-500" />
+                            <Input
+                                value={search}
+                                onChange={(e) => setSearch(e.target.value)}
+                                placeholder="Search by name or email..."
+                                className="border-gray-800 bg-gray-950/80 pl-10"
+                            />
+                        </div>
+                        <Button
+                            onClick={exportCsv}
+                            variant="outline"
+                            className="border-gray-700 text-gray-200 hover:bg-gray-900"
+                        >
+                            <Download className="mr-2 h-4 w-4" />
+                            Export CSV
+                        </Button>
+                    </div>
+
                     <Card className="border-white/10 bg-white/5">
                         <CardHeader>
-                            <CardTitle className="text-white">All Users ({users.length})</CardTitle>
+                            <CardTitle className="text-white">
+                                All Users ({filteredUsers.length})
+                            </CardTitle>
                         </CardHeader>
 
                         <CardContent>
-                            {users.length === 0 ? (
+                            {filteredUsers.length === 0 ? (
                                 <div className="rounded-xl border border-white/10 bg-black/40 p-6 text-center text-gray-400">
                                     No users found.
                                 </div>
                             ) : (
                                 <div className="space-y-3">
-                                    {users.map((user) => (
+                                    {filteredUsers.map((user) => (
                                         <div
                                             key={user.id}
                                             className="flex flex-col gap-4 rounded-xl border border-white/10 bg-black/40 p-4 md:flex-row md:items-center md:justify-between"
@@ -134,7 +192,7 @@ function Info({
     label,
     value,
 }: {
-    icon: any;
+    icon: React.ComponentType<{ className?: string }>;
     label: string;
     value: string;
 }) {
