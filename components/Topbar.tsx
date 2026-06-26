@@ -11,7 +11,6 @@ import {
     Globe,
     Sun,
     Moon,
-    LayoutDashboard,
 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import NotificationBell from "@/components/NotificationBell";
@@ -34,10 +33,14 @@ export default function Topbar() {
         { label: "Home", href: "/" },
         { label: "Challenges", href: "/challenges", hasDropdown: true },
         { label: "Instant", href: "/instant-account" },
-        { label: "Payouts", href: "/payouts" },
         { label: "Marketplace", href: "/marketplace" },
         { label: "Blog", href: "/blog" },
         { label: "FAQ", href: "/faq" },
+    ];
+
+    const mobileLoggedInLinks = [
+        { label: "Profile", href: "/profile" },
+        { label: "Settings", href: "/settings" },
     ];
 
     return (
@@ -66,40 +69,6 @@ export default function Topbar() {
                                     {link.hasDropdown && <ChevronDown className="h-3.5 w-3.5" />}
                                 </Link>
                             ))}
-                        </nav>
-                    )}
-
-                    {userEmail && (
-                        <nav className="hidden items-center gap-5 lg:flex">
-                            <Link
-                                href="/dashboard"
-                                className={`flex items-center gap-1.5 text-sm font-medium transition hover:text-white ${pathname === "/dashboard" ? "text-purple-400" : "text-gray-300"
-                                    }`}
-                            >
-                                <LayoutDashboard className="h-4 w-4" />
-                                Dashboard
-                            </Link>
-                            <Link
-                                href="/accounts"
-                                className={`text-sm font-medium transition hover:text-white ${pathname.startsWith("/accounts") ? "text-purple-400" : "text-gray-300"
-                                    }`}
-                            >
-                                Accounts
-                            </Link>
-                            <Link
-                                href="/challenges"
-                                className={`text-sm font-medium transition hover:text-white ${pathname === "/challenges" ? "text-purple-400" : "text-gray-300"
-                                    }`}
-                            >
-                                Challenges
-                            </Link>
-                            <Link
-                                href="/payouts"
-                                className={`text-sm font-medium transition hover:text-white ${pathname.startsWith("/payouts") || pathname.startsWith("/withdrawal") ? "text-purple-400" : "text-gray-300"
-                                    }`}
-                            >
-                                Payouts
-                            </Link>
                         </nav>
                     )}
 
@@ -137,11 +106,7 @@ export default function Topbar() {
                             className="flex h-9 w-9 items-center justify-center rounded-lg border border-gray-800 bg-gray-900/70 text-gray-300 transition hover:border-purple-500/40 hover:text-white"
                             aria-label="Toggle theme"
                         >
-                            {theme === "dark" ? (
-                                <Sun className="h-4 w-4" />
-                            ) : (
-                                <Moon className="h-4 w-4" />
-                            )}
+                            {theme === "dark" ? <Sun className="h-4 w-4" /> : <Moon className="h-4 w-4" />}
                         </button>
 
                         {userEmail ? (
@@ -160,10 +125,7 @@ export default function Topbar() {
                             !isAuthPage && (
                                 <>
                                     <Link href="/login">
-                                        <Button
-                                            variant="ghost"
-                                            className="text-sm text-gray-300 hover:text-white"
-                                        >
+                                        <Button variant="ghost" className="text-sm text-gray-300 hover:text-white">
                                             Login
                                         </Button>
                                     </Link>
@@ -191,16 +153,7 @@ export default function Topbar() {
             {isOpen && (
                 <div className="fixed left-0 right-0 top-[112px] z-50 border-b border-gray-800 bg-black/95 p-4 backdrop-blur-xl lg:hidden">
                     <div className="flex flex-col gap-3">
-                        {(userEmail
-                            ? [
-                                { label: "Dashboard", href: "/dashboard" },
-                                { label: "Accounts", href: "/accounts" },
-                                { label: "Challenges", href: "/challenges" },
-                                { label: "Payouts", href: "/payouts" },
-                                { label: "Profile", href: "/profile" },
-                            ]
-                            : navLinks
-                        ).map((link) => (
+                        {(userEmail ? mobileLoggedInLinks : navLinks).map((link) => (
                             <Link
                                 key={link.label}
                                 href={link.href}
@@ -224,11 +177,7 @@ export default function Topbar() {
                                 onClick={() => setTheme(theme === "dark" ? "light" : "dark")}
                                 className="flex flex-1 items-center justify-center gap-2 rounded-lg border border-gray-800 bg-gray-900 px-3 py-2 text-sm text-gray-300"
                             >
-                                {theme === "dark" ? (
-                                    <Sun className="h-4 w-4" />
-                                ) : (
-                                    <Moon className="h-4 w-4" />
-                                )}
+                                {theme === "dark" ? <Sun className="h-4 w-4" /> : <Moon className="h-4 w-4" />}
                                 Theme
                             </button>
                         </div>
@@ -236,10 +185,7 @@ export default function Topbar() {
                         {!userEmail && !isAuthPage && (
                             <div className="grid grid-cols-2 gap-2 pt-2">
                                 <Link href="/login" onClick={() => setIsOpen(false)}>
-                                    <Button
-                                        variant="outline"
-                                        className="w-full border-gray-700 text-white hover:bg-gray-900"
-                                    >
+                                    <Button variant="outline" className="w-full border-gray-700 text-white hover:bg-gray-900">
                                         Login
                                     </Button>
                                 </Link>
@@ -250,6 +196,14 @@ export default function Topbar() {
                                     </Button>
                                 </Link>
                             </div>
+                        )}
+
+                        {userEmail && (
+                            <Link href="/profile" onClick={() => setIsOpen(false)}>
+                                <Button className="w-full bg-purple-500 text-white hover:bg-purple-600">
+                                    Profile
+                                </Button>
+                            </Link>
                         )}
                     </div>
                 </div>
