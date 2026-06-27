@@ -34,19 +34,19 @@ export default function ChallengeCard({
 
     return (
         <Card
-            className={`relative overflow-hidden rounded-3xl border transition duration-300 hover:-translate-y-1 hover:shadow-xl ${recommended
+            className={`relative w-full max-w-md overflow-hidden rounded-3xl border transition duration-300 hover:-translate-y-1 hover:shadow-xl ${recommended
                     ? "border-violet-500/40 bg-gradient-to-b from-violet-500/10 to-zinc-950"
                     : "border-white/10 bg-zinc-950/70 hover:border-violet-500/30"
                 }`}
         >
             {recommended && (
-                <div className="absolute -top-3 left-1/2 flex -translate-x-1/2 items-center gap-1 rounded-full bg-violet-600 px-3 py-1 text-xs text-white">
+                <div className="absolute left-1/2 top-4 flex -translate-x-1/2 items-center gap-1 rounded-full bg-violet-600 px-3 py-1 text-xs text-white">
                     <Sparkles className="h-3 w-3" />
                     Recommended
                 </div>
             )}
 
-            <CardHeader>
+            <CardHeader className={recommended ? "pt-14" : "pt-6"}>
                 <div className="mb-4 flex items-center justify-between">
                     <div className="rounded-full bg-violet-500/15 px-3 py-1 text-xs font-medium text-violet-300">
                         Step {challenge.step}
@@ -65,7 +65,6 @@ export default function ChallengeCard({
             </CardHeader>
 
             <CardContent className="space-y-4">
-
                 <RuleRow
                     icon={Target}
                     label="Target Profit"
@@ -93,11 +92,7 @@ export default function ChallengeCard({
                     value={`${challenge.min_trading_days} Days`}
                 />
 
-                <RuleRow
-                    icon={Timer}
-                    label="Trading Period"
-                    value="Unlimited"
-                />
+                <RuleRow icon={Timer} label="Trading Period" value="Unlimited" />
 
                 <div className="rounded-2xl border border-white/10 bg-white/[0.03] p-4">
                     <p className="mb-3 text-xs font-semibold uppercase tracking-wider text-violet-300">
@@ -117,9 +112,7 @@ export default function ChallengeCard({
                     disabled={disabled}
                     className="w-full rounded-xl bg-violet-600 hover:bg-violet-700 disabled:cursor-not-allowed disabled:opacity-50"
                 >
-                    {disabled
-                        ? "Challenge In Progress"
-                        : `Start Step ${challenge.step}`}
+                    {disabled ? "Challenge In Progress" : `Start Step ${challenge.step}`}
                 </Button>
             </CardContent>
         </Card>
