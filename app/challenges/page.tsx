@@ -104,8 +104,8 @@ export default function ChallengesPage() {
                     {message && (
                         <div
                             className={`mb-6 rounded-xl border p-4 ${message.toLowerCase().includes("success")
-                                    ? "border-emerald-500/30 bg-emerald-500/10 text-emerald-300"
-                                    : "border-violet-500/30 bg-violet-500/10 text-violet-200"
+                                ? "border-emerald-500/30 bg-emerald-500/10 text-emerald-300"
+                                : "border-violet-500/30 bg-violet-500/10 text-violet-200"
                                 }`}
                         >
                             {message}
@@ -123,7 +123,7 @@ export default function ChallengesPage() {
                         </p>
                     </div>
 
-                    <div className="grid grid-cols-1 gap-5 md:grid-cols-2 xl:grid-cols-3">
+                    <div className="grid grid-cols-1 justify-items-center gap-5 md:grid-cols-2 xl:grid-cols-3">
                         {challenges.map((challenge) => (
                             <ChallengeCard
                                 key={challenge.step}

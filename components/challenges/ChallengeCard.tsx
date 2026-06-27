@@ -33,88 +33,67 @@ export default function ChallengeCard({
     const recommended = challenge.step === 1;
 
     return (
-        <Card
-            className={`relative w-full max-w-md overflow-hidden rounded-3xl border transition duration-300 hover:-translate-y-1 hover:shadow-xl ${recommended
-                    ? "border-violet-500/40 bg-gradient-to-b from-violet-500/10 to-zinc-950"
-                    : "border-white/10 bg-zinc-950/70 hover:border-violet-500/30"
-                }`}
-        >
+        <div className="relative w-full max-w-md pt-5">
             {recommended && (
-                <div className="absolute left-1/2 top-4 flex -translate-x-1/2 items-center gap-1 rounded-full bg-violet-600 px-3 py-1 text-xs text-white">
+                <div className="absolute left-1/2 top-0 z-20 flex -translate-x-1/2 items-center gap-1 rounded-full bg-violet-600 px-3 py-1 text-xs text-white shadow-lg shadow-violet-500/30">
                     <Sparkles className="h-3 w-3" />
                     Recommended
                 </div>
             )}
 
-            <CardHeader className={recommended ? "pt-14" : "pt-6"}>
-                <div className="mb-4 flex items-center justify-between">
-                    <div className="rounded-full bg-violet-500/15 px-3 py-1 text-xs font-medium text-violet-300">
-                        Step {challenge.step}
+            <Card
+                className={`relative w-full overflow-hidden rounded-3xl border transition duration-300 hover:-translate-y-1 hover:shadow-xl ${recommended
+                        ? "border-violet-500/40 bg-gradient-to-b from-violet-500/10 to-zinc-950"
+                        : "border-white/10 bg-zinc-950/70 hover:border-violet-500/30"
+                    }`}
+            >
+                <CardHeader className="pt-8">
+                    <div className="mb-4 flex items-center justify-between">
+                        <div className="rounded-full bg-violet-500/15 px-3 py-1 text-xs font-medium text-violet-300">
+                            Step {challenge.step}
+                        </div>
+
+                        <Trophy className="h-5 w-5 text-violet-400" />
                     </div>
 
-                    <Trophy className="h-5 w-5 text-violet-400" />
-                </div>
+                    <CardTitle className="text-2xl text-white">
+                        Challenge Step {challenge.step}
+                    </CardTitle>
 
-                <CardTitle className="text-2xl text-white">
-                    Challenge Step {challenge.step}
-                </CardTitle>
-
-                <p className="mt-2 text-sm text-zinc-500">
-                    Professional evaluation with transparent trading rules.
-                </p>
-            </CardHeader>
-
-            <CardContent className="space-y-4">
-                <RuleRow
-                    icon={Target}
-                    label="Target Profit"
-                    value={`${challenge.target_profit}%`}
-                    valueClass="text-emerald-400"
-                />
-
-                <RuleRow
-                    icon={ShieldAlert}
-                    label="Daily Loss"
-                    value={`${challenge.max_daily_loss}%`}
-                    valueClass="text-red-400"
-                />
-
-                <RuleRow
-                    icon={ShieldAlert}
-                    label="Overall Loss"
-                    value={`${challenge.max_total_loss}%`}
-                    valueClass="text-red-400"
-                />
-
-                <RuleRow
-                    icon={CalendarDays}
-                    label="Minimum Days"
-                    value={`${challenge.min_trading_days} Days`}
-                />
-
-                <RuleRow icon={Timer} label="Trading Period" value="Unlimited" />
-
-                <div className="rounded-2xl border border-white/10 bg-white/[0.03] p-4">
-                    <p className="mb-3 text-xs font-semibold uppercase tracking-wider text-violet-300">
-                        Included
+                    <p className="mt-2 text-sm text-zinc-500">
+                        Professional evaluation with transparent trading rules.
                     </p>
+                </CardHeader>
 
-                    <div className="space-y-2 text-sm text-zinc-400">
-                        <p>✓ Dashboard Access</p>
-                        <p>✓ Fast Review</p>
-                        <p>✓ Up To 90% Reward Split</p>
-                        <p>✓ Professional Support</p>
+                <CardContent className="space-y-4">
+                    <RuleRow icon={Target} label="Target Profit" value={`${challenge.target_profit}%`} valueClass="text-emerald-400" />
+                    <RuleRow icon={ShieldAlert} label="Daily Loss" value={`${challenge.max_daily_loss}%`} valueClass="text-red-400" />
+                    <RuleRow icon={ShieldAlert} label="Overall Loss" value={`${challenge.max_total_loss}%`} valueClass="text-red-400" />
+                    <RuleRow icon={CalendarDays} label="Minimum Days" value={`${challenge.min_trading_days} Days`} />
+                    <RuleRow icon={Timer} label="Trading Period" value="Unlimited" />
+
+                    <div className="rounded-2xl border border-white/10 bg-white/[0.03] p-4">
+                        <p className="mb-3 text-xs font-semibold uppercase tracking-wider text-violet-300">
+                            Included
+                        </p>
+
+                        <div className="space-y-2 text-sm text-zinc-400">
+                            <p>✓ Dashboard Access</p>
+                            <p>✓ Fast Review</p>
+                            <p>✓ Up To 90% Reward Split</p>
+                            <p>✓ Professional Support</p>
+                        </div>
                     </div>
-                </div>
 
-                <Button
-                    onClick={() => onStart(challenge.step)}
-                    disabled={disabled}
-                    className="w-full rounded-xl bg-violet-600 hover:bg-violet-700 disabled:cursor-not-allowed disabled:opacity-50"
-                >
-                    {disabled ? "Challenge In Progress" : `Start Step ${challenge.step}`}
-                </Button>
-            </CardContent>
-        </Card>
+                    <Button
+                        onClick={() => onStart(challenge.step)}
+                        disabled={disabled}
+                        className="w-full rounded-xl bg-violet-600 hover:bg-violet-700 disabled:cursor-not-allowed disabled:opacity-50"
+                    >
+                        {disabled ? "Challenge In Progress" : `Start Step ${challenge.step}`}
+                    </Button>
+                </CardContent>
+            </Card>
+        </div>
     );
 }
