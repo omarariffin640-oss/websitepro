@@ -1,5 +1,5 @@
 import Link from "next/link";
-import { ArrowRight, Sparkles } from "lucide-react";
+import { ArrowRight, Sparkles, ShieldCheck, Zap, Clock } from "lucide-react";
 import { Button } from "@/components/ui/button";
 
 export default function HomeCTA() {
@@ -40,6 +40,23 @@ export default function HomeCTA() {
                                 View Challenges
                             </Button>
                         </Link>
+                    </div>
+
+                    <div className="mt-8 flex flex-wrap justify-center gap-3 text-sm text-zinc-400">
+                        <span className="inline-flex items-center gap-2 rounded-full border border-white/10 bg-white/[0.03] px-4 py-2">
+                            <ShieldCheck className="h-4 w-4 text-violet-400" />
+                            Secure Checkout
+                        </span>
+
+                        <span className="inline-flex items-center gap-2 rounded-full border border-white/10 bg-white/[0.03] px-4 py-2">
+                            <Zap className="h-4 w-4 text-violet-400" />
+                            Instant Setup
+                        </span>
+
+                        <span className="inline-flex items-center gap-2 rounded-full border border-white/10 bg-white/[0.03] px-4 py-2">
+                            <Clock className="h-4 w-4 text-violet-400" />
+                            24h Support
+                        </span>
                     </div>
                 </div>
             </div>
