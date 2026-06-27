@@ -92,11 +92,11 @@ export default function InstantAccountPage() {
     }
 
     return (
-        <div className="min-h-screen bg-black text-white">
+        <div className="min-h-screen bg-[#050509] text-white">
             <Sidebar isOpen={sidebarOpen} onClose={() => setSidebarOpen(false)} onOpen={() => setSidebarOpen(true)} />
 
-            <main className="pt-6 lg:ml-64">
-                <div className="mx-auto max-w-7xl px-4 pb-12">
+            <main className="pt-8 lg:ml-72">
+                <div className="mx-auto max-w-7xl px-6 pb-12 lg:px-8">
                     <section className="relative mb-8 overflow-hidden rounded-3xl border border-purple-500/20 bg-gradient-to-br from-purple-950/30 via-gray-950 to-black p-6 md:p-8">
                         <div className="absolute -right-20 -top-20 h-72 w-72 rounded-full bg-purple-500/10 blur-3xl" />
                         <div className="absolute -bottom-20 left-10 h-72 w-72 rounded-full bg-blue-500/10 blur-3xl" />
@@ -130,8 +130,8 @@ export default function InstantAccountPage() {
                     {message && (
                         <div
                             className={`mb-6 rounded-xl border p-4 ${message.toLowerCase().includes("success")
-                                    ? "border-green-500/30 bg-green-500/10 text-green-300"
-                                    : "border-red-500/30 bg-red-500/10 text-red-300"
+                                ? "border-green-500/30 bg-green-500/10 text-green-300"
+                                : "border-red-500/30 bg-red-500/10 text-red-300"
                                 }`}
                         >
                             {message}
@@ -165,7 +165,7 @@ export default function InstantAccountPage() {
                                 </CardContent>
                             </Card>
 
-                            <Card className="border-white/10 bg-white/5">
+                            <Card className="border-white/10 bg-zinc-950/70">
                                 <CardHeader>
                                     <CardTitle className="text-white">Account Includes</CardTitle>
                                 </CardHeader>
@@ -205,7 +205,7 @@ export default function InstantAccountPage() {
                                 </CardContent>
                             </Card>
 
-                            <Card className="border-white/10 bg-white/5">
+                            <Card className="border-white/10 bg-zinc-950/70">
                                 <CardHeader>
                                     <CardTitle className="text-white">Why Instant?</CardTitle>
                                 </CardHeader>
