@@ -96,9 +96,9 @@ export default function TradeDashboard() {
     }
 
     return (
-        <div className="min-h-screen bg-black">
+        <div className="min-h-screen bg-[#050509] text-white">
             <Sidebar isOpen={sidebarOpen} onClose={() => setSidebarOpen(false)} onOpen={() => setSidebarOpen(true)} />
-            <main className="lg:ml-64 pt-2">
+            <main className="pt-8 lg:ml-72">
                 <div className="p-3">
                     <h1 className="text-2xl font-bold text-white mb-3">Trade Dashboard</h1>
 
