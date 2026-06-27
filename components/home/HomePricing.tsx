@@ -35,6 +35,20 @@ export default function HomePricing() {
         return plan.noor;
     };
 
+    const getCapitalAmount = (capital: string) => {
+        return Number(capital.replace("$", "").replace("K", "")) * 1000;
+    };
+
+    const formatCapitalPercent = (capital: string, percent: number) => {
+        const amount = (getCapitalAmount(capital) * percent) / 100;
+
+        if (!showAmount) {
+            return `${percent}% / ••••`;
+        }
+
+        return `${percent}% / ${formatPrice(amount)}`;
+    };
+
     const accountName =
         program === "Free Trial"
             ? "Free Trial Account"
@@ -44,12 +58,12 @@ export default function HomePricing() {
                     ? "Noor Funding Account"
                     : `${program} Challenge Account`;
 
-    const rules = (reward: string) => {
+    const rules = (reward: string, capital: string) => {
         if (program === "Free Trial") {
             return [
-                ["Profit Target", "5%"],
-                ["Daily Loss", "5%"],
-                ["Overall Loss", "10%"],
+                ["Profit Target", formatCapitalPercent(capital, 5)],
+                ["Daily Loss", formatCapitalPercent(capital, 5)],
+                ["Overall Loss", formatCapitalPercent(capital, 10)],
                 ["Trading Period", "14 Days"],
                 ["Refund", "No"],
                 ["Reward Split", "Not Eligible"],
@@ -58,9 +72,9 @@ export default function HomePricing() {
 
         if (program === "Step 1") {
             return [
-                ["Profit Target", "10%"],
-                ["Daily Loss", "5%"],
-                ["Overall Loss", "10%"],
+                ["Profit Target", formatCapitalPercent(capital, 10)],
+                ["Daily Loss", formatCapitalPercent(capital, 5)],
+                ["Overall Loss", formatCapitalPercent(capital, 5)],
                 ["Trading Period", "Unlimited"],
                 ["Refund", "Yes"],
                 ["Reward Split", reward],
@@ -69,9 +83,9 @@ export default function HomePricing() {
 
         if (program === "Step 2") {
             return [
-                ["Profit Target", "5%"],
-                ["Daily Loss", "5%"],
-                ["Overall Loss", "10%"],
+                ["Profit Target", formatCapitalPercent(capital, 5)],
+                ["Daily Loss", formatCapitalPercent(capital, 5)],
+                ["Overall Loss", formatCapitalPercent(capital, 10)],
                 ["Trading Period", "Unlimited"],
                 ["Refund", "Yes"],
                 ["Reward Split", reward],
@@ -125,8 +139,8 @@ export default function HomePricing() {
                             key={item}
                             onClick={() => setProgram(item)}
                             className={`rounded-full border px-4 py-2 text-sm transition ${program === item
-                                    ? "border-violet-500/40 bg-violet-500/15 text-white"
-                                    : "border-white/10 bg-white/[0.03] text-zinc-400 hover:border-violet-500/40 hover:text-white"
+                                ? "border-violet-500/40 bg-violet-500/15 text-white"
+                                : "border-white/10 bg-white/[0.03] text-zinc-400 hover:border-violet-500/40 hover:text-white"
                                 }`}
                         >
                             {item}
@@ -165,8 +179,8 @@ export default function HomePricing() {
                             <div
                                 key={plan.capital}
                                 className={`relative rounded-3xl border p-5 transition hover:-translate-y-1 hover:border-violet-500/40 ${plan.popular
-                                        ? "border-violet-500/40 bg-violet-500/10 shadow-2xl shadow-violet-950/30"
-                                        : "border-white/10 bg-zinc-950/70"
+                                    ? "border-violet-500/40 bg-violet-500/10 shadow-2xl shadow-violet-950/30"
+                                    : "border-white/10 bg-zinc-950/70"
                                     }`}
                             >
                                 {plan.popular && (
@@ -206,7 +220,7 @@ export default function HomePricing() {
                                 </div>
 
                                 <div className="mt-6 space-y-3 text-sm">
-                                    {rules(plan.reward).map(([label, value]) => (
+                                    {rules(plan.reward, plan.capital).map(([label, value]) => (
                                         <div key={label} className="flex items-center justify-between gap-3 border-b border-white/5 pb-2">
                                             <span className="text-zinc-500">{label}</span>
                                             <span className="flex items-center gap-1 text-right text-white">
