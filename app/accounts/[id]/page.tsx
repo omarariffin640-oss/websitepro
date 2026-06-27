@@ -91,11 +91,11 @@ export default function AccountDetailsPage() {
     const balance = Number(account.balance || 0);
 
     return (
-        <div className="min-h-screen bg-black text-white">
+        <div className="min-h-screen bg-[#050509] text-white">
             <Sidebar isOpen={sidebarOpen} onClose={() => setSidebarOpen(false)} onOpen={() => setSidebarOpen(true)} />
 
-            <main className="pt-6 lg:ml-64">
-                <div className="mx-auto max-w-7xl px-4 pb-12">
+            <main className="pt-8 lg:ml-72">
+                <div className="mx-auto max-w-7xl px-6 pb-12 lg:px-8">
                     <Link
                         href="/accounts"
                         className="mb-5 inline-flex items-center gap-2 text-sm text-gray-400 hover:text-white"
@@ -142,7 +142,7 @@ export default function AccountDetailsPage() {
                             </CardContent>
                         </Card>
 
-                        <Card className="border-white/10 bg-white/5">
+                        <Card className="border-white/10 bg-zinc-950/70">
                             <CardHeader>
                                 <CardTitle className="text-white">MT5 Access</CardTitle>
                             </CardHeader>
@@ -181,7 +181,7 @@ function StatCard({
     color: string;
 }) {
     return (
-        <Card className="border-white/10 bg-white/5">
+        <Card className="border-white/10 bg-zinc-950/70">
             <CardContent className="p-5">
                 <div className="mb-4 flex h-12 w-12 items-center justify-center rounded-xl bg-purple-500/20">
                     <Icon className={`h-6 w-6 ${color}`} />
