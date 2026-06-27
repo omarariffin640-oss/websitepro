@@ -1,75 +1,40 @@
-"use client";
-
-import { useState } from "react";
-import { ChevronDown, HelpCircle } from "lucide-react";
+import { HelpCircle } from "lucide-react";
 
 export default function HomeFAQ() {
     const faqs = [
-        {
-            q: "How do I get funded?",
-            a: "Choose a challenge, complete the objectives, pass the evaluation, and receive your funded account.",
-        },
-        {
-            q: "How long does payout review take?",
-            a: "Most payout requests are reviewed within 24 hours after submission.",
-        },
-        {
-            q: "Can I trade during news?",
-            a: "Trading rules depend on the selected program. Always check the challenge rules before trading.",
-        },
-        {
-            q: "What platforms are supported?",
-            a: "Platform and server details will be shown inside your dashboard after account activation.",
-        },
-        {
-            q: "Can I have multiple accounts?",
-            a: "Yes, as long as your combined allocation follows Noor Funding account limits.",
-        },
+        ["How do I get funded?", "Choose a challenge, pass the rules, and receive your funded account."],
+        ["Is Free Trial available?", "Yes. Free Trial runs for 14 days and helps traders test the platform."],
+        ["How fast are payouts?", "Most payout requests are reviewed within 24 hours."],
+        ["Can I buy multiple accounts?", "Yes, as long as total allocation follows Noor Funding limits."],
+        ["Do I need KYC?", "KYC may be required before payout approval."],
+        ["Is there a time limit?", "Paid challenges have unlimited trading period."],
+        ["What is profit split?", "Eligible funded traders can receive up to 90% reward split."],
+        ["Can I trade news?", "Rules depend on the program selected. Always check challenge rules."],
+        ["What happens after I pass?", "Your account is reviewed and upgraded based on program requirements."],
     ];
-
-    const [open, setOpen] = useState<number | null>(0);
 
     return (
         <section className="px-4 py-20">
-            <div className="mx-auto max-w-4xl">
-                <div className="mb-12 text-center">
+            <div className="mx-auto max-w-7xl">
+                <div className="mx-auto mb-12 max-w-3xl text-center">
                     <div className="inline-flex items-center gap-2 rounded-full border border-violet-500/20 bg-violet-500/10 px-4 py-2 text-sm text-violet-300">
                         <HelpCircle className="h-4 w-4" />
-                        Frequently Asked Questions
+                        Trader FAQ
                     </div>
 
                     <h2 className="mt-4 text-3xl font-bold text-white md:text-5xl">
-                        Questions traders ask
+                        Frequently asked questions
                     </h2>
-
-                    <p className="mx-auto mt-4 max-w-2xl text-zinc-400">
-                        Quick answers about challenges, payouts, rules and accounts.
-                    </p>
                 </div>
 
-                <div className="space-y-4">
-                    {faqs.map((faq, index) => (
+                <div className="grid gap-5 md:grid-cols-2 xl:grid-cols-3">
+                    {faqs.map(([q, a]) => (
                         <div
-                            key={faq.q}
-                            className="overflow-hidden rounded-2xl border border-white/10 bg-zinc-950/70 transition hover:border-violet-500/30"
+                            key={q}
+                            className="rounded-3xl border border-white/10 bg-zinc-950/70 p-6 transition hover:-translate-y-1 hover:border-violet-500/40 hover:bg-violet-500/5"
                         >
-                            <button
-                                onClick={() => setOpen(open === index ? null : index)}
-                                className="flex w-full items-center justify-between gap-4 p-6 text-left"
-                            >
-                                <span className="font-medium text-white">{faq.q}</span>
-
-                                <ChevronDown
-                                    className={`h-5 w-5 shrink-0 text-violet-400 transition-transform ${open === index ? "rotate-180" : ""
-                                        }`}
-                                />
-                            </button>
-
-                            {open === index && (
-                                <div className="border-t border-white/10 px-6 py-5 text-sm leading-6 text-zinc-400">
-                                    {faq.a}
-                                </div>
-                            )}
+                            <h3 className="text-lg font-semibold text-white">{q}</h3>
+                            <p className="mt-3 text-sm leading-6 text-zinc-500">{a}</p>
                         </div>
                     ))}
                 </div>
