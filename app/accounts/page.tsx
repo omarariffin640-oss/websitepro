@@ -101,11 +101,10 @@ export default function AccountsPage() {
     }
 
     return (
-        <div className="min-h-screen bg-black text-white">
+        <div className="min-h-screen bg-[#050509] text-white">
             <Sidebar isOpen={sidebarOpen} onClose={() => setSidebarOpen(false)} onOpen={() => setSidebarOpen(true)} />
-
-            <main className="pt-6 lg:ml-64">
-                <div className="mx-auto max-w-7xl px-4 pb-12">
+            <main className="pt-8 lg:ml-72">
+                <div className="mx-auto max-w-7xl px-6 pb-12 lg:px-8">
                     <section className="relative mb-8 overflow-hidden rounded-3xl border border-purple-500/20 bg-gradient-to-br from-purple-950/30 via-gray-950 to-black p-6 md:p-8">
                         <div className="absolute -right-20 -top-20 h-72 w-72 rounded-full bg-purple-500/10 blur-3xl" />
                         <div className="absolute -bottom-20 left-10 h-72 w-72 rounded-full bg-blue-500/10 blur-3xl" />
@@ -126,7 +125,7 @@ export default function AccountsPage() {
                                 </p>
                             </div>
 
-                            <div className="rounded-2xl border border-white/10 bg-black/40 p-4 text-sm">
+                            <div className="rounded-2xl border border-white/10 bg-white/[0.03] p-4 text-sm">
                                 <p className="text-gray-400">Total Balance</p>
                                 <p className="mt-1 text-2xl font-bold text-white">
                                     ${totalBalance.toLocaleString()}
@@ -157,7 +156,7 @@ export default function AccountsPage() {
                     </div>
 
                     {accounts.length === 0 ? (
-                        <Card className="border-white/10 bg-white/5">
+                        <Card className="border-white/10 bg-zinc950/70">
                             <CardContent className="p-8 text-center">
                                 <div className="mx-auto mb-4 flex h-16 w-16 items-center justify-center rounded-2xl bg-purple-500/20">
                                     <Wallet className="h-8 w-8 text-purple-400" />
