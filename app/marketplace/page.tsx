@@ -4,6 +4,7 @@ import { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
 
 import Sidebar from "@/components/Sidebar";
+import DashboardTopbar from "@/components/layout/DashboardTopbar";
 import MarketplaceHero from "@/components/marketplace/MarketplaceHero";
 import ProductGrid from "@/components/marketplace/ProductGrid";
 import { MarketplaceProduct } from "@/components/marketplace/ProductCard";
@@ -73,7 +74,13 @@ export default function MarketplacePage() {
 
             <main className="pt-8 lg:ml-72">
                 <div className="mx-auto max-w-7xl px-6 pb-12 lg:px-8">
+                    <DashboardTopbar
+                        title="Marketplace"
+                        description="Browse premium trading accounts, upgrades and services."
+                    />
+
                     <MarketplaceHero />
+
                     <ProductGrid products={products} />
                 </div>
             </main>
