@@ -2,8 +2,7 @@ import type { Metadata } from "next";
 import { Inter } from "next/font/google";
 import "./globals.css";
 import { ThemeProvider } from "./providers";
-import AnnouncementBar from "@/components/AnnouncementBar";
-import Topbar from "@/components/Topbar";
+import AppShell from "@/components/AppShell";
 
 const inter = Inter({ subsets: ["latin"] });
 
@@ -21,11 +20,7 @@ export default function RootLayout({
     <html lang="en" suppressHydrationWarning>
       <body className={`${inter.className} antialiased`}>
         <ThemeProvider>
-          <AnnouncementBar />  {/* Banner - relative */}
-          <Topbar />           {/* Topbar - fixed top-0 */}
-          <main className="pt-[114px]">
-            {children}
-          </main>
+          <AppShell>{children}</AppShell>
         </ThemeProvider>
       </body>
     </html>
