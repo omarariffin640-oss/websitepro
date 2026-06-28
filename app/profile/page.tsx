@@ -4,6 +4,7 @@ import { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
 
 import Sidebar from "@/components/Sidebar";
+import DashboardTopbar from "@/components/layout/DashboardTopbar";
 
 import ProfileHero from "@/components/profile/ProfileHero";
 import ProfileCard from "@/components/profile/ProfileCard";
@@ -168,12 +169,13 @@ export default function ProfilePage() {
 
             <main className="pt-8 lg:ml-72">
                 <div className="mx-auto max-w-7xl px-6 pb-12 lg:px-8">
-
-                    <ProfileHero
-                        profile={profile}
-                        saving={saving}
-                        onSave={saveProfile}
+                    <DashboardTopbar
+                        title="Profile"
+                        description="Manage your personal information, avatar and account details."
+                        userName={profile.name || profile.email.split("@")[0] || "Trader"}
                     />
+
+                    <ProfileHero profile={profile} saving={saving} onSave={saveProfile} />
 
                     {message && (
                         <div className="mb-6 rounded-xl border border-violet-500/30 bg-violet-500/10 p-4 text-violet-200">
@@ -197,7 +199,6 @@ export default function ProfilePage() {
 
                         <ProfileStats />
                     </div>
-
                 </div>
             </main>
         </div>
