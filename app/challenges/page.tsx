@@ -2,11 +2,8 @@
 
 import { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
-
 import Sidebar from "@/components/Sidebar";
-import DashboardTopbar from "@/components/layout/DashboardTopbar";
 import PageSkeleton from "@/components/layout/PageSkeleton";
-
 import ChallengeHero from "@/components/challenges/ChallengeHero";
 import ActiveChallengeCard from "@/components/challenges/ActiveChallengeCard";
 import ChallengeCard, { ChallengeData } from "@/components/challenges/ChallengeCard";
@@ -95,20 +92,15 @@ export default function ChallengesPage() {
                 onOpen={() => setSidebarOpen(true)}
             />
 
-            <main className="pt-[150px] lg:ml-72">
+            <main className="pt-8 lg:ml-72">
                 <div className="mx-auto max-w-7xl px-6 pb-12 lg:px-8">
-                    <DashboardTopbar
-                        title="Challenges"
-                        description="Choose your evaluation account and track your active challenge."
-                    />
-
                     <ChallengeHero hasActiveChallenge={activeChallenge !== null} />
 
                     {message && (
                         <div
                             className={`mb-6 rounded-xl border p-4 ${message.toLowerCase().includes("success")
-                                ? "border-emerald-500/30 bg-emerald-500/10 text-emerald-300"
-                                : "border-violet-500/30 bg-violet-500/10 text-violet-200"
+                                    ? "border-emerald-500/30 bg-emerald-500/10 text-emerald-300"
+                                    : "border-violet-500/30 bg-violet-500/10 text-violet-200"
                                 }`}
                         >
                             {message}
