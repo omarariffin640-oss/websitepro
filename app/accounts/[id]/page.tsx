@@ -2,8 +2,12 @@
 
 import { useEffect, useState } from "react";
 import { useParams, useRouter } from "next/navigation";
+import Link from "next/link";
+
 import Sidebar from "@/components/Sidebar";
+import DashboardTopbar from "@/components/layout/DashboardTopbar";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+
 import {
     Wallet,
     Server,
@@ -15,7 +19,6 @@ import {
     Calendar,
     ArrowLeft,
 } from "lucide-react";
-import Link from "next/link";
 
 type Account = {
     id: number;
@@ -92,7 +95,11 @@ export default function AccountDetailsPage() {
 
     return (
         <div className="min-h-screen bg-[#050509] text-white">
-            <Sidebar isOpen={sidebarOpen} onClose={() => setSidebarOpen(false)} onOpen={() => setSidebarOpen(true)} />
+            <Sidebar
+                isOpen={sidebarOpen}
+                onClose={() => setSidebarOpen(false)}
+                onOpen={() => setSidebarOpen(true)}
+            />
 
             <main className="pt-8 lg:ml-72">
                 <div className="mx-auto max-w-7xl px-6 pb-12 lg:px-8">
@@ -104,24 +111,10 @@ export default function AccountDetailsPage() {
                         Back to Accounts
                     </Link>
 
-                    <section className="relative mb-8 overflow-hidden rounded-3xl border border-purple-500/20 bg-gradient-to-br from-purple-950/30 via-gray-950 to-black p-6 md:p-8">
-                        <div className="absolute -right-20 -top-20 h-72 w-72 rounded-full bg-purple-500/10 blur-3xl" />
-
-                        <div className="relative z-10">
-                            <div className="mb-3 inline-flex items-center gap-2 rounded-full border border-purple-500/30 bg-purple-500/10 px-3 py-1 text-sm text-purple-300">
-                                <Wallet className="h-4 w-4" />
-                                Account Details
-                            </div>
-
-                            <h1 className="text-3xl font-bold md:text-4xl">
-                                {account.account_name}
-                            </h1>
-
-                            <p className="mt-3 max-w-2xl text-gray-400">
-                                View account login, balance, status, and trading performance.
-                            </p>
-                        </div>
-                    </section>
+                    <DashboardTopbar
+                        title={account.account_name}
+                        description="View account login, balance, status and trading performance."
+                    />
 
                     <div className="mb-8 grid grid-cols-1 gap-5 md:grid-cols-4">
                         <StatCard icon={Wallet} title="Balance" value={`$${balance.toLocaleString()}`} color="text-purple-400" />
@@ -154,11 +147,7 @@ export default function AccountDetailsPage() {
                                 <InfoRow
                                     icon={Calendar}
                                     label="Created"
-                                    value={
-                                        account.created_at
-                                            ? new Date(account.created_at).toLocaleDateString()
-                                            : "-"
-                                    }
+                                    value={account.created_at ? new Date(account.created_at).toLocaleDateString() : "-"}
                                 />
                             </CardContent>
                         </Card>
@@ -169,17 +158,7 @@ export default function AccountDetailsPage() {
     );
 }
 
-function StatCard({
-    icon: Icon,
-    title,
-    value,
-    color,
-}: {
-    icon: any;
-    title: string;
-    value: string;
-    color: string;
-}) {
+function StatCard({ icon: Icon, title, value, color }: any) {
     return (
         <Card className="border-white/10 bg-zinc-950/70">
             <CardContent className="p-5">
@@ -187,23 +166,13 @@ function StatCard({
                     <Icon className={`h-6 w-6 ${color}`} />
                 </div>
                 <p className="text-sm text-gray-400">{title}</p>
-                <p className={`mt-1 text-2xl font-bold capitalize ${color}`}>
-                    {value}
-                </p>
+                <p className={`mt-1 text-2xl font-bold capitalize ${color}`}>{value}</p>
             </CardContent>
         </Card>
     );
 }
 
-function InfoRow({
-    icon: Icon,
-    label,
-    value,
-}: {
-    icon: any;
-    label: string;
-    value: string;
-}) {
+function InfoRow({ icon: Icon, label, value }: any) {
     return (
         <div className="flex items-center justify-between gap-3 rounded-xl border border-white/10 bg-black/40 p-3">
             <div className="flex items-center gap-2 text-gray-400">
