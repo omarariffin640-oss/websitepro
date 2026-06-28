@@ -6,6 +6,7 @@ import { useRouter } from "next/navigation";
 import Sidebar from "@/components/Sidebar";
 import DashboardTopbar from "@/components/layout/DashboardTopbar";
 import PageSkeleton from "@/components/layout/PageSkeleton";
+import EmptyState from "@/components/layout/EmptyState";
 import { API_BASE } from "@/lib/api";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
@@ -347,9 +348,10 @@ export default function DashboardPage() {
 
                             <CardContent>
                                 {trades.length === 0 ? (
-                                    <div className="rounded-xl border border-white/10 bg-black/40 p-6 text-center text-gray-400">
-                                        No trades yet. Start trading to see your performance.
-                                    </div>
+                                    <EmptyState
+                                        title="No trades yet"
+                                        description="Start trading to see your recent trades and performance here."
+                                    />
                                 ) : (
                                     <div className="space-y-3">
                                         {trades.slice(0, 6).map((trade) => (
@@ -368,8 +370,7 @@ export default function DashboardPage() {
                                                     className={`font-bold ${trade.profit >= 0 ? "text-green-400" : "text-red-400"
                                                         }`}
                                                 >
-                                                    {trade.profit >= 0 ? "+" : ""}
-                                                    ${Number(trade.profit).toFixed(2)}
+                                                    {trade.profit >= 0 ? "+" : ""}${Number(trade.profit).toFixed(2)}
                                                 </div>
                                             </div>
                                         ))}
