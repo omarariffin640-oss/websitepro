@@ -3,9 +3,15 @@
 import Link from "next/link";
 import { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
+
 import Sidebar from "@/components/Sidebar";
+import DashboardTopbar from "@/components/layout/DashboardTopbar";
+import PageSkeleton from "@/components/layout/PageSkeleton";
+import EmptyState from "@/components/layout/EmptyState";
+
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
+
 import {
     Wallet,
     Activity,
@@ -42,9 +48,7 @@ export default function AccountsPage() {
 
         fetch(`https://websitepro-d5cu.onrender.com/accounts?email=${email}`)
             .then((res) => res.json())
-            .then((data) => {
-                setAccounts(Array.isArray(data) ? data : []);
-            })
+            .then((data) => setAccounts(Array.isArray(data) ? data : []))
             .catch(() => setAccounts([]))
             .finally(() => setLoading(false));
     }, [router]);
@@ -93,84 +97,35 @@ export default function AccountsPage() {
     };
 
     if (loading) {
-        return (
-            <div className="flex min-h-screen items-center justify-center bg-black">
-                <p className="text-gray-400">Loading accounts...</p>
-            </div>
-        );
+        return <PageSkeleton />;
     }
 
     return (
         <div className="min-h-screen bg-[#050509] text-white">
-            <Sidebar isOpen={sidebarOpen} onClose={() => setSidebarOpen(false)} onOpen={() => setSidebarOpen(true)} />
+            <Sidebar
+                isOpen={sidebarOpen}
+                onClose={() => setSidebarOpen(false)}
+                onOpen={() => setSidebarOpen(true)}
+            />
+
             <main className="pt-8 lg:ml-72">
                 <div className="mx-auto max-w-7xl px-6 pb-12 lg:px-8">
-                    <section className="relative mb-8 overflow-hidden rounded-3xl border border-purple-500/20 bg-gradient-to-br from-purple-950/30 via-gray-950 to-black p-6 md:p-8">
-                        <div className="absolute -right-20 -top-20 h-72 w-72 rounded-full bg-purple-500/10 blur-3xl" />
-                        <div className="absolute -bottom-20 left-10 h-72 w-72 rounded-full bg-blue-500/10 blur-3xl" />
-
-                        <div className="relative z-10 flex flex-col gap-6 md:flex-row md:items-center md:justify-between">
-                            <div>
-                                <div className="mb-3 inline-flex items-center gap-2 rounded-full border border-purple-500/30 bg-purple-500/10 px-3 py-1 text-sm text-purple-300">
-                                    <Wallet className="h-4 w-4" />
-                                    Account Center
-                                </div>
-
-                                <h1 className="text-3xl font-bold md:text-4xl">
-                                    Trading Accounts
-                                </h1>
-
-                                <p className="mt-3 max-w-2xl text-gray-400">
-                                    View your funded accounts, balances, status, and trading platform access.
-                                </p>
-                            </div>
-
-                            <div className="rounded-2xl border border-white/10 bg-white/[0.03] p-4 text-sm">
-                                <p className="text-gray-400">Total Balance</p>
-                                <p className="mt-1 text-2xl font-bold text-white">
-                                    ${totalBalance.toLocaleString()}
-                                </p>
-                            </div>
-                        </div>
-                    </section>
+                    <DashboardTopbar
+                        title="Trading Accounts"
+                        description="View your funded accounts, balances, status, and trading platform access."
+                    />
 
                     <div className="mb-8 grid grid-cols-1 gap-5 md:grid-cols-3">
-                        <SummaryCard
-                            icon={Wallet}
-                            title="Total Accounts"
-                            value={accounts.length.toString()}
-                            color="text-purple-400"
-                        />
-                        <SummaryCard
-                            icon={CheckCircle}
-                            title="Active Accounts"
-                            value={activeAccounts.toString()}
-                            color="text-green-400"
-                        />
-                        <SummaryCard
-                            icon={TrendingUp}
-                            title="Total Balance"
-                            value={`$${totalBalance.toLocaleString()}`}
-                            color="text-blue-400"
-                        />
+                        <SummaryCard icon={Wallet} title="Total Accounts" value={accounts.length.toString()} color="text-purple-400" />
+                        <SummaryCard icon={CheckCircle} title="Active Accounts" value={activeAccounts.toString()} color="text-green-400" />
+                        <SummaryCard icon={TrendingUp} title="Total Balance" value={`$${totalBalance.toLocaleString()}`} color="text-blue-400" />
                     </div>
 
                     {accounts.length === 0 ? (
-                        <Card className="border-white/10 bg-zinc950/70">
-                            <CardContent className="p-8 text-center">
-                                <div className="mx-auto mb-4 flex h-16 w-16 items-center justify-center rounded-2xl bg-purple-500/20">
-                                    <Wallet className="h-8 w-8 text-purple-400" />
-                                </div>
-
-                                <h2 className="text-2xl font-bold text-white">
-                                    No Accounts Found
-                                </h2>
-
-                                <p className="mx-auto mt-2 max-w-xl text-gray-400">
-                                    You do not have any trading accounts yet. Start a challenge or create an instant account to begin.
-                                </p>
-                            </CardContent>
-                        </Card>
+                        <EmptyState
+                            title="No accounts found"
+                            description="Start a challenge or create an instant account to begin trading."
+                        />
                     ) : (
                         <div className="grid grid-cols-1 gap-6 md:grid-cols-2 xl:grid-cols-3">
                             {accounts.map((account) => (
@@ -183,7 +138,6 @@ export default function AccountsPage() {
                                             <div className="flex h-12 w-12 items-center justify-center rounded-xl bg-purple-500/20">
                                                 <Wallet className="h-6 w-6 text-purple-400" />
                                             </div>
-
                                             {getStatusBadge(account.status)}
                                         </div>
 
@@ -210,16 +164,8 @@ export default function AccountsPage() {
                                         </div>
 
                                         <div className="space-y-3">
-                                            <AccessRow
-                                                icon={KeyRound}
-                                                label="Login"
-                                                value={`NF-${account.id}`}
-                                            />
-                                            <AccessRow
-                                                icon={Activity}
-                                                label="Server"
-                                                value="NoorFunding-Live"
-                                            />
+                                            <AccessRow icon={KeyRound} label="Login" value={`NF-${account.id}`} />
+                                            <AccessRow icon={Activity} label="Server" value="NoorFunding-Live" />
                                         </div>
 
                                         <Link
@@ -240,17 +186,7 @@ export default function AccountsPage() {
     );
 }
 
-function SummaryCard({
-    icon: Icon,
-    title,
-    value,
-    color,
-}: {
-    icon: any;
-    title: string;
-    value: string;
-    color: string;
-}) {
+function SummaryCard({ icon: Icon, title, value, color }: any) {
     return (
         <Card className="border-white/10 bg-white/5 transition hover:border-purple-500/40 hover:bg-purple-500/10">
             <CardContent className="p-5">
@@ -265,15 +201,7 @@ function SummaryCard({
     );
 }
 
-function InfoBox({
-    icon: Icon,
-    label,
-    value,
-}: {
-    icon: any;
-    label: string;
-    value: string;
-}) {
+function InfoBox({ icon: Icon, label, value }: any) {
     return (
         <div className="rounded-xl border border-white/10 bg-black/40 p-3">
             <div className="mb-1 flex items-center gap-2 text-gray-400">
@@ -285,15 +213,7 @@ function InfoBox({
     );
 }
 
-function AccessRow({
-    icon: Icon,
-    label,
-    value,
-}: {
-    icon: any;
-    label: string;
-    value: string;
-}) {
+function AccessRow({ icon: Icon, label, value }: any) {
     return (
         <div className="flex items-center justify-between gap-3 rounded-xl border border-white/10 bg-black/40 p-3">
             <div className="flex items-center gap-2 text-gray-400">
