@@ -4,7 +4,7 @@ import { useEffect, useState } from "react";
 import { useParams, useRouter } from "next/navigation";
 import Link from "next/link";
 
-import Sidebar from "@/components/Sidebar";
+import DashboardShell from "@/components/DashboardShell";
 import DashboardTopbar from "@/components/layout/DashboardTopbar";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 
@@ -38,7 +38,6 @@ export default function AccountDetailsPage() {
     const params = useParams();
     const accountId = params.id as string;
 
-    const [sidebarOpen, setSidebarOpen] = useState(false);
     const [account, setAccount] = useState<Account | null>(null);
     const [loading, setLoading] = useState(true);
 
@@ -72,89 +71,83 @@ export default function AccountDetailsPage() {
 
     if (loading) {
         return (
-            <div className="flex min-h-screen items-center justify-center bg-black">
-                <p className="text-gray-400">Loading account...</p>
-            </div>
+            <DashboardShell>
+                <div className="flex min-h-[300px] items-center justify-center">
+                    <p className="text-gray-400">Loading account...</p>
+                </div>
+            </DashboardShell>
         );
     }
 
     if (!account) {
         return (
-            <div className="flex min-h-screen items-center justify-center bg-black text-white">
-                <div className="text-center">
-                    <p className="mb-4 text-red-400">Account not found.</p>
-                    <Link href="/accounts" className="text-purple-400">
-                        Back to Accounts
-                    </Link>
+            <DashboardShell>
+                <div className="flex min-h-[300px] items-center justify-center text-white">
+                    <div className="text-center">
+                        <p className="mb-4 text-red-400">Account not found.</p>
+                        <Link href="/accounts" className="text-purple-400">
+                            Back to Accounts
+                        </Link>
+                    </div>
                 </div>
-            </div>
+            </DashboardShell>
         );
     }
 
     const balance = Number(account.balance || 0);
 
     return (
-        <div className="min-h-screen bg-[#050509] text-white">
-            <Sidebar
-                isOpen={sidebarOpen}
-                onClose={() => setSidebarOpen(false)}
-                onOpen={() => setSidebarOpen(true)}
+        <DashboardShell>
+            <Link
+                href="/accounts"
+                className="mb-5 inline-flex items-center gap-2 text-sm text-gray-400 hover:text-white"
+            >
+                <ArrowLeft className="h-4 w-4" />
+                Back to Accounts
+            </Link>
+
+            <DashboardTopbar
+                title={account.account_name}
+                description="View account login, balance, status and trading performance."
             />
 
-            <main className="pt-8 lg:ml-72">
-                <div className="mx-auto max-w-7xl px-6 pb-12 lg:px-8">
-                    <Link
-                        href="/accounts"
-                        className="mb-5 inline-flex items-center gap-2 text-sm text-gray-400 hover:text-white"
-                    >
-                        <ArrowLeft className="h-4 w-4" />
-                        Back to Accounts
-                    </Link>
+            <div className="mb-8 grid grid-cols-1 gap-5 md:grid-cols-4">
+                <StatCard icon={Wallet} title="Balance" value={`$${balance.toLocaleString()}`} color="text-purple-400" />
+                <StatCard icon={Activity} title="Status" value={account.status || "active"} color="text-green-400" />
+                <StatCard icon={TrendingUp} title="Profit" value="$0.00" color="text-green-400" />
+                <StatCard icon={Trophy} title="Win Rate" value="0%" color="text-yellow-400" />
+            </div>
 
-                    <DashboardTopbar
-                        title={account.account_name}
-                        description="View account login, balance, status and trading performance."
-                    />
+            <div className="grid grid-cols-1 gap-6 xl:grid-cols-3">
+                <Card className="border-purple-500/20 bg-gradient-to-b from-purple-500/10 to-gray-950 xl:col-span-2">
+                    <CardHeader>
+                        <CardTitle className="text-white">Trading Performance</CardTitle>
+                    </CardHeader>
+                    <CardContent>
+                        <div className="rounded-xl border border-white/10 bg-black/40 p-8 text-center text-gray-400">
+                            No trades yet. Start trading to see performance here.
+                        </div>
+                    </CardContent>
+                </Card>
 
-                    <div className="mb-8 grid grid-cols-1 gap-5 md:grid-cols-4">
-                        <StatCard icon={Wallet} title="Balance" value={`$${balance.toLocaleString()}`} color="text-purple-400" />
-                        <StatCard icon={Activity} title="Status" value={account.status || "active"} color="text-green-400" />
-                        <StatCard icon={TrendingUp} title="Profit" value="$0.00" color="text-green-400" />
-                        <StatCard icon={Trophy} title="Win Rate" value="0%" color="text-yellow-400" />
-                    </div>
+                <Card className="border-white/10 bg-zinc-950/70">
+                    <CardHeader>
+                        <CardTitle className="text-white">MT5 Access</CardTitle>
+                    </CardHeader>
 
-                    <div className="grid grid-cols-1 gap-6 xl:grid-cols-3">
-                        <Card className="xl:col-span-2 border-purple-500/20 bg-gradient-to-b from-purple-500/10 to-gray-950">
-                            <CardHeader>
-                                <CardTitle className="text-white">Trading Performance</CardTitle>
-                            </CardHeader>
-                            <CardContent>
-                                <div className="rounded-xl border border-white/10 bg-black/40 p-8 text-center text-gray-400">
-                                    No trades yet. Start trading to see performance here.
-                                </div>
-                            </CardContent>
-                        </Card>
-
-                        <Card className="border-white/10 bg-zinc-950/70">
-                            <CardHeader>
-                                <CardTitle className="text-white">MT5 Access</CardTitle>
-                            </CardHeader>
-
-                            <CardContent className="space-y-3">
-                                <InfoRow icon={KeyRound} label="Login" value={account.login || `NF-${account.id}`} />
-                                <InfoRow icon={Server} label="Server" value={account.server || "NoorFunding-Demo"} />
-                                <InfoRow icon={Shield} label="Platform" value={account.platform || "MT5"} />
-                                <InfoRow
-                                    icon={Calendar}
-                                    label="Created"
-                                    value={account.created_at ? new Date(account.created_at).toLocaleDateString() : "-"}
-                                />
-                            </CardContent>
-                        </Card>
-                    </div>
-                </div>
-            </main>
-        </div>
+                    <CardContent className="space-y-3">
+                        <InfoRow icon={KeyRound} label="Login" value={account.login || `NF-${account.id}`} />
+                        <InfoRow icon={Server} label="Server" value={account.server || "NoorFunding-Demo"} />
+                        <InfoRow icon={Shield} label="Platform" value={account.platform || "MT5"} />
+                        <InfoRow
+                            icon={Calendar}
+                            label="Created"
+                            value={account.created_at ? new Date(account.created_at).toLocaleDateString() : "-"}
+                        />
+                    </CardContent>
+                </Card>
+            </div>
+        </DashboardShell>
     );
 }
 
