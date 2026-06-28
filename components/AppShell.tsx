@@ -16,7 +16,9 @@ export default function AppShell({ children }: { children: React.ReactNode }) {
         pathname.startsWith("/payouts") ||
         pathname.startsWith("/certificates") ||
         pathname.startsWith("/profile") ||
-        pathname.startsWith("/settings");
+        pathname.startsWith("/settings") ||
+        pathname.startsWith("/blog") ||
+        pathname.startsWith("/faq");
 
     if (isDashboardPage) {
         return <>{children}</>;
