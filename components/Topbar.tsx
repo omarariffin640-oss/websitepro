@@ -32,15 +32,7 @@ export default function Topbar() {
         { label: "FAQ", href: "/faq" },
     ];
 
-    const accountLinks = [
-        { label: "Dashboard", href: "/dashboard" },
-        { label: "Accounts", href: "/accounts" },
-        { label: "Orders", href: "/orders" },
-        { label: "Payouts", href: "/payouts" },
-        { label: "Profile", href: "/profile" },
-    ];
-
-    const links = userEmail ? accountLinks : navLinks;
+    const links = navLinks;
 
     return (
         <>
@@ -63,8 +55,8 @@ export default function Topbar() {
                                     key={link.href}
                                     href={link.href}
                                     className={`rounded-xl px-3 py-2 text-sm font-medium transition ${active
-                                            ? "bg-violet-500/15 text-white"
-                                            : "text-zinc-400 hover:bg-white/5 hover:text-white"
+                                        ? "bg-violet-500/15 text-white"
+                                        : "text-zinc-400 hover:bg-white/5 hover:text-white"
                                         }`}
                                 >
                                     {link.label}
