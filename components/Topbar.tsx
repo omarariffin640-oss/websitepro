@@ -37,7 +37,7 @@ export default function Topbar() {
     return (
         <>
             <header className="fixed left-0 right-0 top-[48px] z-50 border-b border-white/10 bg-black/80 backdrop-blur-xl">
-                <div className="mx-auto flex h-16 max-w-7xl items-center justify-between px-4">
+                <div className="mx-auto grid h-16 max-w-7xl grid-cols-[auto_1fr_auto] items-center gap-6 px-4">
                     <Link href={userEmail ? "/dashboard" : "/"} className="flex items-center gap-2">
                         <div className="flex h-9 w-9 items-center justify-center rounded-xl bg-violet-600 shadow-lg shadow-violet-600/25">
                             <span className="text-sm font-bold text-white">NF</span>
@@ -47,7 +47,7 @@ export default function Topbar() {
                         </span>
                     </Link>
 
-                    <nav className="hidden items-center gap-1 lg:flex">
+                    <nav className="hidden justify-center gap-1 lg:flex">
                         {links.map((link) => {
                             const active = pathname === link.href;
                             return (
@@ -65,13 +65,13 @@ export default function Topbar() {
                         })}
                     </nav>
 
-                    <div className="hidden items-center gap-2 lg:flex">
+                    <div className="hidden items-center justify-end gap-3 lg:flex">
                         <button
                             onClick={() => setLang(lang === "EN" ? "MS" : "EN")}
                             className="flex h-9 items-center gap-2 rounded-xl border border-white/10 bg-white/[0.03] px-3 text-xs text-zinc-300 hover:border-violet-500/40 hover:text-white"
                         >
                             <Globe className="h-4 w-4" />
-                            {lang}
+                            {lang === "EN" ? "English" : "Malay"}
                         </button>
 
                         <button

@@ -26,7 +26,7 @@ export default function AppShell({ children }: { children: React.ReactNode }) {
         <>
             <AnnouncementBar />
             <Topbar />
-            <main className="pt-[114px]">{children}</main>
+            <main className="pt-[140px]">{children}</main>
         </>
     );
 }
