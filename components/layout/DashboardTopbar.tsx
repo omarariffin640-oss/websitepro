@@ -1,7 +1,10 @@
 "use client";
 
+import { useState } from "react";
 import { Bell, ChevronRight } from "lucide-react";
+
 import PromotionBanner from "@/components/layout/PromotionBanner";
+import NotificationDropdown from "@/components/layout/NotificationDropdown";
 
 type Props = {
     title: string;
@@ -14,6 +17,8 @@ export default function DashboardTopbar({
     description,
     userName = "Trader",
 }: Props) {
+    const [showNotifications, setShowNotifications] = useState(false);
+
     return (
         <>
             <header className="mb-6">
@@ -30,16 +35,22 @@ export default function DashboardTopbar({
                         </h1>
 
                         {description && (
-                            <p className="mt-2 max-w-2xl text-zinc-400">
-                                {description}
-                            </p>
+                            <p className="mt-2 max-w-2xl text-zinc-400">{description}</p>
                         )}
                     </div>
 
                     <div className="flex items-center gap-4">
-                        <button className="flex h-11 w-11 items-center justify-center rounded-xl border border-white/10 bg-white/5 transition hover:border-violet-500/40 hover:bg-violet-500/10">
-                            <Bell className="h-5 w-5 text-zinc-300" />
-                        </button>
+                        <div className="relative">
+                            <button
+                                type="button"
+                                onClick={() => setShowNotifications(!showNotifications)}
+                                className="flex h-11 w-11 items-center justify-center rounded-xl border border-white/10 bg-white/5 transition hover:border-violet-500/40 hover:bg-violet-500/10"
+                            >
+                                <Bell className="h-5 w-5 text-zinc-300" />
+                            </button>
+
+                            {showNotifications && <NotificationDropdown />}
+                        </div>
 
                         <div className="flex items-center gap-3 rounded-xl border border-white/10 bg-white/5 px-4 py-2">
                             <div className="flex h-10 w-10 items-center justify-center rounded-full bg-violet-600 font-semibold text-white">
@@ -47,13 +58,8 @@ export default function DashboardTopbar({
                             </div>
 
                             <div>
-                                <p className="text-xs text-zinc-500">
-                                    Welcome Back
-                                </p>
-
-                                <p className="font-medium text-white">
-                                    {userName}
-                                </p>
+                                <p className="text-xs text-zinc-500">Welcome Back</p>
+                                <p className="font-medium text-white">{userName}</p>
                             </div>
                         </div>
                     </div>
