@@ -69,7 +69,7 @@ export default function BlogPage() {
                 onOpen={() => setSidebarOpen(true)}
             />
 
-            <main className="pt-8 lg:ml-72">
+            <main className="pt-[150px] lg:ml-72">
                 <div className="mx-auto max-w-7xl px-6 pb-12 lg:px-8">
                     <DashboardTopbar
                         title="Blog"
