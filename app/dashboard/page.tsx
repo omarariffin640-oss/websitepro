@@ -4,6 +4,7 @@ import { motion } from "framer-motion";
 import { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
 import Sidebar from "@/components/Sidebar";
+import DashboardTopbar from "@/components/layout/DashboardTopbar";
 import { API_BASE } from "@/lib/api";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
@@ -242,34 +243,11 @@ export default function DashboardPage() {
 
             <main className="pt-8 lg:ml-72">
                 <div className="mx-auto max-w-7xl px-6 pb-12 lg:px-8">
-                    <section className="relative mb-8 overflow-hidden rounded-3xl border border-purple-500/20 bg-gradient-to-br from-purple-950/30 via-gray-950 to-black p-6 md:p-8">
-                        <div className="absolute -right-20 -top-20 h-72 w-72 rounded-full bg-purple-500/10 blur-3xl" />
-                        <div className="absolute -bottom-20 left-10 h-72 w-72 rounded-full bg-blue-500/10 blur-3xl" />
-
-                        <div className="relative z-10 flex flex-col gap-6 md:flex-row md:items-center md:justify-between">
-                            <div>
-                                <div className="mb-3 inline-flex items-center gap-2 rounded-full border border-purple-500/30 bg-purple-500/10 px-3 py-1 text-sm text-purple-300">
-                                    <Activity className="h-4 w-4" />
-                                    Trader Dashboard
-                                </div>
-
-                                <h1 className="text-3xl font-bold md:text-4xl">
-                                    Welcome Back, Trader
-                                </h1>
-
-                                <p className="mt-3 max-w-2xl text-gray-400">
-                                    Track your active challenge, account performance, trading history, and payout progress.
-                                </p>
-                            </div>
-
-                            <div className="rounded-2xl border border-white/10 bg-black/40 p-4 text-sm">
-                                <p className="text-gray-400">Signed In</p>
-                                <p className="mt-1 max-w-[220px] truncate font-semibold text-white">
-                                    {userEmail}
-                                </p>
-                            </div>
-                        </div>
-                    </section>
+                    <DashboardTopbar
+                        title="Dashboard"
+                        description="Track your active challenge, account performance and trading history."
+                        userName={userEmail ? userEmail.split("@")[0] : "Trader"}
+                    />
 
                     {(activeChallenge || accounts.length > 0) && (
                         <Card className="mb-8 border-purple-500/30 bg-purple-500/10">
