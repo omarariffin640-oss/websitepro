@@ -5,6 +5,7 @@ import { Bell, ChevronRight } from "lucide-react";
 
 import PromotionBanner from "@/components/layout/PromotionBanner";
 import NotificationDropdown from "@/components/layout/NotificationDropdown";
+import UserProfileDropdown from "@/components/layout/UserProfileDropdown";
 
 type Props = {
     title: string;
@@ -18,6 +19,7 @@ export default function DashboardTopbar({
     userName = "Trader",
 }: Props) {
     const [showNotifications, setShowNotifications] = useState(false);
+    const [showProfile, setShowProfile] = useState(false);
 
     return (
         <>
@@ -52,15 +54,23 @@ export default function DashboardTopbar({
                             {showNotifications && <NotificationDropdown />}
                         </div>
 
-                        <div className="flex items-center gap-3 rounded-xl border border-white/10 bg-white/5 px-4 py-2">
-                            <div className="flex h-10 w-10 items-center justify-center rounded-full bg-violet-600 font-semibold text-white">
-                                {userName.charAt(0).toUpperCase()}
-                            </div>
+                        <div className="relative">
+                            <button
+                                type="button"
+                                onClick={() => setShowProfile(!showProfile)}
+                                className="flex items-center gap-3 rounded-xl border border-white/10 bg-white/5 px-4 py-2 transition hover:border-violet-500/40 hover:bg-violet-500/10"
+                            >
+                                <div className="flex h-10 w-10 items-center justify-center rounded-full bg-violet-600 font-semibold text-white">
+                                    {userName.charAt(0).toUpperCase()}
+                                </div>
 
-                            <div>
-                                <p className="text-xs text-zinc-500">Welcome Back</p>
-                                <p className="font-medium text-white">{userName}</p>
-                            </div>
+                                <div className="text-left">
+                                    <p className="text-xs text-zinc-500">Welcome Back</p>
+                                    <p className="font-medium text-white">{userName}</p>
+                                </div>
+                            </button>
+
+                            {showProfile && <UserProfileDropdown />}
                         </div>
                     </div>
                 </div>
