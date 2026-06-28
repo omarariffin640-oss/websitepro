@@ -3,7 +3,7 @@
 import { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
 
-import Sidebar from "@/components/Sidebar";
+import DashboardShell from "@/components/DashboardShell";
 import DashboardTopbar from "@/components/layout/DashboardTopbar";
 
 import ProfileHero from "@/components/profile/ProfileHero";
@@ -23,7 +23,6 @@ const API_URL = "https://websitepro-d5cu.onrender.com";
 export default function ProfilePage() {
     const router = useRouter();
 
-    const [sidebarOpen, setSidebarOpen] = useState(false);
     const [loading, setLoading] = useState(true);
     const [saving, setSaving] = useState(false);
 
@@ -74,11 +73,7 @@ export default function ProfilePage() {
                 }),
             });
 
-            setProfile({
-                ...profile,
-                name,
-            });
-
+            setProfile({ ...profile, name });
             setMessage("Profile updated successfully.");
         } catch {
             setMessage("Failed to update profile.");
@@ -134,7 +129,6 @@ export default function ProfilePage() {
             });
 
             await fetchProfile(profile.email);
-
             setMessage("Avatar deleted.");
         } catch {
             setMessage("Delete failed.");
@@ -145,62 +139,56 @@ export default function ProfilePage() {
 
     if (loading) {
         return (
-            <div className="flex min-h-screen items-center justify-center bg-black">
-                <p className="text-zinc-400">Loading profile...</p>
-            </div>
+            <DashboardShell>
+                <div className="flex min-h-[300px] items-center justify-center">
+                    <p className="text-zinc-400">Loading profile...</p>
+                </div>
+            </DashboardShell>
         );
     }
 
     if (!profile) {
         return (
-            <div className="flex min-h-screen items-center justify-center bg-black">
-                <p className="text-red-400">Profile not found.</p>
-            </div>
+            <DashboardShell>
+                <div className="flex min-h-[300px] items-center justify-center">
+                    <p className="text-red-400">Profile not found.</p>
+                </div>
+            </DashboardShell>
         );
     }
 
     return (
-        <div className="min-h-screen bg-[#050509] text-white">
-            <Sidebar
-                isOpen={sidebarOpen}
-                onClose={() => setSidebarOpen(false)}
-                onOpen={() => setSidebarOpen(true)}
+        <DashboardShell>
+            <DashboardTopbar
+                title="Profile"
+                description="Manage your personal information, avatar and account details."
+                userName={profile.name || profile.email.split("@")[0] || "Trader"}
             />
 
-            <main className="pt-8 lg:ml-72">
-                <div className="mx-auto max-w-7xl px-6 pb-12 lg:px-8">
-                    <DashboardTopbar
-                        title="Profile"
-                        description="Manage your personal information, avatar and account details."
-                        userName={profile.name || profile.email.split("@")[0] || "Trader"}
-                    />
+            <ProfileHero profile={profile} saving={saving} onSave={saveProfile} />
 
-                    <ProfileHero profile={profile} saving={saving} onSave={saveProfile} />
-
-                    {message && (
-                        <div className="mb-6 rounded-xl border border-violet-500/30 bg-violet-500/10 p-4 text-violet-200">
-                            {message}
-                        </div>
-                    )}
-
-                    <div className="grid grid-cols-1 gap-6 xl:grid-cols-3">
-                        <div className="xl:col-span-2">
-                            <ProfileCard
-                                profile={profile}
-                                name={name}
-                                setName={setName}
-                                avatarFile={avatarFile}
-                                setAvatarFile={setAvatarFile}
-                                saving={saving}
-                                onUpload={uploadAvatar}
-                                onDelete={deleteAvatar}
-                            />
-                        </div>
-
-                        <ProfileStats />
-                    </div>
+            {message && (
+                <div className="mb-6 rounded-xl border border-violet-500/30 bg-violet-500/10 p-4 text-violet-200">
+                    {message}
                 </div>
-            </main>
-        </div>
+            )}
+
+            <div className="grid grid-cols-1 gap-6 xl:grid-cols-3">
+                <div className="xl:col-span-2">
+                    <ProfileCard
+                        profile={profile}
+                        name={name}
+                        setName={setName}
+                        avatarFile={avatarFile}
+                        setAvatarFile={setAvatarFile}
+                        saving={saving}
+                        onUpload={uploadAvatar}
+                        onDelete={deleteAvatar}
+                    />
+                </div>
+
+                <ProfileStats />
+            </div>
+        </DashboardShell>
     );
 }
