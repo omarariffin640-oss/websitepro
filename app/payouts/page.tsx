@@ -4,6 +4,7 @@ import { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
 
 import Sidebar from "@/components/Sidebar";
+import DashboardTopbar from "@/components/layout/DashboardTopbar";
 
 import PayoutHero from "@/components/payouts/PayoutHero";
 import PayoutGrid from "@/components/payouts/PayoutGrid";
@@ -26,9 +27,7 @@ export default function PayoutsPage() {
 
         fetch(`https://websitepro-d5cu.onrender.com/payouts?email=${email}`)
             .then((res) => res.json())
-            .then((data) => {
-                setPayouts(Array.isArray(data) ? data : []);
-            })
+            .then((data) => setPayouts(Array.isArray(data) ? data : []))
             .finally(() => setLoading(false));
     }, [router]);
 
@@ -53,24 +52,20 @@ export default function PayoutsPage() {
         }
 
         const amount = prompt("Enter payout amount:");
-
         if (!amount) return;
 
-        const res = await fetch(
-            "https://websitepro-d5cu.onrender.com/request-payout",
-            {
-                method: "POST",
-                headers: {
-                    "Content-Type": "application/json",
-                },
-                body: JSON.stringify({
-                    email,
-                    amount: Number(amount),
-                    method: "bank",
-                    note: "User payout request",
-                }),
-            }
-        );
+        const res = await fetch("https://websitepro-d5cu.onrender.com/request-payout", {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json",
+            },
+            body: JSON.stringify({
+                email,
+                amount: Number(amount),
+                method: "bank",
+                note: "User payout request",
+            }),
+        });
 
         const data = await res.json();
 
@@ -100,6 +95,10 @@ export default function PayoutsPage() {
 
             <main className="pt-8 lg:ml-72">
                 <div className="mx-auto max-w-7xl px-6 pb-12 lg:px-8">
+                    <DashboardTopbar
+                        title="Payouts"
+                        description="Track payout requests, approvals and payment history."
+                    />
 
                     <PayoutHero
                         totalPaid={totalPaid}
@@ -109,7 +108,6 @@ export default function PayoutsPage() {
                     />
 
                     <PayoutGrid payouts={payouts} />
-
                 </div>
             </main>
         </div>
