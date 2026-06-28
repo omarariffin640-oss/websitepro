@@ -3,8 +3,6 @@
 import { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
 
-import Sidebar from "@/components/Sidebar";
-import DashboardTopbar from "@/components/layout/DashboardTopbar";
 import ChallengeHero from "@/components/challenges/ChallengeHero";
 import ActiveChallengeCard from "@/components/challenges/ActiveChallengeCard";
 import ChallengeCard, { ChallengeData } from "@/components/challenges/ChallengeCard";
@@ -16,7 +14,7 @@ type ActiveChallenge = ChallengeData & {
 
 export default function ChallengesPage() {
     const router = useRouter();
-    const [sidebarOpen, setSidebarOpen] = useState(false);
+
     const [challenges, setChallenges] = useState<ChallengeData[]>([]);
     const [activeChallenge, setActiveChallenge] = useState<ActiveChallenge | null>(null);
     const [loading, setLoading] = useState(true);
@@ -25,14 +23,11 @@ export default function ChallengesPage() {
     useEffect(() => {
         const email = localStorage.getItem("userEmail");
 
-        if (!email) {
-            router.push("/login");
-            return;
-        }
-
         Promise.all([
             fetch("https://websitepro-d5cu.onrender.com/challenge-rules").then((res) => res.json()),
-            fetch(`https://websitepro-d5cu.onrender.com/active-challenge?email=${email}`).then((res) => res.json()),
+            email
+                ? fetch(`https://websitepro-d5cu.onrender.com/active-challenge?email=${email}`).then((res) => res.json())
+                : Promise.resolve(null),
         ])
             .then(([rules, active]) => {
                 setChallenges(Array.isArray(rules) ? rules : []);
@@ -40,11 +35,15 @@ export default function ChallengesPage() {
             })
             .catch(() => setMessage("Failed to load challenge data."))
             .finally(() => setLoading(false));
-    }, [router]);
+    }, []);
 
     const startChallenge = async (step: number) => {
         const email = localStorage.getItem("userEmail");
-        if (!email) return setMessage("Please login first.");
+
+        if (!email) {
+            router.push("/login");
+            return;
+        }
 
         setMessage("Starting challenge...");
 
@@ -86,19 +85,8 @@ export default function ChallengesPage() {
 
     return (
         <div className="min-h-screen bg-[#050509] text-white">
-            <Sidebar
-                isOpen={sidebarOpen}
-                onClose={() => setSidebarOpen(false)}
-                onOpen={() => setSidebarOpen(true)}
-            />
-
-            <main className="pt-8 lg:ml-72">
-                <div className="mx-auto max-w-7xl px-6 pb-12 lg:px-8">
-                    <DashboardTopbar
-                        title="Challenges"
-                        description="Choose your evaluation account and track your active challenge."
-                    />
-
+            <main>
+                <div className="mx-auto max-w-7xl px-6 py-12">
                     <ChallengeHero hasActiveChallenge={activeChallenge !== null} />
 
                     {message && (
