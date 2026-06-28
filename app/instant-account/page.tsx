@@ -4,6 +4,7 @@ import { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
 
 import Sidebar from "@/components/Sidebar";
+import DashboardTopbar from "@/components/layout/DashboardTopbar";
 
 import InstantHero from "@/components/instant/InstantHero";
 import InstantAccountCard from "@/components/instant/InstantAccountCard";
@@ -19,6 +20,7 @@ type InstantAccount = {
 
 export default function InstantAccountPage() {
     const router = useRouter();
+
     const [sidebarOpen, setSidebarOpen] = useState(false);
     const [account, setAccount] = useState<InstantAccount | null>(null);
     const [loading, setLoading] = useState(true);
@@ -49,11 +51,14 @@ export default function InstantAccountPage() {
         const email = localStorage.getItem("userEmail");
 
         try {
-            const res = await fetch("https://websitepro-d5cu.onrender.com/create-instant-account", {
-                method: "POST",
-                headers: { "Content-Type": "application/json" },
-                body: JSON.stringify({ user_email: email }),
-            });
+            const res = await fetch(
+                "https://websitepro-d5cu.onrender.com/create-instant-account",
+                {
+                    method: "POST",
+                    headers: { "Content-Type": "application/json" },
+                    body: JSON.stringify({ user_email: email }),
+                }
+            );
 
             const data = await res.json();
 
@@ -80,24 +85,33 @@ export default function InstantAccountPage() {
     if (loading) {
         return (
             <div className="flex min-h-screen items-center justify-center bg-black">
-                <p className="text-gray-400">Loading instant account...</p>
+                <p className="text-zinc-400">Loading instant account...</p>
             </div>
         );
     }
 
     return (
         <div className="min-h-screen bg-[#050509] text-white">
-            <Sidebar isOpen={sidebarOpen} onClose={() => setSidebarOpen(false)} onOpen={() => setSidebarOpen(true)} />
+            <Sidebar
+                isOpen={sidebarOpen}
+                onClose={() => setSidebarOpen(false)}
+                onOpen={() => setSidebarOpen(true)}
+            />
 
             <main className="pt-8 lg:ml-72">
                 <div className="mx-auto max-w-7xl px-6 pb-12 lg:px-8">
+                    <DashboardTopbar
+                        title="Instant Funding"
+                        description="Create and manage your instant funded trading account."
+                    />
+
                     <InstantHero hasAccount={account !== null} />
 
                     {message && (
                         <div
                             className={`mb-6 rounded-xl border p-4 ${message.toLowerCase().includes("success")
-                                ? "border-green-500/30 bg-green-500/10 text-green-300"
-                                : "border-red-500/30 bg-red-500/10 text-red-300"
+                                    ? "border-emerald-500/30 bg-emerald-500/10 text-emerald-300"
+                                    : "border-red-500/30 bg-red-500/10 text-red-300"
                                 }`}
                         >
                             {message}
