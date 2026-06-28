@@ -5,6 +5,8 @@ import { useRouter } from "next/navigation";
 
 import Sidebar from "@/components/Sidebar";
 import DashboardTopbar from "@/components/layout/DashboardTopbar";
+import PageSkeleton from "@/components/layout/PageSkeleton";
+import EmptyState from "@/components/layout/EmptyState";
 
 import PayoutHero from "@/components/payouts/PayoutHero";
 import PayoutGrid from "@/components/payouts/PayoutGrid";
@@ -78,11 +80,7 @@ export default function PayoutsPage() {
     };
 
     if (loading) {
-        return (
-            <div className="flex min-h-screen items-center justify-center bg-black">
-                <p className="text-zinc-400">Loading payouts...</p>
-            </div>
-        );
+        return <PageSkeleton />;
     }
 
     return (
@@ -107,7 +105,14 @@ export default function PayoutsPage() {
                         onRequestPayout={requestPayout}
                     />
 
-                    <PayoutGrid payouts={payouts} />
+                    {payouts.length === 0 ? (
+                        <EmptyState
+                            title="No payouts yet"
+                            description="Your payout requests and payment history will appear here once available."
+                        />
+                    ) : (
+                        <PayoutGrid payouts={payouts} />
+                    )}
                 </div>
             </main>
         </div>
