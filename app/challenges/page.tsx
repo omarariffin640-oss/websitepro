@@ -4,6 +4,7 @@ import { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
 
 import Sidebar from "@/components/Sidebar";
+import DashboardTopbar from "@/components/layout/DashboardTopbar";
 import ChallengeHero from "@/components/challenges/ChallengeHero";
 import ActiveChallengeCard from "@/components/challenges/ActiveChallengeCard";
 import ChallengeCard, { ChallengeData } from "@/components/challenges/ChallengeCard";
@@ -43,11 +44,7 @@ export default function ChallengesPage() {
 
     const startChallenge = async (step: number) => {
         const email = localStorage.getItem("userEmail");
-
-        if (!email) {
-            setMessage("Please login first.");
-            return;
-        }
+        if (!email) return setMessage("Please login first.");
 
         setMessage("Starting challenge...");
 
@@ -68,9 +65,7 @@ export default function ChallengesPage() {
                 );
                 const refreshData = await refreshRes.json();
 
-                if (refreshData && refreshData.id) {
-                    setActiveChallenge(refreshData);
-                }
+                if (refreshData && refreshData.id) setActiveChallenge(refreshData);
 
                 setTimeout(() => setMessage(""), 3000);
             } else {
@@ -99,13 +94,18 @@ export default function ChallengesPage() {
 
             <main className="pt-8 lg:ml-72">
                 <div className="mx-auto max-w-7xl px-6 pb-12 lg:px-8">
+                    <DashboardTopbar
+                        title="Challenges"
+                        description="Choose your evaluation account and track your active challenge."
+                    />
+
                     <ChallengeHero hasActiveChallenge={activeChallenge !== null} />
 
                     {message && (
                         <div
                             className={`mb-6 rounded-xl border p-4 ${message.toLowerCase().includes("success")
-                                ? "border-emerald-500/30 bg-emerald-500/10 text-emerald-300"
-                                : "border-violet-500/30 bg-violet-500/10 text-violet-200"
+                                    ? "border-emerald-500/30 bg-emerald-500/10 text-emerald-300"
+                                    : "border-violet-500/30 bg-violet-500/10 text-violet-200"
                                 }`}
                         >
                             {message}
@@ -115,9 +115,7 @@ export default function ChallengesPage() {
                     <ActiveChallengeCard challenge={activeChallenge} />
 
                     <div className="mb-6">
-                        <h2 className="text-2xl font-bold text-white">
-                            Available Challenges
-                        </h2>
+                        <h2 className="text-2xl font-bold text-white">Available Challenges</h2>
                         <p className="mt-2 text-zinc-400">
                             Select a challenge step below to begin your evaluation.
                         </p>
