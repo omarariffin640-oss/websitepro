@@ -130,7 +130,7 @@ export default function Sidebar({ isOpen = false, onClose, onOpen }: SidebarProp
 
     if (loading) {
         return (
-            <aside className="fixed left-0 top-0 z-40 h-full w-72 border-r border-white/10 bg-[#050509]/95 pt-[112px] backdrop-blur-xl">
+            <aside className="fixed left-0 top-[112px] z-40 h-[calc(100vh-112px)] w-72 border-r border-white/10 bg-[#050509]/95 backdrop-blur-xl">
                 <div className="p-5 text-sm text-zinc-500">Loading...</div>
             </aside>
         );
@@ -156,7 +156,7 @@ export default function Sidebar({ isOpen = false, onClose, onOpen }: SidebarProp
             )}
 
             <aside
-                className={`fixed left-0 top-0 z-50 h-full w-72 border-r border-white/10 bg-[#050509]/95 pt-[112px] backdrop-blur-xl transition-transform duration-300 lg:z-40 lg:translate-x-0 ${isOpen ? "translate-x-0" : "-translate-x-full"
+                className={`fixed left-0 top-[112px] z-40 h-[calc(100vh-112px)] w-72 border-r border-white/10 bg-[#050509]/95 backdrop-blur-xl transition-transform duration-300 lg:translate-x-0 ${isOpen ? "translate-x-0" : "-translate-x-full"
                     }`}
             >
                 <div className="flex items-center justify-between border-b border-white/10 px-4 py-4">
