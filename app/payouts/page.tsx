@@ -3,7 +3,7 @@
 import { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
 
-import Sidebar from "@/components/Sidebar";
+import DashboardShell from "@/components/DashboardShell";
 import DashboardTopbar from "@/components/layout/DashboardTopbar";
 import PageSkeleton from "@/components/layout/PageSkeleton";
 import EmptyState from "@/components/layout/EmptyState";
@@ -15,7 +15,6 @@ import { Payout } from "@/components/payouts/PayoutCard";
 export default function PayoutsPage() {
     const router = useRouter();
 
-    const [sidebarOpen, setSidebarOpen] = useState(false);
     const [loading, setLoading] = useState(true);
     const [payouts, setPayouts] = useState<Payout[]>([]);
 
@@ -80,41 +79,35 @@ export default function PayoutsPage() {
     };
 
     if (loading) {
-        return <PageSkeleton />;
+        return (
+            <DashboardShell>
+                <PageSkeleton />
+            </DashboardShell>
+        );
     }
 
     return (
-        <div className="min-h-screen bg-[#050509] text-white">
-            <Sidebar
-                isOpen={sidebarOpen}
-                onClose={() => setSidebarOpen(false)}
-                onOpen={() => setSidebarOpen(true)}
+        <DashboardShell>
+            <DashboardTopbar
+                title="Payouts"
+                description="Track payout requests, approvals and payment history."
             />
 
-            <main className="pt-8 lg:ml-72">
-                <div className="mx-auto max-w-7xl px-6 pb-12 lg:px-8">
-                    <DashboardTopbar
-                        title="Payouts"
-                        description="Track payout requests, approvals and payment history."
-                    />
+            <PayoutHero
+                totalPaid={totalPaid}
+                pendingAmount={pendingAmount}
+                approvedAmount={approvedAmount}
+                onRequestPayout={requestPayout}
+            />
 
-                    <PayoutHero
-                        totalPaid={totalPaid}
-                        pendingAmount={pendingAmount}
-                        approvedAmount={approvedAmount}
-                        onRequestPayout={requestPayout}
-                    />
-
-                    {payouts.length === 0 ? (
-                        <EmptyState
-                            title="No payouts yet"
-                            description="Your payout requests and payment history will appear here once available."
-                        />
-                    ) : (
-                        <PayoutGrid payouts={payouts} />
-                    )}
-                </div>
-            </main>
-        </div>
+            {payouts.length === 0 ? (
+                <EmptyState
+                    title="No payouts yet"
+                    description="Your payout requests and payment history will appear here once available."
+                />
+            ) : (
+                <PayoutGrid payouts={payouts} />
+            )}
+        </DashboardShell>
     );
 }
