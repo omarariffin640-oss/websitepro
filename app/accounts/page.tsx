@@ -4,6 +4,8 @@ import Link from "next/link";
 import { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
 
+import AnnouncementBar from "@/components/AnnouncementBar";
+import Topbar from "@/components/Topbar";
 import Sidebar from "@/components/Sidebar";
 import DashboardTopbar from "@/components/layout/DashboardTopbar";
 import PageSkeleton from "@/components/layout/PageSkeleton";
@@ -97,92 +99,118 @@ export default function AccountsPage() {
     };
 
     if (loading) {
-        return <PageSkeleton />;
+        return (
+            <>
+                <AnnouncementBar />
+                <Topbar />
+                <PageSkeleton />
+            </>
+        );
     }
 
     return (
-        <div className="min-h-screen bg-[#050509] text-white">
-            <Sidebar
-                isOpen={sidebarOpen}
-                onClose={() => setSidebarOpen(false)}
-                onOpen={() => setSidebarOpen(true)}
-            />
+        <>
+            <AnnouncementBar />
+            <Topbar />
 
-            <main className="pt-8 lg:ml-72">
-                <div className="mx-auto max-w-7xl px-6 pb-12 lg:px-8">
-                    <DashboardTopbar
-                        title="Trading Accounts"
-                        description="View your funded accounts, balances, status, and trading platform access."
-                    />
+            <div className="min-h-screen bg-[#050509] pt-[114px] text-white">
+                <Sidebar
+                    isOpen={sidebarOpen}
+                    onClose={() => setSidebarOpen(false)}
+                    onOpen={() => setSidebarOpen(true)}
+                />
 
-                    <div className="mb-8 grid grid-cols-1 gap-5 md:grid-cols-3">
-                        <SummaryCard icon={Wallet} title="Total Accounts" value={accounts.length.toString()} color="text-purple-400" />
-                        <SummaryCard icon={CheckCircle} title="Active Accounts" value={activeAccounts.toString()} color="text-green-400" />
-                        <SummaryCard icon={TrendingUp} title="Total Balance" value={`$${totalBalance.toLocaleString()}`} color="text-blue-400" />
-                    </div>
-
-                    {accounts.length === 0 ? (
-                        <EmptyState
-                            title="No accounts found"
-                            description="Start a challenge or create an instant account to begin trading."
+                <main className="pt-8 lg:ml-72">
+                    <div className="mx-auto max-w-7xl px-6 pb-12 lg:px-8">
+                        <DashboardTopbar
+                            title="Trading Accounts"
+                            description="View your funded accounts, balances, status, and trading platform access."
                         />
-                    ) : (
-                        <div className="grid grid-cols-1 gap-6 md:grid-cols-2 xl:grid-cols-3">
-                            {accounts.map((account) => (
-                                <Card
-                                    key={account.id}
-                                    className="border-purple-500/20 bg-gradient-to-b from-purple-500/10 to-gray-950 transition hover:-translate-y-1 hover:border-purple-500/50 hover:shadow-xl hover:shadow-purple-500/10"
-                                >
-                                    <CardHeader>
-                                        <div className="mb-4 flex items-start justify-between gap-3">
-                                            <div className="flex h-12 w-12 items-center justify-center rounded-xl bg-purple-500/20">
-                                                <Wallet className="h-6 w-6 text-purple-400" />
-                                            </div>
-                                            {getStatusBadge(account.status)}
-                                        </div>
 
-                                        <CardTitle className="text-white">
-                                            {account.account_name || `Account #${account.id}`}
-                                        </CardTitle>
-
-                                        <p className="text-sm text-gray-400">
-                                            Noor Funding Trading Account
-                                        </p>
-                                    </CardHeader>
-
-                                    <CardContent className="space-y-4">
-                                        <div className="rounded-xl border border-white/10 bg-black/40 p-4">
-                                            <p className="text-sm text-gray-400">Balance</p>
-                                            <p className="mt-1 text-3xl font-bold text-white">
-                                                ${Number(account.balance || 0).toLocaleString()}
-                                            </p>
-                                        </div>
-
-                                        <div className="grid grid-cols-2 gap-3">
-                                            <InfoBox icon={Server} label="Platform" value="MT5" />
-                                            <InfoBox icon={Shield} label="Leverage" value="1:100" />
-                                        </div>
-
-                                        <div className="space-y-3">
-                                            <AccessRow icon={KeyRound} label="Login" value={`NF-${account.id}`} />
-                                            <AccessRow icon={Activity} label="Server" value="NoorFunding-Live" />
-                                        </div>
-
-                                        <Link
-                                            href={`/accounts/${account.id}`}
-                                            className="flex w-full items-center justify-center gap-2 rounded-xl border border-purple-500/30 px-4 py-3 text-sm font-medium text-white transition hover:bg-purple-500/20"
-                                        >
-                                            View Details
-                                            <ArrowUpRight className="h-4 w-4" />
-                                        </Link>
-                                    </CardContent>
-                                </Card>
-                            ))}
+                        <div className="mb-8 grid grid-cols-1 gap-5 md:grid-cols-3">
+                            <SummaryCard
+                                icon={Wallet}
+                                title="Total Accounts"
+                                value={accounts.length.toString()}
+                                color="text-purple-400"
+                            />
+                            <SummaryCard
+                                icon={CheckCircle}
+                                title="Active Accounts"
+                                value={activeAccounts.toString()}
+                                color="text-green-400"
+                            />
+                            <SummaryCard
+                                icon={TrendingUp}
+                                title="Total Balance"
+                                value={`$${totalBalance.toLocaleString()}`}
+                                color="text-blue-400"
+                            />
                         </div>
-                    )}
-                </div>
-            </main>
-        </div>
+
+                        {accounts.length === 0 ? (
+                            <EmptyState
+                                title="No accounts found"
+                                description="Start a challenge or create an instant account to begin trading."
+                            />
+                        ) : (
+                            <div className="grid grid-cols-1 gap-6 md:grid-cols-2 xl:grid-cols-3">
+                                {accounts.map((account) => (
+                                    <Card
+                                        key={account.id}
+                                        className="border-purple-500/20 bg-gradient-to-b from-purple-500/10 to-gray-950 transition hover:-translate-y-1 hover:border-purple-500/50 hover:shadow-xl hover:shadow-purple-500/10"
+                                    >
+                                        <CardHeader>
+                                            <div className="mb-4 flex items-start justify-between gap-3">
+                                                <div className="flex h-12 w-12 items-center justify-center rounded-xl bg-purple-500/20">
+                                                    <Wallet className="h-6 w-6 text-purple-400" />
+                                                </div>
+                                                {getStatusBadge(account.status)}
+                                            </div>
+
+                                            <CardTitle className="text-white">
+                                                {account.account_name || `Account #${account.id}`}
+                                            </CardTitle>
+
+                                            <p className="text-sm text-gray-400">
+                                                Noor Funding Trading Account
+                                            </p>
+                                        </CardHeader>
+
+                                        <CardContent className="space-y-4">
+                                            <div className="rounded-xl border border-white/10 bg-black/40 p-4">
+                                                <p className="text-sm text-gray-400">Balance</p>
+                                                <p className="mt-1 text-3xl font-bold text-white">
+                                                    ${Number(account.balance || 0).toLocaleString()}
+                                                </p>
+                                            </div>
+
+                                            <div className="grid grid-cols-2 gap-3">
+                                                <InfoBox icon={Server} label="Platform" value="MT5" />
+                                                <InfoBox icon={Shield} label="Leverage" value="1:100" />
+                                            </div>
+
+                                            <div className="space-y-3">
+                                                <AccessRow icon={KeyRound} label="Login" value={`NF-${account.id}`} />
+                                                <AccessRow icon={Activity} label="Server" value="NoorFunding-Live" />
+                                            </div>
+
+                                            <Link
+                                                href={`/accounts/${account.id}`}
+                                                className="flex w-full items-center justify-center gap-2 rounded-xl border border-purple-500/30 px-4 py-3 text-sm font-medium text-white transition hover:bg-purple-500/20"
+                                            >
+                                                View Details
+                                                <ArrowUpRight className="h-4 w-4" />
+                                            </Link>
+                                        </CardContent>
+                                    </Card>
+                                ))}
+                            </div>
+                        )}
+                    </div>
+                </main>
+            </div>
+        </>
     );
 }
 
@@ -193,7 +221,6 @@ function SummaryCard({ icon: Icon, title, value, color }: any) {
                 <div className="mb-4 flex h-12 w-12 items-center justify-center rounded-xl bg-purple-500/20">
                     <Icon className={`h-6 w-6 ${color}`} />
                 </div>
-
                 <p className="text-sm text-gray-400">{title}</p>
                 <p className={`mt-1 text-2xl font-bold ${color}`}>{value}</p>
             </CardContent>
