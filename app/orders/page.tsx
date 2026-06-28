@@ -2,14 +2,16 @@
 
 import { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
-import Sidebar from "@/components/Sidebar";
+
+import DashboardShell from "@/components/DashboardShell";
+
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
+
 import {
     ShoppingCart,
     DollarSign,
     CheckCircle,
-    Clock,
     CreditCard,
     Calendar,
 } from "lucide-react";
@@ -29,7 +31,6 @@ const API_URL = "https://websitepro-d5cu.onrender.com";
 export default function OrdersPage() {
     const router = useRouter();
 
-    const [sidebarOpen, setSidebarOpen] = useState(false);
     const [orders, setOrders] = useState<Order[]>([]);
     const [loading, setLoading] = useState(true);
 
@@ -119,140 +120,124 @@ export default function OrdersPage() {
 
     if (loading) {
         return (
-            <div className="flex min-h-screen items-center justify-center bg-black">
-                <p className="text-gray-400">Loading orders...</p>
-            </div>
+            <DashboardShell>
+                <div className="flex min-h-[300px] items-center justify-center">
+                    <p className="text-gray-400">Loading orders...</p>
+                </div>
+            </DashboardShell>
         );
     }
 
     return (
-        <div className="min-h-screen bg-[#050509] text-white">
-            <Sidebar isOpen={sidebarOpen} onClose={() => setSidebarOpen(false)} onOpen={() => setSidebarOpen(true)} />
+        <DashboardShell>
+            <section className="relative mb-8 overflow-hidden rounded-3xl border border-purple-500/20 bg-gradient-to-br from-purple-950/30 via-gray-950 to-black p-6 md:p-8">
+                <div className="absolute -right-20 -top-20 h-72 w-72 rounded-full bg-purple-500/10 blur-3xl" />
 
-            <main className="pt-8 lg:ml-72">
-                <div className="mx-auto max-w-7xl px-6 pb-12 lg:px-8">
-                    <section className="relative mb-8 overflow-hidden rounded-3xl border border-purple-500/20 bg-gradient-to-br from-purple-950/30 via-gray-950 to-black p-6 md:p-8">
-                        <div className="absolute -right-20 -top-20 h-72 w-72 rounded-full bg-purple-500/10 blur-3xl" />
-
-                        <div className="relative z-10">
-                            <div className="mb-3 inline-flex items-center gap-2 rounded-full border border-purple-500/30 bg-purple-500/10 px-3 py-1 text-sm text-purple-300">
-                                <ShoppingCart className="h-4 w-4" />
-                                Order Center
-                            </div>
-
-                            <h1 className="text-3xl font-bold md:text-4xl">Orders</h1>
-
-                            <p className="mt-3 max-w-2xl text-gray-400">
-                                Track your challenge purchases, account orders, and payment status.
-                            </p>
-                        </div>
-                    </section>
-
-                    <div className="mb-8 grid grid-cols-1 gap-5 md:grid-cols-3">
-                        <SummaryCard
-                            icon={ShoppingCart}
-                            title="Total Orders"
-                            value={orders.length.toString()}
-                            color="text-purple-400"
-                        />
-                        <SummaryCard
-                            icon={CheckCircle}
-                            title="Active Orders"
-                            value={activeOrders.toString()}
-                            color="text-green-400"
-                        />
-                        <SummaryCard
-                            icon={DollarSign}
-                            title="Total Amount"
-                            value={`$${totalPaid.toLocaleString()}`}
-                            color="text-blue-400"
-                        />
+                <div className="relative z-10">
+                    <div className="mb-3 inline-flex items-center gap-2 rounded-full border border-purple-500/30 bg-purple-500/10 px-3 py-1 text-sm text-purple-300">
+                        <ShoppingCart className="h-4 w-4" />
+                        Order Center
                     </div>
 
-                    <Card className="border-white/10 bg-zinc-950/70">
-                        <CardHeader>
-                            <CardTitle className="text-white">Order History</CardTitle>
-                        </CardHeader>
+                    <h1 className="text-3xl font-bold md:text-4xl">Orders</h1>
 
-                        <CardContent>
-                            {orders.length === 0 ? (
-                                <div className="rounded-2xl border border-white/10 bg-white/[0.03] p-8 text-center">
-                                    <div className="mx-auto mb-4 flex h-16 w-16 items-center justify-center rounded-2xl bg-violet-500/15">
-                                        <ShoppingCart className="h-8 w-8 text-purple-400" />
-                                    </div>
+                    <p className="mt-3 max-w-2xl text-gray-400">
+                        Track your challenge purchases, account orders, and payment status.
+                    </p>
+                </div>
+            </section>
 
-                                    <h2 className="text-xl font-bold text-white">
-                                        No Orders Yet
-                                    </h2>
+            <div className="mb-8 grid grid-cols-1 gap-5 md:grid-cols-3">
+                <SummaryCard
+                    icon={ShoppingCart}
+                    title="Total Orders"
+                    value={orders.length.toString()}
+                    color="text-purple-400"
+                />
+                <SummaryCard
+                    icon={CheckCircle}
+                    title="Active Orders"
+                    value={activeOrders.toString()}
+                    color="text-green-400"
+                />
+                <SummaryCard
+                    icon={DollarSign}
+                    title="Total Amount"
+                    value={`$${totalPaid.toLocaleString()}`}
+                    color="text-blue-400"
+                />
+            </div>
 
-                                    <p className="mt-2 text-gray-400">
-                                        Purchase a challenge account to see your order history.
-                                    </p>
-                                </div>
-                            ) : (
-                                <div className="space-y-3">
-                                    {orders.map((order) => (
-                                        <div
-                                            key={order.id}
-                                            className="rounded-xl border border-white/10 bg-black/40 p-4 transition hover:border-purple-500/40 hover:bg-purple-500/10"
-                                        >
-                                            <div className="flex flex-col gap-4 md:flex-row md:items-center md:justify-between">
-                                                <div>
-                                                    <h3 className="font-semibold text-white">
-                                                        {order.account_name}
-                                                    </h3>
+            <Card className="border-white/10 bg-zinc-950/70">
+                <CardHeader>
+                    <CardTitle className="text-white">Order History</CardTitle>
+                </CardHeader>
 
-                                                    <div className="mt-2 flex flex-wrap gap-2">
-                                                        {getStatusBadge(order.status)}
-                                                        {getPaymentBadge(order.payment_status)}
-                                                    </div>
-                                                </div>
+                <CardContent>
+                    {orders.length === 0 ? (
+                        <div className="rounded-2xl border border-white/10 bg-white/[0.03] p-8 text-center">
+                            <div className="mx-auto mb-4 flex h-16 w-16 items-center justify-center rounded-2xl bg-violet-500/15">
+                                <ShoppingCart className="h-8 w-8 text-purple-400" />
+                            </div>
 
-                                                <div className="grid grid-cols-1 gap-3 text-sm sm:grid-cols-3 md:min-w-[520px]">
-                                                    <InfoItem
-                                                        icon={DollarSign}
-                                                        label="Amount"
-                                                        value={`$${Number(order.amount || 0).toLocaleString()}`}
-                                                    />
-                                                    <InfoItem
-                                                        icon={CreditCard}
-                                                        label="Payment"
-                                                        value={order.payment_status || "paid"}
-                                                    />
-                                                    <InfoItem
-                                                        icon={Calendar}
-                                                        label="Date"
-                                                        value={
-                                                            order.created_at
-                                                                ? new Date(order.created_at).toLocaleDateString()
-                                                                : "-"
-                                                        }
-                                                    />
-                                                </div>
+                            <h2 className="text-xl font-bold text-white">No Orders Yet</h2>
+
+                            <p className="mt-2 text-gray-400">
+                                Purchase a challenge account to see your order history.
+                            </p>
+                        </div>
+                    ) : (
+                        <div className="space-y-3">
+                            {orders.map((order) => (
+                                <div
+                                    key={order.id}
+                                    className="rounded-xl border border-white/10 bg-black/40 p-4 transition hover:border-purple-500/40 hover:bg-purple-500/10"
+                                >
+                                    <div className="flex flex-col gap-4 md:flex-row md:items-center md:justify-between">
+                                        <div>
+                                            <h3 className="font-semibold text-white">
+                                                {order.account_name}
+                                            </h3>
+
+                                            <div className="mt-2 flex flex-wrap gap-2">
+                                                {getStatusBadge(order.status)}
+                                                {getPaymentBadge(order.payment_status)}
                                             </div>
                                         </div>
-                                    ))}
+
+                                        <div className="grid grid-cols-1 gap-3 text-sm sm:grid-cols-3 md:min-w-[520px]">
+                                            <InfoItem
+                                                icon={DollarSign}
+                                                label="Amount"
+                                                value={`$${Number(order.amount || 0).toLocaleString()}`}
+                                            />
+                                            <InfoItem
+                                                icon={CreditCard}
+                                                label="Payment"
+                                                value={order.payment_status || "paid"}
+                                            />
+                                            <InfoItem
+                                                icon={Calendar}
+                                                label="Date"
+                                                value={
+                                                    order.created_at
+                                                        ? new Date(order.created_at).toLocaleDateString()
+                                                        : "-"
+                                                }
+                                            />
+                                        </div>
+                                    </div>
                                 </div>
-                            )}
-                        </CardContent>
-                    </Card>
-                </div>
-            </main>
-        </div>
+                            ))}
+                        </div>
+                    )}
+                </CardContent>
+            </Card>
+        </DashboardShell>
     );
 }
 
-function SummaryCard({
-    icon: Icon,
-    title,
-    value,
-    color,
-}: {
-    icon: any;
-    title: string;
-    value: string;
-    color: string;
-}) {
+function SummaryCard({ icon: Icon, title, value, color }: any) {
     return (
         <Card className="border-white/10 bg-white/5 transition hover:border-purple-500/40 hover:bg-purple-500/10">
             <CardContent className="p-5">
@@ -266,15 +251,7 @@ function SummaryCard({
     );
 }
 
-function InfoItem({
-    icon: Icon,
-    label,
-    value,
-}: {
-    icon: any;
-    label: string;
-    value: string;
-}) {
+function InfoItem({ icon: Icon, label, value }: any) {
     return (
         <div className="rounded-xl border border-white/10 bg-black/40 p-3">
             <div className="mb-1 flex items-center gap-2 text-gray-400">
