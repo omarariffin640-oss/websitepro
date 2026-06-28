@@ -3,7 +3,7 @@
 import { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
 
-import Sidebar from "@/components/Sidebar";
+import DashboardShell from "@/components/DashboardShell";
 import DashboardTopbar from "@/components/layout/DashboardTopbar";
 import PageSkeleton from "@/components/layout/PageSkeleton";
 import EmptyState from "@/components/layout/EmptyState";
@@ -15,7 +15,6 @@ import { Certificate } from "@/components/certificates/CertificateCard";
 export default function CertificatesPage() {
     const router = useRouter();
 
-    const [sidebarOpen, setSidebarOpen] = useState(false);
     const [loading, setLoading] = useState(true);
     const [certificates, setCertificates] = useState<Certificate[]>([]);
 
@@ -37,43 +36,39 @@ export default function CertificatesPage() {
 
     const activeCount = certificates.filter((c) => c.status === "active").length;
     const fundedCount = certificates.filter((c) => c.type === "funded").length;
-    const achievementCount = certificates.filter((c) => c.type === "achievement").length;
+    const achievementCount = certificates.filter(
+        (c) => c.type === "achievement"
+    ).length;
 
     if (loading) {
-        return <PageSkeleton />;
+        return (
+            <DashboardShell>
+                <PageSkeleton />
+            </DashboardShell>
+        );
     }
 
     return (
-        <div className="min-h-screen bg-[#050509] text-white">
-            <Sidebar
-                isOpen={sidebarOpen}
-                onClose={() => setSidebarOpen(false)}
-                onOpen={() => setSidebarOpen(true)}
+        <DashboardShell>
+            <DashboardTopbar
+                title="Certificates"
+                description="View your funded, challenge and achievement certificates."
             />
 
-            <main className="pt-8 lg:ml-72">
-                <div className="mx-auto max-w-7xl px-6 pb-12 lg:px-8">
-                    <DashboardTopbar
-                        title="Certificates"
-                        description="View your funded, challenge and achievement certificates."
-                    />
+            <CertificatesHero
+                activeCount={activeCount}
+                fundedCount={fundedCount}
+                achievementCount={achievementCount}
+            />
 
-                    <CertificatesHero
-                        activeCount={activeCount}
-                        fundedCount={fundedCount}
-                        achievementCount={achievementCount}
-                    />
-
-                    {certificates.length === 0 ? (
-                        <EmptyState
-                            title="No certificates yet"
-                            description="Your funded, challenge and achievement certificates will appear here once available."
-                        />
-                    ) : (
-                        <CertificateGrid certificates={certificates} />
-                    )}
-                </div>
-            </main>
-        </div>
+            {certificates.length === 0 ? (
+                <EmptyState
+                    title="No certificates yet"
+                    description="Your funded, challenge and achievement certificates will appear here once available."
+                />
+            ) : (
+                <CertificateGrid certificates={certificates} />
+            )}
+        </DashboardShell>
     );
 }
