@@ -7,18 +7,18 @@ import Topbar from "@/components/Topbar";
 export default function AppShell({ children }: { children: React.ReactNode }) {
     const pathname = usePathname();
 
-    const isDashboardRoute =
+    const isDashboardPage =
         pathname.startsWith("/dashboard") ||
         pathname.startsWith("/accounts") ||
+        pathname.startsWith("/challenges") ||
+        pathname.startsWith("/instant-account") ||
+        pathname.startsWith("/marketplace") ||
         pathname.startsWith("/payouts") ||
         pathname.startsWith("/certificates") ||
         pathname.startsWith("/profile") ||
-        pathname.startsWith("/settings") ||
-        pathname.startsWith("/instant-account") ||
-        pathname.startsWith("/marketplace") ||
-        pathname.startsWith("/challenges");
+        pathname.startsWith("/settings");
 
-    if (isDashboardRoute) {
+    if (isDashboardPage) {
         return <>{children}</>;
     }
 
@@ -26,7 +26,7 @@ export default function AppShell({ children }: { children: React.ReactNode }) {
         <>
             <AnnouncementBar />
             <Topbar />
-            <main className="pt-[160px]">{children}</main>
+            <main className="pt-[114px]">{children}</main>
         </>
     );
 }
