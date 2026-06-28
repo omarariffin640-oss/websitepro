@@ -4,6 +4,8 @@ import { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
 
 import Sidebar from "@/components/Sidebar";
+import DashboardTopbar from "@/components/layout/DashboardTopbar";
+
 import SettingsHero from "@/components/settings/SettingsHero";
 import PreferenceSettings from "@/components/settings/PreferenceSettings";
 import SecuritySettings from "@/components/settings/SecuritySettings";
@@ -56,6 +58,11 @@ export default function SettingsPage() {
 
             <main className="pt-8 lg:ml-72">
                 <div className="mx-auto max-w-7xl px-6 pb-12 lg:px-8">
+                    <DashboardTopbar
+                        title="Settings"
+                        description="Manage your preferences, notifications and account security."
+                    />
+
                     <SettingsHero
                         notifications={settings.notifications}
                         emailAlerts={settings.emailAlerts}
