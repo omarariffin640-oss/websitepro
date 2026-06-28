@@ -4,6 +4,7 @@ import { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
 
 import Sidebar from "@/components/Sidebar";
+import Topbar from "@/components/Topbar";
 import DashboardTopbar from "@/components/layout/DashboardTopbar";
 
 import InstantHero from "@/components/instant/InstantHero";
@@ -84,51 +85,58 @@ export default function InstantAccountPage() {
 
     if (loading) {
         return (
-            <div className="flex min-h-screen items-center justify-center bg-black">
-                <p className="text-zinc-400">Loading instant account...</p>
-            </div>
+            <>
+                <Topbar />
+                <div className="flex min-h-screen items-center justify-center bg-black pt-[64px]">
+                    <p className="text-zinc-400">Loading instant account...</p>
+                </div>
+            </>
         );
     }
 
     return (
-        <div className="min-h-screen bg-[#050509] text-white">
-            <Sidebar
-                isOpen={sidebarOpen}
-                onClose={() => setSidebarOpen(false)}
-                onOpen={() => setSidebarOpen(true)}
-            />
+        <>
+            <Topbar />
 
-            <main className="pt-8 lg:ml-72">
-                <div className="mx-auto max-w-7xl px-6 pb-12 lg:px-8">
-                    <DashboardTopbar
-                        title="Instant Funding"
-                        description="Create and manage your instant funded trading account."
-                    />
+            <div className="min-h-screen bg-[#050509] pt-[64px] text-white">
+                <Sidebar
+                    isOpen={sidebarOpen}
+                    onClose={() => setSidebarOpen(false)}
+                    onOpen={() => setSidebarOpen(true)}
+                />
 
-                    <InstantHero hasAccount={account !== null} />
-
-                    {message && (
-                        <div
-                            className={`mb-6 rounded-xl border p-4 ${message.toLowerCase().includes("success")
-                                    ? "border-emerald-500/30 bg-emerald-500/10 text-emerald-300"
-                                    : "border-red-500/30 bg-red-500/10 text-red-300"
-                                }`}
-                        >
-                            {message}
-                        </div>
-                    )}
-
-                    <div className="space-y-8">
-                        <InstantAccountCard
-                            account={account}
-                            creating={creating}
-                            onCreate={createAccount}
+                <main className="pt-8 lg:ml-72">
+                    <div className="mx-auto max-w-7xl px-6 pb-12 lg:px-8">
+                        <DashboardTopbar
+                            title="Instant Funding"
+                            description="Create and manage your instant funded trading account."
                         />
 
-                        <InstantBenefits />
+                        <InstantHero hasAccount={account !== null} />
+
+                        {message && (
+                            <div
+                                className={`mb-6 rounded-xl border p-4 ${message.toLowerCase().includes("success")
+                                        ? "border-emerald-500/30 bg-emerald-500/10 text-emerald-300"
+                                        : "border-red-500/30 bg-red-500/10 text-red-300"
+                                    }`}
+                            >
+                                {message}
+                            </div>
+                        )}
+
+                        <div className="space-y-8">
+                            <InstantAccountCard
+                                account={account}
+                                creating={creating}
+                                onCreate={createAccount}
+                            />
+
+                            <InstantBenefits />
+                        </div>
                     </div>
-                </div>
-            </main>
-        </div>
+                </main>
+            </div>
+        </>
     );
 }
