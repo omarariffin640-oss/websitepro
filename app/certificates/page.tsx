@@ -4,6 +4,7 @@ import { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
 
 import Sidebar from "@/components/Sidebar";
+import DashboardTopbar from "@/components/layout/DashboardTopbar";
 
 import CertificatesHero from "@/components/certificates/CertificatesHero";
 import CertificateGrid from "@/components/certificates/CertificateGrid";
@@ -24,9 +25,7 @@ export default function CertificatesPage() {
             return;
         }
 
-        fetch(
-            `https://websitepro-d5cu.onrender.com/certificates?email=${email}`
-        )
+        fetch(`https://websitepro-d5cu.onrender.com/certificates?email=${email}`)
             .then((res) => res.json())
             .then((data) => {
                 setCertificates(Array.isArray(data) ? data : []);
@@ -34,17 +33,9 @@ export default function CertificatesPage() {
             .finally(() => setLoading(false));
     }, [router]);
 
-    const activeCount = certificates.filter(
-        (c) => c.status === "active"
-    ).length;
-
-    const fundedCount = certificates.filter(
-        (c) => c.type === "funded"
-    ).length;
-
-    const achievementCount = certificates.filter(
-        (c) => c.type === "achievement"
-    ).length;
+    const activeCount = certificates.filter((c) => c.status === "active").length;
+    const fundedCount = certificates.filter((c) => c.type === "funded").length;
+    const achievementCount = certificates.filter((c) => c.type === "achievement").length;
 
     if (loading) {
         return (
@@ -64,6 +55,10 @@ export default function CertificatesPage() {
 
             <main className="pt-8 lg:ml-72">
                 <div className="mx-auto max-w-7xl px-6 pb-12 lg:px-8">
+                    <DashboardTopbar
+                        title="Certificates"
+                        description="View your funded, challenge and achievement certificates."
+                    />
 
                     <CertificatesHero
                         activeCount={activeCount}
@@ -71,10 +66,7 @@ export default function CertificatesPage() {
                         achievementCount={achievementCount}
                     />
 
-                    <CertificateGrid
-                        certificates={certificates}
-                    />
-
+                    <CertificateGrid certificates={certificates} />
                 </div>
             </main>
         </div>
