@@ -95,7 +95,7 @@ export default function ChallengesPage() {
                 onOpen={() => setSidebarOpen(true)}
             />
 
-            <main className="pt-8 lg:ml-72">
+            <main className="pt-[150px] lg:ml-72">
                 <div className="mx-auto max-w-7xl px-6 pb-12 lg:px-8">
                     <DashboardTopbar
                         title="Challenges"
@@ -107,8 +107,8 @@ export default function ChallengesPage() {
                     {message && (
                         <div
                             className={`mb-6 rounded-xl border p-4 ${message.toLowerCase().includes("success")
-                                    ? "border-emerald-500/30 bg-emerald-500/10 text-emerald-300"
-                                    : "border-violet-500/30 bg-violet-500/10 text-violet-200"
+                                ? "border-emerald-500/30 bg-emerald-500/10 text-emerald-300"
+                                : "border-violet-500/30 bg-violet-500/10 text-violet-200"
                                 }`}
                         >
                             {message}
