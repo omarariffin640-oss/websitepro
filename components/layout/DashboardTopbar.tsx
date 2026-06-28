@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { Bell, ChevronRight } from "lucide-react";
 
 import DashboardSearch from "@/components/layout/DashboardSearch";
@@ -22,6 +22,32 @@ export default function DashboardTopbar({
     const [showNotifications, setShowNotifications] = useState(false);
     const [showProfile, setShowProfile] = useState(false);
 
+    const notificationRef = useRef<HTMLDivElement | null>(null);
+    const profileRef = useRef<HTMLDivElement | null>(null);
+
+    useEffect(() => {
+        function handleClickOutside(event: MouseEvent) {
+            const target = event.target as Node;
+
+            if (
+                notificationRef.current &&
+                !notificationRef.current.contains(target)
+            ) {
+                setShowNotifications(false);
+            }
+
+            if (profileRef.current && !profileRef.current.contains(target)) {
+                setShowProfile(false);
+            }
+        }
+
+        document.addEventListener("mousedown", handleClickOutside);
+
+        return () => {
+            document.removeEventListener("mousedown", handleClickOutside);
+        };
+    }, []);
+
     return (
         <>
             <header className="mb-6">
@@ -33,7 +59,9 @@ export default function DashboardTopbar({
                             <span className="text-violet-400">{title}</span>
                         </div>
 
-                        <h1 className="text-3xl font-bold text-white md:text-4xl">{title}</h1>
+                        <h1 className="text-3xl font-bold text-white md:text-4xl">
+                            {title}
+                        </h1>
 
                         {description && (
                             <p className="mt-2 max-w-2xl text-zinc-400">{description}</p>
@@ -44,10 +72,13 @@ export default function DashboardTopbar({
                         <DashboardSearch placeholder="Search dashboard..." />
 
                         <div className="flex items-center gap-4">
-                            <div className="relative">
+                            <div ref={notificationRef} className="relative">
                                 <button
                                     type="button"
-                                    onClick={() => setShowNotifications(!showNotifications)}
+                                    onClick={() => {
+                                        setShowNotifications(!showNotifications);
+                                        setShowProfile(false);
+                                    }}
                                     className="flex h-11 w-11 items-center justify-center rounded-xl border border-white/10 bg-white/5 transition hover:border-violet-500/40 hover:bg-violet-500/10"
                                 >
                                     <Bell className="h-5 w-5 text-zinc-300" />
@@ -56,10 +87,13 @@ export default function DashboardTopbar({
                                 {showNotifications && <NotificationDropdown />}
                             </div>
 
-                            <div className="relative">
+                            <div ref={profileRef} className="relative">
                                 <button
                                     type="button"
-                                    onClick={() => setShowProfile(!showProfile)}
+                                    onClick={() => {
+                                        setShowProfile(!showProfile);
+                                        setShowNotifications(false);
+                                    }}
                                     className="flex items-center gap-3 rounded-xl border border-white/10 bg-white/5 px-4 py-2 transition hover:border-violet-500/40 hover:bg-violet-500/10"
                                 >
                                     <div className="flex h-10 w-10 items-center justify-center rounded-full bg-violet-600 font-semibold text-white">
