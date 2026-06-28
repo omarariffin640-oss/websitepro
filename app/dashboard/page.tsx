@@ -5,6 +5,7 @@ import { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
 import Sidebar from "@/components/Sidebar";
 import DashboardTopbar from "@/components/layout/DashboardTopbar";
+import PageSkeleton from "@/components/layout/PageSkeleton";
 import { API_BASE } from "@/lib/api";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
@@ -230,18 +231,19 @@ export default function DashboardPage() {
     ];
 
     if (loading) {
-        return (
-            <div className="flex min-h-screen items-center justify-center bg-black">
-                <p className="text-gray-400">Loading dashboard...</p>
-            </div>
-        );
+        return <PageSkeleton />;
     }
 
     return (
         <div className="min-h-screen bg-[#050509] text-white">
-            <Sidebar isOpen={sidebarOpen} onClose={() => setSidebarOpen(false)} onOpen={() => setSidebarOpen(true)} />
+            <Sidebar
+                isOpen={sidebarOpen}
+                onClose={() => setSidebarOpen(false)}
+                onOpen={() => setSidebarOpen(true)}
+            />
 
             <main className="pt-8 lg:ml-72">
+                ...
                 <div className="mx-auto max-w-7xl px-6 pb-12 lg:px-8">
                     <DashboardTopbar
                         title="Dashboard"
