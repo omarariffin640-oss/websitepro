@@ -5,6 +5,8 @@ import { useRouter } from "next/navigation";
 
 import Sidebar from "@/components/Sidebar";
 import DashboardTopbar from "@/components/layout/DashboardTopbar";
+import PageSkeleton from "@/components/layout/PageSkeleton";
+import EmptyState from "@/components/layout/EmptyState";
 
 import CertificatesHero from "@/components/certificates/CertificatesHero";
 import CertificateGrid from "@/components/certificates/CertificateGrid";
@@ -38,11 +40,7 @@ export default function CertificatesPage() {
     const achievementCount = certificates.filter((c) => c.type === "achievement").length;
 
     if (loading) {
-        return (
-            <div className="flex min-h-screen items-center justify-center bg-black">
-                <p className="text-zinc-400">Loading certificates...</p>
-            </div>
-        );
+        return <PageSkeleton />;
     }
 
     return (
@@ -66,7 +64,14 @@ export default function CertificatesPage() {
                         achievementCount={achievementCount}
                     />
 
-                    <CertificateGrid certificates={certificates} />
+                    {certificates.length === 0 ? (
+                        <EmptyState
+                            title="No certificates yet"
+                            description="Your funded, challenge and achievement certificates will appear here once available."
+                        />
+                    ) : (
+                        <CertificateGrid certificates={certificates} />
+                    )}
                 </div>
             </main>
         </div>
