@@ -102,16 +102,20 @@ export default function OfferPopup() {
 
                         <div className="mt-5 flex flex-wrap items-center gap-2 text-sm text-gray-300">
                             <Clock className="h-4 w-4 text-purple-400" />
-                            Ends in
+                            <span>Ends in</span>
+
                             <span className="rounded-md bg-purple-500/20 px-2 py-1 font-mono text-white">
                                 {String(timeLeft.days).padStart(2, "0")}d
                             </span>
+
                             <span className="rounded-md bg-purple-500/20 px-2 py-1 font-mono text-white">
                                 {String(timeLeft.hours).padStart(2, "0")}h
                             </span>
+
                             <span className="rounded-md bg-purple-500/20 px-2 py-1 font-mono text-white">
                                 {String(timeLeft.minutes).padStart(2, "0")}m
                             </span>
+
                             <span className="rounded-md bg-purple-500/20 px-2 py-1 font-mono text-white">
                                 {String(timeLeft.seconds).padStart(2, "0")}s
                             </span>
