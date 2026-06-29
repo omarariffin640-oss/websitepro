@@ -4,7 +4,6 @@ import { useEffect, useRef, useState } from "react";
 import { Bell, ChevronRight } from "lucide-react";
 
 import DashboardSearch from "@/components/layout/DashboardSearch";
-import PromotionBanner from "@/components/layout/PromotionBanner";
 import NotificationDropdown from "@/components/layout/NotificationDropdown";
 import UserProfileDropdown from "@/components/layout/UserProfileDropdown";
 
@@ -112,8 +111,6 @@ export default function DashboardTopbar({
                     </div>
                 </div>
             </header>
-
-            <PromotionBanner />
         </>
     );
 }
