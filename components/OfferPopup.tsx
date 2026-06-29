@@ -25,13 +25,14 @@ export default function OfferPopup() {
         <div className="fixed inset-0 z-[80] flex items-center justify-center bg-black/70 px-4 backdrop-blur-sm">
             <div className="relative w-full max-w-2xl overflow-hidden rounded-3xl border border-purple-500/30 bg-gradient-to-br from-purple-950 via-zinc-950 to-black p-6 text-white shadow-2xl shadow-purple-500/20">
                 <button
+                    type="button"
                     onClick={closePopup}
-                    className="absolute right-4 top-4 rounded-full border border-white/10 bg-black/40 p-2 text-gray-400 hover:bg-white/10 hover:text-white"
+                    className="absolute right-4 top-4 z-50 rounded-full border border-white/10 bg-black/60 p-2 text-gray-300 transition hover:bg-white/10 hover:text-white"
                 >
                     <X className="h-4 w-4" />
                 </button>
 
-                <div className="absolute -right-20 -top-20 h-64 w-64 rounded-full bg-purple-500/20 blur-3xl" />
+                <div className="pointer-events-none absolute -right-20 -top-20 h-64 w-64 rounded-full bg-purple-500/20 blur-3xl" />
 
                 <div className="relative z-10">
                     <div className="mb-4 inline-flex items-center gap-2 rounded-full border border-purple-500/30 bg-purple-500/10 px-3 py-1 text-sm text-purple-300">
