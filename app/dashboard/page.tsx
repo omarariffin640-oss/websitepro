@@ -6,7 +6,7 @@ import { useRouter } from "next/navigation";
 
 import DashboardShell from "@/components/DashboardShell";
 import DashboardTopbar from "@/components/layout/DashboardTopbar";
-import FeaturedOfferCard from "@/components/FeaturedOfferCard";
+import OfferPopup from "@/components/OfferPopup";
 import PageSkeleton from "@/components/layout/PageSkeleton";
 import EmptyState from "@/components/layout/EmptyState";
 import { API_BASE } from "@/lib/api";
@@ -239,7 +239,7 @@ export default function DashboardPage() {
                 userName={userEmail ? userEmail.split("@")[0] : "Trader"}
             />
 
-            <FeaturedOfferCard />
+            <OfferPopup />
 
             {(activeChallenge || accounts.length > 0) && (
                 <Card className="mb-8 border-purple-500/30 bg-purple-500/10">
