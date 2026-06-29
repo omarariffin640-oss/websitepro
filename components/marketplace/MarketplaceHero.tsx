@@ -18,14 +18,14 @@ export default function MarketplaceHero() {
                     </h1>
 
                     <p className="mt-5 max-w-2xl leading-7 text-zinc-400">
-                        Explore premium trading tools, account upgrades, add-ons, and services
-                        designed to improve your Noor Funding experience.
+                        Explore premium indicators, trading robots, tools, templates, merch and mentorship
+                        designed to support your trading journey.
                     </p>
 
                     <div className="mt-8 flex flex-wrap gap-3">
                         <Badge icon={ShieldCheck} text="Secure Checkout" />
                         <Badge icon={Zap} text="Instant Access" />
-                        <Badge icon={Star} text="Premium Add-ons" />
+                        <Badge icon={Star} text="Premium Tools" />
                     </div>
                 </div>
 
@@ -40,7 +40,7 @@ export default function MarketplaceHero() {
                     </div>
 
                     <p className="mt-4 text-sm leading-6 text-zinc-500">
-                        Products and add-ons can be purchased directly from your dashboard.
+                        Browse trader resources, tools and products directly from your dashboard.
                     </p>
                 </div>
             </div>
