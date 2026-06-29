@@ -6,6 +6,7 @@ import { useRouter } from "next/navigation";
 
 import DashboardShell from "@/components/DashboardShell";
 import DashboardTopbar from "@/components/layout/DashboardTopbar";
+import FeaturedOfferCard from "@/components/FeaturedOfferCard";
 import PageSkeleton from "@/components/layout/PageSkeleton";
 import EmptyState from "@/components/layout/EmptyState";
 import { API_BASE } from "@/lib/api";
@@ -237,6 +238,8 @@ export default function DashboardPage() {
                 description="Track your active challenge, account performance and trading history."
                 userName={userEmail ? userEmail.split("@")[0] : "Trader"}
             />
+
+            <FeaturedOfferCard />
 
             {(activeChallenge || accounts.length > 0) && (
                 <Card className="mb-8 border-purple-500/30 bg-purple-500/10">
