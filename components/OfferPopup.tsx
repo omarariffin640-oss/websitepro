@@ -5,7 +5,7 @@ import { X, Gift, Clock, Sparkles } from "lucide-react";
 
 export default function OfferPopup() {
     const [show, setShow] = useState(false);
-    const [isRunning] = useState(true);
+    const [isRunning] = useState(false);
 
     const [timeLeft, setTimeLeft] = useState({
         days: 2,
