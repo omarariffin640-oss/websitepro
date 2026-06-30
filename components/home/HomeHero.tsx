@@ -6,6 +6,10 @@ import {
     Wallet,
     Award,
     Activity,
+    ShoppingBag,
+    Trophy,
+    Settings,
+    LogOut,
 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 
@@ -73,69 +77,108 @@ export default function HomeHero() {
                 <div className="rounded-3xl border border-white/10 bg-zinc-950/80 p-4 shadow-2xl shadow-violet-950/30">
                     <div className="mb-4 flex items-center justify-between">
                         <div>
-                            <p className="text-sm font-semibold text-white">NOOR Platform</p>
-                            <p className="text-xs text-zinc-500">Live account overview</p>
+                            <p className="text-sm font-semibold text-white">
+                                Dashboard Preview
+                            </p>
+                            <p className="text-xs text-zinc-500">Live user dashboard demo</p>
                         </div>
-                        <div className="rounded-full bg-emerald-500/10 px-3 py-1 text-xs text-emerald-400">
-                            Active
+
+                        <div className="rounded-full bg-violet-500/10 px-3 py-1 text-xs text-violet-400">
+                            Demo
                         </div>
                     </div>
 
-                    <div className="grid grid-cols-2 gap-3 md:grid-cols-4">
-                        {[
-                            ["Balance", "$50,000"],
-                            ["Equity", "$52,684"],
-                            ["Profit", "+$2,684"],
-                            ["Drawdown", "2.1%"],
-                        ].map(([label, value]) => (
-                            <div
-                                key={label}
-                                className="rounded-2xl border border-white/10 bg-white/[0.03] p-4"
-                            >
-                                <p className="text-xs text-zinc-500">{label}</p>
-                                <p className="mt-1 font-semibold text-white">{value}</p>
-                            </div>
-                        ))}
-                    </div>
-
-                    <div className="mt-4 h-44 rounded-2xl border border-white/10 bg-gradient-to-br from-violet-500/10 to-cyan-500/5 p-4">
-                        <svg viewBox="0 0 500 160" className="h-full w-full">
-                            <path
-                                d="M0 118 C55 96 86 105 126 86 C170 64 205 92 246 66 C290 39 330 58 370 38 C420 14 455 32 500 20"
-                                fill="none"
-                                stroke="#8b5cf6"
-                                strokeWidth="5"
-                                strokeLinecap="round"
-                            />
-                            <path
-                                d="M0 118 C55 96 86 105 126 86 C170 64 205 92 246 66 C290 39 330 58 370 38 C420 14 455 32 500 20"
-                                fill="none"
-                                stroke="#22d3ee"
-                                strokeWidth="2"
-                                strokeLinecap="round"
-                                opacity="0.35"
-                            />
-                        </svg>
-                    </div>
-
-                    <div className="mt-4 grid grid-cols-2 gap-3">
-                        {[
-                            [ShieldCheck, "Account Login", "NOOR-125623"],
-                            [TrendingUp, "Server", "NOOR-Live"],
-                            [Wallet, "Payout", "Pending Review"],
-                            [Award, "Certificate", "Eligible"],
-                        ].map(([Icon, title, value]: any) => (
-                            <div
-                                key={title}
-                                className="flex items-center gap-3 rounded-2xl border border-white/10 bg-white/[0.03] p-4"
-                            >
-                                <Icon className="h-5 w-5 text-violet-400" />
-                                <div>
-                                    <p className="text-xs text-zinc-500">{title}</p>
-                                    <p className="text-sm text-white">{value}</p>
+                    <div className="grid gap-4 lg:grid-cols-[145px_1fr]">
+                        <div className="rounded-2xl border border-white/10 bg-white/[0.03] p-3">
+                            {[
+                                ["Dashboard", Activity],
+                                ["Challenges", Trophy],
+                                ["Instant", ShieldCheck],
+                                ["Marketplace", ShoppingBag],
+                                ["Payouts", Wallet],
+                                ["Certificates", Award],
+                                ["Leaderboard", TrendingUp],
+                                ["Settings", Settings],
+                            ].map(([label, Icon]: any) => (
+                                <div
+                                    key={label}
+                                    className="mb-2 flex items-center gap-2 rounded-xl px-2 py-2 text-xs text-zinc-400 first:bg-violet-500/15 first:text-white"
+                                >
+                                    <Icon className="h-3.5 w-3.5" />
+                                    {label}
                                 </div>
+                            ))}
+
+                            <div className="mt-4 flex items-center gap-2 rounded-xl px-2 py-2 text-xs text-red-400">
+                                <LogOut className="h-3.5 w-3.5" />
+                                Logout
                             </div>
-                        ))}
+                        </div>
+
+                        <div>
+                            <div className="grid grid-cols-2 gap-3">
+                                {[
+                                    ["Current Balance", "$50,000"],
+                                    ["Weekly Profit", "+$2,684"],
+                                    ["Win Rate", "72%"],
+                                    ["Total Trades", "148"],
+                                ].map(([label, value]) => (
+                                    <div
+                                        key={label}
+                                        className="rounded-2xl border border-white/10 bg-white/[0.03] p-3"
+                                    >
+                                        <p className="text-xs text-zinc-500">{label}</p>
+                                        <p className="mt-1 text-sm font-semibold text-white">
+                                            {value}
+                                        </p>
+                                    </div>
+                                ))}
+                            </div>
+
+                            <div className="mt-4 h-40 rounded-2xl border border-white/10 bg-gradient-to-br from-violet-500/10 to-cyan-500/5 p-4">
+                                <div className="mb-3 flex items-center justify-between">
+                                    <p className="text-xs text-zinc-400">
+                                        Performance Analytics
+                                    </p>
+                                    <p className="text-xs text-emerald-400">+5.36%</p>
+                                </div>
+
+                                <svg viewBox="0 0 500 130" className="h-full w-full">
+                                    <path
+                                        d="M0 100 C55 78 92 92 135 70 C182 45 210 80 255 50 C300 22 340 46 382 28 C430 8 460 22 500 12"
+                                        fill="none"
+                                        stroke="#8b5cf6"
+                                        strokeWidth="5"
+                                        strokeLinecap="round"
+                                    />
+                                    <path
+                                        d="M0 100 C55 78 92 92 135 70 C182 45 210 80 255 50 C300 22 340 46 382 28 C430 8 460 22 500 12"
+                                        fill="none"
+                                        stroke="#22d3ee"
+                                        strokeWidth="2"
+                                        strokeLinecap="round"
+                                        opacity="0.35"
+                                    />
+                                </svg>
+                            </div>
+
+                            <div className="mt-4 grid grid-cols-2 gap-3">
+                                {[
+                                    ["Challenge", "Step 1"],
+                                    ["Platform", "MT5"],
+                                    ["Drawdown", "2.1%"],
+                                    ["Payout Status", "Locked"],
+                                ].map(([label, value]) => (
+                                    <div
+                                        key={label}
+                                        className="rounded-2xl border border-white/10 bg-white/[0.03] p-3"
+                                    >
+                                        <p className="text-xs text-zinc-500">{label}</p>
+                                        <p className="mt-1 text-sm text-white">{value}</p>
+                                    </div>
+                                ))}
+                            </div>
+                        </div>
                     </div>
                 </div>
             </div>
