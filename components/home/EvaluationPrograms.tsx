@@ -24,17 +24,17 @@ export default function EvaluationPrograms() {
     return (
         <section className="mb-12 px-6 lg:px-8">
             <div className="mx-auto max-w-7xl">
-                <div className="mb-8">
+                <div className="mb-8 text-center">
                     <div className="inline-flex items-center gap-2 rounded-full border border-violet-500/30 bg-violet-500/10 px-4 py-2 text-sm text-violet-300">
                         <TrendingUp className="h-4 w-4" />
-                        Noor Funding Programs
+                        Funding Programs
                     </div>
 
-                    <h2 className="mt-5 text-3xl font-bold text-white md:text-4xl">
-                        Get funded up to $200,000 and trade with confidence.
+                    <h2 className="mx-auto mt-5 max-w-3xl text-3xl font-bold text-white md:text-4xl">
+                        Choose your preferred funding path
                     </h2>
 
-                    <p className="mt-3 max-w-3xl text-zinc-400">
+                    <p className="mx-auto mt-3 max-w-3xl text-zinc-400">
                         Compare Free Trial, Challenges, Instant Funding and Noor Funding in
                         one clean section.
                     </p>
@@ -44,10 +44,13 @@ export default function EvaluationPrograms() {
                     <ProgramCard program={freeTrial} />
 
                     <div>
-                        <ChallengeTabs
-                            active={activeChallenge}
-                            onChange={setActiveChallenge}
-                        />
+                        <div className="flex justify-center">
+                            <ChallengeTabs
+                                active={activeChallenge}
+                                onChange={setActiveChallenge}
+                            />
+                        </div>
+
                         <ProgramCard program={selectedChallenge} />
                     </div>
 
