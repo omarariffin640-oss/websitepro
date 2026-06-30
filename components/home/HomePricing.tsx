@@ -121,7 +121,7 @@ export default function HomePricing() {
     };
 
     return (
-        <section className="px-4 py-20">
+        <section className="mt-20 px-4 py-20">
             <div className="mx-auto max-w-7xl">
                 <div className="mx-auto mb-10 max-w-2xl text-center">
                     <p className="text-sm font-medium text-violet-400">Funding Programs</p>
