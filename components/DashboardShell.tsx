@@ -4,6 +4,7 @@ import { useState } from "react";
 import AnnouncementBar from "@/components/AnnouncementBar";
 import Topbar from "@/components/Topbar";
 import Sidebar from "@/components/Sidebar";
+import AppBackground from "@/components/layout/AppBackground";
 
 export default function DashboardShell({
     children,
@@ -17,14 +18,16 @@ export default function DashboardShell({
             <AnnouncementBar />
             <Topbar />
 
-            <div className="min-h-screen bg-[#050509] pt-[114px] text-white">
+            <div className="relative min-h-screen overflow-hidden bg-[#050509] pt-[114px] text-white">
+                <AppBackground />
+
                 <Sidebar
                     isOpen={sidebarOpen}
                     onClose={() => setSidebarOpen(false)}
                     onOpen={() => setSidebarOpen(true)}
                 />
 
-                <main className="pt-8 lg:ml-72">
+                <main className="relative z-10 pt-8 lg:ml-72">
                     <div className="mx-auto max-w-7xl px-6 pb-12 lg:px-8">
                         {children}
                     </div>
