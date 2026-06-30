@@ -7,6 +7,7 @@ import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { Wallet, Mail, DollarSign, Calendar, CheckCircle, XCircle, Clock } from "lucide-react";
+import { API_BASE } from "@/lib/api";
 
 type Payout = {
     id: number;
@@ -36,7 +37,7 @@ export default function AdminPayoutsPage() {
 
     const fetchPayouts = async () => {
         try {
-            const res = await fetch("https://websitepro-d5cu.onrender.com/admin/payouts");
+            const res = await fetch(`${API_BASE}/admin/payouts`)
             const data = await res.json();
             setPayouts(Array.isArray(data) ? data : []);
         } catch {
@@ -47,7 +48,7 @@ export default function AdminPayoutsPage() {
     };
 
     const updateStatus = async (id: number, status: Payout["status"]) => {
-        const res = await fetch(`https://websitepro-d5cu.onrender.com/admin/payouts/${id}/status`, {
+        const res = await fetch(`${API_BASE}/admin/payouts/${id}/status`, {
             method: "PUT",
             headers: { "Content-Type": "application/json" },
             body: JSON.stringify({ status }),
