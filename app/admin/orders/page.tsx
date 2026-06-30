@@ -6,6 +6,7 @@ import Sidebar from "@/components/Sidebar";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { ShoppingCart, Mail, DollarSign, CreditCard, Calendar } from "lucide-react";
+import { API_BASE } from "@/lib/api";
 
 type Order = {
     id: number;
@@ -30,7 +31,7 @@ export default function AdminOrdersPage() {
             return;
         }
 
-        fetch("https://websitepro-d5cu.onrender.com/admin/orders")
+        fetch(`${API_BASE}/admin/orders`)
             .then((res) => res.json())
             .then((data) => {
                 setOrders(Array.isArray(data) ? data : []);
