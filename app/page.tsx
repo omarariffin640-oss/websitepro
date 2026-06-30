@@ -1,5 +1,6 @@
 import HomeHero from "@/components/home/HomeHero";
 import HomeStats from "@/components/home/HomeStats";
+import EvaluationPrograms from "@/components/home/EvaluationPrograms";
 import HomePricing from "@/components/home/HomePricing";
 import HomeRewards from "@/components/home/HomeRewards";
 import HomePlatform from "@/components/home/HomePlatform";
@@ -13,6 +14,9 @@ export default function HomePage() {
     <main className="min-h-screen bg-[#050509] text-white">
       <HomeHero />
       <HomeStats />
+
+      <EvaluationPrograms />
+
       <HomePricing />
       <HomeRewards />
       <HomePlatform />
