@@ -2,11 +2,17 @@
 
 import { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import Sidebar from "@/components/Sidebar";
+import { Card, CardContent } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
-import Sidebar from "@/components/Sidebar";
-import { CheckCircle, XCircle, Clock } from "lucide-react";
+import { CheckCircle, XCircle, Clock, ShieldCheck } from "lucide-react";
+
+const kycs = [
+    { id: 1, name: "Ali Noor", email: "ali@test.com", status: "pending", date: "2026-06-16" },
+    { id: 2, name: "Sarah Tan", email: "sarah@test.com", status: "verified", date: "2026-06-15" },
+    { id: 3, name: "John Lim", email: "john@test.com", status: "rejected", date: "2026-06-14" },
+];
 
 export default function KYCVerificationPage() {
     const router = useRouter();
@@ -15,76 +21,81 @@ export default function KYCVerificationPage() {
 
     useEffect(() => {
         const email = localStorage.getItem("userEmail");
+
         if (!email) {
             router.push("/login");
             return;
         }
+
         setLoading(false);
     }, [router]);
-
-    const kycs = [
-        { id: 1, name: "Ali Noor", email: "ali@test.com", status: "pending", date: "2026-06-16" },
-        { id: 2, name: "Sarah Tan", email: "sarah@test.com", status: "verified", date: "2026-06-15" },
-        { id: 3, name: "John Lim", email: "john@test.com", status: "rejected", date: "2026-06-14" },
-    ];
 
     if (loading) {
         return (
             <div className="flex min-h-screen items-center justify-center bg-black">
-                <p className="text-gray-400">Loading...</p>
+                <p className="text-gray-400">Loading KYC verification...</p>
             </div>
         );
     }
 
     return (
-        <div className="min-h-screen bg-black">
-            <Sidebar isOpen={sidebarOpen} onClose={() => setSidebarOpen(false)} onOpen={() => setSidebarOpen(true)} />
-            <main className="lg:ml-64 pt-2">
-                <div className="p-3">
-                    <h1 className="text-2xl font-bold text-white mb-3">KYC Verification</h1>
+        <div className="min-h-screen bg-black text-white">
+            <Sidebar
+                isOpen={sidebarOpen}
+                onClose={() => setSidebarOpen(false)}
+                onOpen={() => setSidebarOpen(true)}
+            />
 
-                    <Card className="bg-[#1A1A1A] border-gray-800">
-                        <CardHeader>
-                            <CardTitle className="text-white">Pending Verifications</CardTitle>
-                        </CardHeader>
-                        <CardContent>
+            <main className="pt-6 lg:ml-72">
+                <div className="mx-auto max-w-7xl px-6 pb-12 lg:px-8">
+                    <section className="mb-8 rounded-3xl border border-purple-500/20 bg-gradient-to-br from-purple-950/30 via-gray-950 to-black p-6 md:p-8">
+                        <div className="mb-3 inline-flex items-center gap-2 rounded-full border border-purple-500/30 bg-purple-500/10 px-3 py-1 text-sm text-purple-300">
+                            <ShieldCheck className="h-4 w-4" />
+                            KYC Verification
+                        </div>
+
+                        <h1 className="text-3xl font-bold md:text-4xl">KYC Requests</h1>
+                        <p className="mt-3 text-gray-400">
+                            Review, approve, reject and monitor user identity verification requests.
+                        </p>
+                    </section>
+
+                    <Card className="border-white/10 bg-white/5">
+                        <CardContent className="p-6">
+                            <h2 className="mb-5 text-lg font-semibold text-white">
+                                Verification List
+                            </h2>
+
                             <div className="overflow-x-auto">
                                 <table className="w-full text-left">
-                                    <thead className="border-b border-gray-700">
+                                    <thead className="border-b border-white/10">
                                         <tr>
-                                            <th className="pb-3 text-gray-400 font-medium">Name</th>
-                                            <th className="pb-3 text-gray-400 font-medium">Email</th>
-                                            <th className="pb-3 text-gray-400 font-medium">Status</th>
-                                            <th className="pb-3 text-gray-400 font-medium">Date</th>
-                                            <th className="pb-3 text-gray-400 font-medium">Action</th>
+                                            <th className="pb-3 text-sm font-medium text-gray-400">Name</th>
+                                            <th className="pb-3 text-sm font-medium text-gray-400">Email</th>
+                                            <th className="pb-3 text-sm font-medium text-gray-400">Status</th>
+                                            <th className="pb-3 text-sm font-medium text-gray-400">Date</th>
+                                            <th className="pb-3 text-sm font-medium text-gray-400">Action</th>
                                         </tr>
                                     </thead>
-                                    <tbody className="divide-y divide-gray-800">
+
+                                    <tbody className="divide-y divide-white/10">
                                         {kycs.map((kyc) => (
-                                            <tr key={kyc.id} className="hover:bg-gray-800/30 transition-colors">
-                                                <td className="py-3 text-white">{kyc.name}</td>
-                                                <td className="py-3 text-gray-400">{kyc.email}</td>
-                                                <td className="py-3">
-                                                    {kyc.status === "verified" && (
-                                                        <Badge className="bg-green-500/20 text-green-500 border-green-500/30">Verified</Badge>
-                                                    )}
-                                                    {kyc.status === "pending" && (
-                                                        <Badge className="bg-yellow-500/20 text-yellow-500 border-yellow-500/30">Pending</Badge>
-                                                    )}
-                                                    {kyc.status === "rejected" && (
-                                                        <Badge className="bg-red-500/20 text-red-500 border-red-500/30">Rejected</Badge>
-                                                    )}
+                                            <tr key={kyc.id} className="hover:bg-white/[0.03]">
+                                                <td className="py-4 font-medium text-white">{kyc.name}</td>
+                                                <td className="py-4 text-gray-400">{kyc.email}</td>
+                                                <td className="py-4">
+                                                    <StatusBadge status={kyc.status} />
                                                 </td>
-                                                <td className="py-3 text-gray-400">{kyc.date}</td>
-                                                <td className="py-3">
-                                                    <div className="flex gap-1">
-                                                        <Button variant="ghost" size="icon" className="h-8 w-8 text-green-400 hover:text-green-300 hover:bg-green-500/10">
+                                                <td className="py-4 text-gray-400">{kyc.date}</td>
+                                                <td className="py-4">
+                                                    <div className="flex gap-2">
+                                                        <Button variant="ghost" size="icon" className="h-8 w-8 text-green-400 hover:bg-green-500/10">
                                                             <CheckCircle className="h-4 w-4" />
                                                         </Button>
-                                                        <Button variant="ghost" size="icon" className="h-8 w-8 text-red-400 hover:text-red-300 hover:bg-red-500/10">
+                                                        <Button variant="ghost" size="icon" className="h-8 w-8 text-red-400 hover:bg-red-500/10">
                                                             <XCircle className="h-4 w-4" />
                                                         </Button>
-                                                        <Button variant="ghost" size="icon" className="h-8 w-8 text-yellow-400 hover:text-yellow-300 hover:bg-yellow-500/10">
+                                                        <Button variant="ghost" size="icon" className="h-8 w-8 text-yellow-400 hover:bg-yellow-500/10">
                                                             <Clock className="h-4 w-4" />
                                                         </Button>
                                                     </div>
@@ -100,4 +111,16 @@ export default function KYCVerificationPage() {
             </main>
         </div>
     );
+}
+
+function StatusBadge({ status }: { status: string }) {
+    if (status === "verified") {
+        return <Badge className="border-green-500/30 bg-green-500/20 text-green-400">Verified</Badge>;
+    }
+
+    if (status === "rejected") {
+        return <Badge className="border-red-500/30 bg-red-500/20 text-red-400">Rejected</Badge>;
+    }
+
+    return <Badge className="border-yellow-500/30 bg-yellow-500/20 text-yellow-400">Pending</Badge>;
 }
