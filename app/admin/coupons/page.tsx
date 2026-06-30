@@ -2,11 +2,16 @@
 
 import { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import Sidebar from "@/components/Sidebar";
+import { Card, CardContent } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
-import Sidebar from "@/components/Sidebar";
-import { Eye, Trash2 } from "lucide-react";
+import { Eye, Trash2, Tag, Plus } from "lucide-react";
+
+const coupons = [
+    { code: "PROP10", discount: "10%", expiry: "2026-12-31", status: "Active" },
+    { code: "PROP20", discount: "20%", expiry: "2026-06-30", status: "Expired" },
+];
 
 export default function CouponsPage() {
     const router = useRouter();
@@ -15,81 +20,104 @@ export default function CouponsPage() {
 
     useEffect(() => {
         const email = localStorage.getItem("userEmail");
+
         if (!email) {
             router.push("/login");
             return;
         }
+
         setLoading(false);
     }, [router]);
 
     if (loading) {
         return (
             <div className="flex min-h-screen items-center justify-center bg-black">
-                <p className="text-gray-400">Loading...</p>
+                <p className="text-gray-400">Loading coupons...</p>
             </div>
         );
     }
 
     return (
-        <div className="min-h-screen bg-black">
-            <Sidebar isOpen={sidebarOpen} onClose={() => setSidebarOpen(false)} onOpen={() => setSidebarOpen(true)} />
-            <main className="lg:ml-64 pt-2">
-                <div className="p-3">
-                    <h1 className="text-2xl font-bold text-white mb-3">Coupons Management</h1>
+        <div className="min-h-screen bg-black text-white">
+            <Sidebar
+                isOpen={sidebarOpen}
+                onClose={() => setSidebarOpen(false)}
+                onOpen={() => setSidebarOpen(true)}
+            />
 
-                    <Card className="bg-[#1A1A1A] border-gray-800">
-                        <CardHeader>
-                            <CardTitle className="text-white">Active Coupons</CardTitle>
-                        </CardHeader>
-                        <CardContent>
+            <main className="pt-6 lg:ml-72">
+                <div className="mx-auto max-w-7xl px-6 pb-12 lg:px-8">
+                    <section className="mb-8 rounded-3xl border border-purple-500/20 bg-gradient-to-br from-purple-950/30 via-gray-950 to-black p-6 md:p-8">
+                        <div className="mb-3 inline-flex items-center gap-2 rounded-full border border-purple-500/30 bg-purple-500/10 px-3 py-1 text-sm text-purple-300">
+                            <Tag className="h-4 w-4" />
+                            Coupons Management
+                        </div>
+
+                        <div className="flex flex-col gap-4 md:flex-row md:items-end md:justify-between">
+                            <div>
+                                <h1 className="text-3xl font-bold md:text-4xl">
+                                    Coupon Codes
+                                </h1>
+                                <p className="mt-3 text-gray-400">
+                                    Manage promo codes, discount rates, expiry dates and coupon status.
+                                </p>
+                            </div>
+
+                            <Button className="bg-purple-600 hover:bg-purple-700">
+                                <Plus className="mr-2 h-4 w-4" />
+                                Create Coupon
+                            </Button>
+                        </div>
+                    </section>
+
+                    <Card className="border-white/10 bg-white/5">
+                        <CardContent className="p-6">
+                            <h2 className="mb-5 text-lg font-semibold text-white">
+                                Active Coupons
+                            </h2>
+
                             <div className="overflow-x-auto">
                                 <table className="w-full text-left">
-                                    <thead className="border-b border-gray-700">
+                                    <thead className="border-b border-white/10">
                                         <tr>
-                                            <th className="pb-3 text-gray-400 font-medium">Code</th>
-                                            <th className="pb-3 text-gray-400 font-medium">Discount</th>
-                                            <th className="pb-3 text-gray-400 font-medium">Expiry</th>
-                                            <th className="pb-3 text-gray-400 font-medium">Status</th>
-                                            <th className="pb-3 text-gray-400 font-medium">Action</th>
+                                            <th className="pb-3 text-sm font-medium text-gray-400">Code</th>
+                                            <th className="pb-3 text-sm font-medium text-gray-400">Discount</th>
+                                            <th className="pb-3 text-sm font-medium text-gray-400">Expiry</th>
+                                            <th className="pb-3 text-sm font-medium text-gray-400">Status</th>
+                                            <th className="pb-3 text-sm font-medium text-gray-400">Action</th>
                                         </tr>
                                     </thead>
-                                    <tbody className="divide-y divide-gray-800">
-                                        <tr className="hover:bg-gray-800/30 transition-colors">
-                                            <td className="py-3 text-white font-medium">PROP10</td>
-                                            <td className="py-3 text-green-500">10%</td>
-                                            <td className="py-3 text-gray-400">2026-12-31</td>
-                                            <td className="py-3">
-                                                <Badge className="bg-green-500/20 text-green-500 border-green-500/30">Active</Badge>
-                                            </td>
-                                            <td className="py-3">
-                                                <div className="flex gap-1">
-                                                    <Button variant="ghost" size="icon" className="h-8 w-8 text-purple-400 hover:text-purple-300 hover:bg-purple-500/10">
-                                                        <Eye className="h-4 w-4" />
-                                                    </Button>
-                                                    <Button variant="ghost" size="icon" className="h-8 w-8 text-red-400 hover:text-red-300 hover:bg-red-500/10">
-                                                        <Trash2 className="h-4 w-4" />
-                                                    </Button>
-                                                </div>
-                                            </td>
-                                        </tr>
-                                        <tr className="hover:bg-gray-800/30 transition-colors">
-                                            <td className="py-3 text-white font-medium">PROP20</td>
-                                            <td className="py-3 text-green-500">20%</td>
-                                            <td className="py-3 text-gray-400">2026-06-30</td>
-                                            <td className="py-3">
-                                                <Badge className="bg-yellow-500/20 text-yellow-500 border-yellow-500/30">Expired</Badge>
-                                            </td>
-                                            <td className="py-3">
-                                                <div className="flex gap-1">
-                                                    <Button variant="ghost" size="icon" className="h-8 w-8 text-purple-400 hover:text-purple-300 hover:bg-purple-500/10">
-                                                        <Eye className="h-4 w-4" />
-                                                    </Button>
-                                                    <Button variant="ghost" size="icon" className="h-8 w-8 text-red-400 hover:text-red-300 hover:bg-red-500/10">
-                                                        <Trash2 className="h-4 w-4" />
-                                                    </Button>
-                                                </div>
-                                            </td>
-                                        </tr>
+
+                                    <tbody className="divide-y divide-white/10">
+                                        {coupons.map((coupon) => (
+                                            <tr key={coupon.code} className="hover:bg-white/[0.03]">
+                                                <td className="py-4 font-semibold text-white">{coupon.code}</td>
+                                                <td className="py-4 text-green-400">{coupon.discount}</td>
+                                                <td className="py-4 text-gray-400">{coupon.expiry}</td>
+                                                <td className="py-4">
+                                                    <Badge
+                                                        className={
+                                                            coupon.status === "Active"
+                                                                ? "border-green-500/30 bg-green-500/20 text-green-400"
+                                                                : "border-yellow-500/30 bg-yellow-500/20 text-yellow-400"
+                                                        }
+                                                    >
+                                                        {coupon.status}
+                                                    </Badge>
+                                                </td>
+                                                <td className="py-4">
+                                                    <div className="flex gap-2">
+                                                        <Button variant="ghost" size="icon" className="h-8 w-8 text-purple-400 hover:bg-purple-500/10">
+                                                            <Eye className="h-4 w-4" />
+                                                        </Button>
+
+                                                        <Button variant="ghost" size="icon" className="h-8 w-8 text-red-400 hover:bg-red-500/10">
+                                                            <Trash2 className="h-4 w-4" />
+                                                        </Button>
+                                                    </div>
+                                                </td>
+                                            </tr>
+                                        ))}
                                     </tbody>
                                 </table>
                             </div>
