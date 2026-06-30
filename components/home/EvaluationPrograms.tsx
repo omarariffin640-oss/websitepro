@@ -40,7 +40,7 @@ export default function EvaluationPrograms() {
     ];
 
     return (
-        <section className="mb-12 px-6 lg:px-8">
+        <section className="mb-20 px-6 lg:px-8">
             <div className="mx-auto max-w-5xl">
                 <div className="mb-8 text-center">
                     <div className="inline-flex items-center gap-2 rounded-full border border-violet-500/30 bg-violet-500/10 px-4 py-2 text-sm text-violet-300">
@@ -64,8 +64,8 @@ export default function EvaluationPrograms() {
                             type="button"
                             onClick={() => setActiveTab(tab)}
                             className={`rounded-full border px-5 py-2 text-sm font-medium transition ${activeTab === tab
-                                    ? "border-violet-500 bg-violet-600 text-white"
-                                    : "border-white/10 bg-white/[0.04] text-zinc-400 hover:border-violet-500/40 hover:text-white"
+                                ? "border-violet-500 bg-violet-600 text-white"
+                                : "border-white/10 bg-white/[0.04] text-zinc-400 hover:border-violet-500/40 hover:text-white"
                                 }`}
                         >
                             {tab}

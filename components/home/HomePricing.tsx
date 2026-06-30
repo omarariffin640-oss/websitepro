@@ -139,7 +139,7 @@ export default function HomePricing() {
                             key={item}
                             onClick={() => setProgram(item)}
                             className={`rounded-full border px-4 py-2 text-sm transition ${program === item
-                                ? "border-violet-500/40 bg-violet-500/15 text-white"
+                                ? "border-violet-500 bg-violet-600 text-white shadow-lg shadow-violet-950/40"
                                 : "border-white/10 bg-white/[0.03] text-zinc-400 hover:border-violet-500/40 hover:text-white"
                                 }`}
                         >
@@ -232,7 +232,12 @@ export default function HomePricing() {
                                 </div>
 
                                 <Link href="/register">
-                                    <Button className="mt-5 w-full rounded-xl bg-violet-600 hover:bg-violet-700">
+                                    <Button
+                                        className={`mt-5 w-full rounded-xl ${program === "Free Trial"
+                                            ? "bg-emerald-600 hover:bg-emerald-700"
+                                            : "bg-violet-600 hover:bg-violet-700"
+                                            }`}
+                                    >
                                         {program === "Free Trial" ? "Start Free Trial" : "Start Challenge"}
                                     </Button>
                                 </Link>
