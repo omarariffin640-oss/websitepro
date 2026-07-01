@@ -870,7 +870,7 @@ app.get("/admin/stats", async (req, res) => {
 app.get("/admin/users", async (req, res) => {
     const { data, error } = await supabase
         .from("users")
-        .select("*")
+        .select("id,email,name,avatar_url,role,challenge_status,account_type,created_at")
         .order("created_at", { ascending: false });
 
     if (error) {

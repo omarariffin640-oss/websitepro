@@ -6,28 +6,98 @@ import Sidebar from "@/components/Sidebar";
 import { Card, CardContent } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
-import { Eye, Trash2, Tag, Plus } from "lucide-react";
+import { Input } from "@/components/ui/input";
+import { Trash2, Tag, Plus } from "lucide-react";
+import { API_BASE } from "@/lib/api";
 
-const coupons = [
-    { code: "PROP10", discount: "10%", expiry: "2026-12-31", status: "Active" },
-    { code: "PROP20", discount: "20%", expiry: "2026-06-30", status: "Expired" },
-];
+type Coupon = {
+    id?: number;
+    code: string;
+    discount: string;
+    expiry?: string;
+    status?: string;
+};
 
 export default function CouponsPage() {
     const router = useRouter();
     const [sidebarOpen, setSidebarOpen] = useState(false);
     const [loading, setLoading] = useState(true);
+    const [coupons, setCoupons] = useState<Coupon[]>([]);
+    const [code, setCode] = useState("");
+    const [discount, setDiscount] = useState("");
+    const [expiry, setExpiry] = useState("");
 
     useEffect(() => {
         const email = localStorage.getItem("userEmail");
-
         if (!email) {
             router.push("/login");
             return;
         }
 
-        setLoading(false);
+        fetchCoupons();
     }, [router]);
+
+    const fetchCoupons = async () => {
+        try {
+            const res = await fetch(`${API_BASE}/admin/coupons`);
+            const data = await res.json();
+            setCoupons(Array.isArray(data) ? data : []);
+        } catch {
+            setCoupons([]);
+        } finally {
+            setLoading(false);
+        }
+    };
+
+    const createCoupon = async () => {
+        if (!code || !discount) {
+            alert("Please enter coupon code and discount.");
+            return;
+        }
+
+        const res = await fetch(`${API_BASE}/admin/coupons`, {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json",
+            },
+            body: JSON.stringify({
+                code,
+                discount,
+                expiry,
+                status: "active",
+            }),
+        });
+
+        const data = await res.json();
+
+        if (!data.success) {
+            alert(data.message || "Failed to create coupon.");
+            return;
+        }
+
+        setCode("");
+        setDiscount("");
+        setExpiry("");
+        fetchCoupons();
+    };
+
+    const deleteCoupon = async (id?: number) => {
+        if (!id) return;
+        if (!confirm("Delete this coupon?")) return;
+
+        const res = await fetch(`${API_BASE}/admin/coupons/${id}`, {
+            method: "DELETE",
+        });
+
+        const data = await res.json();
+
+        if (!data.success) {
+            alert(data.message || "Failed to delete coupon.");
+            return;
+        }
+
+        fetchCoupons();
+    };
 
     if (loading) {
         return (
@@ -53,73 +123,88 @@ export default function CouponsPage() {
                             Coupons Management
                         </div>
 
-                        <div className="flex flex-col gap-4 md:flex-row md:items-end md:justify-between">
-                            <div>
-                                <h1 className="text-3xl font-bold md:text-4xl">
-                                    Coupon Codes
-                                </h1>
-                                <p className="mt-3 text-gray-400">
-                                    Manage promo codes, discount rates, expiry dates and coupon status.
-                                </p>
-                            </div>
+                        <h1 className="text-3xl font-bold md:text-4xl">Coupon Codes</h1>
+                        <p className="mt-3 text-gray-400">
+                            Create, manage and delete discount coupons.
+                        </p>
+                    </section>
 
-                            <Button className="bg-purple-600 hover:bg-purple-700">
+                    <Card className="mb-6 border-white/10 bg-white/5">
+                        <CardContent className="grid gap-3 p-6 md:grid-cols-4">
+                            <Input
+                                value={code}
+                                onChange={(e) => setCode(e.target.value.toUpperCase())}
+                                placeholder="Code e.g. PROP10"
+                                className="border-gray-800 bg-black"
+                            />
+                            <Input
+                                value={discount}
+                                onChange={(e) => setDiscount(e.target.value)}
+                                placeholder="Discount e.g. 10%"
+                                className="border-gray-800 bg-black"
+                            />
+                            <Input
+                                value={expiry}
+                                onChange={(e) => setExpiry(e.target.value)}
+                                placeholder="Expiry e.g. 2026-12-31"
+                                className="border-gray-800 bg-black"
+                            />
+                            <Button onClick={createCoupon} className="bg-purple-600 hover:bg-purple-700">
                                 <Plus className="mr-2 h-4 w-4" />
                                 Create Coupon
                             </Button>
-                        </div>
-                    </section>
+                        </CardContent>
+                    </Card>
 
                     <Card className="border-white/10 bg-white/5">
                         <CardContent className="p-6">
                             <h2 className="mb-5 text-lg font-semibold text-white">
-                                Active Coupons
+                                All Coupons ({coupons.length})
                             </h2>
 
                             <div className="overflow-x-auto">
                                 <table className="w-full text-left">
                                     <thead className="border-b border-white/10">
                                         <tr>
-                                            <th className="pb-3 text-sm font-medium text-gray-400">Code</th>
-                                            <th className="pb-3 text-sm font-medium text-gray-400">Discount</th>
-                                            <th className="pb-3 text-sm font-medium text-gray-400">Expiry</th>
-                                            <th className="pb-3 text-sm font-medium text-gray-400">Status</th>
-                                            <th className="pb-3 text-sm font-medium text-gray-400">Action</th>
+                                            <th className="pb-3 text-sm text-gray-400">Code</th>
+                                            <th className="pb-3 text-sm text-gray-400">Discount</th>
+                                            <th className="pb-3 text-sm text-gray-400">Expiry</th>
+                                            <th className="pb-3 text-sm text-gray-400">Status</th>
+                                            <th className="pb-3 text-sm text-gray-400">Action</th>
                                         </tr>
                                     </thead>
 
                                     <tbody className="divide-y divide-white/10">
                                         {coupons.map((coupon) => (
-                                            <tr key={coupon.code} className="hover:bg-white/[0.03]">
-                                                <td className="py-4 font-semibold text-white">{coupon.code}</td>
+                                            <tr key={coupon.id || coupon.code}>
+                                                <td className="py-4 font-semibold">{coupon.code}</td>
                                                 <td className="py-4 text-green-400">{coupon.discount}</td>
-                                                <td className="py-4 text-gray-400">{coupon.expiry}</td>
+                                                <td className="py-4 text-gray-400">{coupon.expiry || "-"}</td>
                                                 <td className="py-4">
-                                                    <Badge
-                                                        className={
-                                                            coupon.status === "Active"
-                                                                ? "border-green-500/30 bg-green-500/20 text-green-400"
-                                                                : "border-yellow-500/30 bg-yellow-500/20 text-yellow-400"
-                                                        }
-                                                    >
-                                                        {coupon.status}
+                                                    <Badge className="border-green-500/30 bg-green-500/20 text-green-400">
+                                                        {coupon.status || "active"}
                                                     </Badge>
                                                 </td>
                                                 <td className="py-4">
-                                                    <div className="flex gap-2">
-                                                        <Button variant="ghost" size="icon" className="h-8 w-8 text-purple-400 hover:bg-purple-500/10">
-                                                            <Eye className="h-4 w-4" />
-                                                        </Button>
-
-                                                        <Button variant="ghost" size="icon" className="h-8 w-8 text-red-400 hover:bg-red-500/10">
-                                                            <Trash2 className="h-4 w-4" />
-                                                        </Button>
-                                                    </div>
+                                                    <Button
+                                                        onClick={() => deleteCoupon(coupon.id)}
+                                                        variant="ghost"
+                                                        size="icon"
+                                                        className="h-8 w-8 text-red-400 hover:bg-red-500/10"
+                                                    >
+                                                        <Trash2 className="h-4 w-4" />
+                                                    </Button>
                                                 </td>
                                             </tr>
                                         ))}
                                     </tbody>
                                 </table>
+
+                                {coupons.length === 0 && (
+                                    <p className="py-6 text-center text-gray-400">
+                                        No coupons found.
+                                    </p>
+                                )}
                             </div>
                         </CardContent>
                     </Card>
