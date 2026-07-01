@@ -177,7 +177,12 @@ export default function CouponsPage() {
                                     <tbody className="divide-y divide-white/10">
                                         {coupons.map((coupon) => (
                                             <tr key={coupon.id || coupon.code}>
-                                                <td className="py-4 font-semibold">{coupon.code}</td>
+                                                <td className="py-4 font-semibold">
+                                                    {coupon.code}
+                                                    <p className="mt-1 text-xs text-gray-500">
+                                                        Coupon ID: #{coupon.id}
+                                                    </p>
+                                                </td>
                                                 <td className="py-4 text-green-400">{coupon.discount}</td>
                                                 <td className="py-4 text-gray-400">{coupon.expiry || "-"}</td>
                                                 <td className="py-4">

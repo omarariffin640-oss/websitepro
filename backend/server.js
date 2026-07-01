@@ -958,6 +958,12 @@ app.put("/admin/payouts/:id/status", async (req, res) => {
         });
     }
 
+    await supabase.from("admin_logs").insert([{
+        title: `Payout ${status} for payout ID ${id}`,
+        status: status === "rejected" ? "Rejected" : "Success",
+        color: status === "rejected" ? "yellow" : "green"
+    }]);
+
     res.json({
         success: true,
         message: "Payout status updated"
@@ -1035,6 +1041,304 @@ app.delete("/admin/coupons/:id", async (req, res) => {
         success: true,
         message: "Coupon deleted"
     });
+});
+
+app.post("/admin/coupons", async (req, res) => {
+    const { code, discount, expiry, status } = req.body;
+
+    console.log("CREATE COUPON HIT", req.body);
+
+    if (!code || !discount) {
+        return res.status(400).json({ success: false, message: "Missing coupon data" });
+    }
+
+    const { error } = await supabase.from("coupons").insert([{
+        code,
+        discount,
+        expiry,
+        status: status || "active"
+    }]);
+
+    if (error) {
+        console.log("COUPON ERROR", error.message);
+        return res.status(500).json({ success: false, message: error.message });
+    }
+
+    res.json({ success: true, message: "Coupon created" });
+});
+
+// GET ALL COUPONS
+app.get("/admin/coupons", async (req, res) => {
+    const { data, error } = await supabase
+        .from("coupons")
+        .select("*")
+        .order("created_at", { ascending: false });
+
+    if (error) {
+        console.log("GET COUPONS ERROR", error.message);
+        return res.status(500).json({
+            success: false,
+            message: error.message
+        });
+    }
+
+    res.json(data || []);
+});
+
+// ADMIN NEWS
+app.get("/admin/news", async (req, res) => {
+    const { data, error } = await supabase
+        .from("news")
+        .select("*")
+        .order("created_at", { ascending: false });
+
+    if (error) return res.status(500).json({ success: false, message: error.message });
+    res.json(data || []);
+});
+
+app.post("/admin/news", async (req, res) => {
+    const { title, content, category } = req.body;
+
+    if (!title || !content || !category) {
+        return res.status(400).json({ success: false, message: "Missing news data" });
+    }
+
+    const { error } = await supabase.from("news").insert([{
+        title,
+        content,
+        category,
+        status: "published"
+    }]);
+
+    if (error) return res.status(500).json({ success: false, message: error.message });
+
+    res.json({ success: true, message: "News published" });
+});
+
+app.delete("/admin/news/:id", async (req, res) => {
+    const { id } = req.params;
+
+    const { error } = await supabase
+        .from("news")
+        .delete()
+        .eq("id", id);
+
+    if (error) return res.status(500).json({ success: false, message: error.message });
+
+    res.json({ success: true, message: "News deleted" });
+});
+
+// ADMIN EMAILS TEMPLETES
+app.get("/admin/emails", async (req, res) => {
+    const { data, error } = await supabase
+        .from("email_templates")
+        .select("*")
+        .order("created_at", { ascending: false });
+
+    if (error) return res.status(500).json({ success: false, message: error.message });
+    res.json(data || []);
+});
+
+app.post("/admin/emails", async (req, res) => {
+    const { title, description, subject, body, status } = req.body;
+
+    if (!title || !subject || !body) {
+        return res.status(400).json({ success: false, message: "Missing email template data" });
+    }
+
+    const { error } = await supabase.from("email_templates").insert([{
+        title,
+        description,
+        subject,
+        body,
+        status: status || "active"
+    }]);
+
+    if (error) return res.status(500).json({ success: false, message: error.message });
+    res.json({ success: true, message: "Email template created" });
+});
+
+app.put("/admin/emails/:id", async (req, res) => {
+    const { id } = req.params;
+    const { title, description, subject, body, status } = req.body;
+
+    const { error } = await supabase
+        .from("email_templates")
+        .update({ title, description, subject, body, status })
+        .eq("id", id);
+
+    if (error) return res.status(500).json({ success: false, message: error.message });
+    res.json({ success: true, message: "Email template updated" });
+});
+
+app.delete("/admin/emails/:id", async (req, res) => {
+    const { id } = req.params;
+
+    const { error } = await supabase
+        .from("email_templates")
+        .delete()
+        .eq("id", id);
+
+    if (error) return res.status(500).json({ success: false, message: error.message });
+    res.json({ success: true, message: "Email template deleted" });
+});
+
+// ADMIN KYC
+app.get("/admin/kyc", async (req, res) => {
+    const { data, error } = await supabase
+        .from("kyc")
+        .select("*")
+        .order("created_at", { ascending: false });
+
+    if (error) return res.status(500).json({ success: false, message: error.message });
+    res.json(data || []);
+});
+
+app.put("/admin/kyc/:id/status", async (req, res) => {
+    const { id } = req.params;
+    const { status } = req.body;
+
+    if (!["pending", "verified", "rejected"].includes(status)) {
+        return res.status(400).json({ success: false, message: "Invalid KYC status" });
+    }
+
+    const { error } = await supabase
+        .from("kyc")
+        .update({ status })
+        .eq("id", id);
+
+    if (error) return res.status(500).json({ success: false, message: error.message });
+
+    res.json({ success: true, message: "KYC status updated" });
+});
+
+app.delete("/admin/kyc/:id", async (req, res) => {
+    const { id } = req.params;
+
+    const { error } = await supabase
+        .from("kyc")
+        .delete()
+        .eq("id", id);
+
+    if (error) return res.status(500).json({ success: false, message: error.message });
+
+    res.json({ success: true, message: "KYC deleted" });
+});
+
+// USER SUBMIT KYC
+app.post("/kyc/submit", async (req, res) => {
+    const { name, email } = req.body;
+
+    if (!name || !email) {
+        return res.status(400).json({
+            success: false,
+            message: "Name and email required"
+        });
+    }
+
+    const { error } = await supabase.from("kyc").insert([{
+        name,
+        email,
+        status: "pending"
+    }]);
+
+    if (error) {
+        return res.status(500).json({
+            success: false,
+            message: error.message
+        });
+    }
+
+    await supabase.from("admin_logs").insert([{
+        title: `New KYC submitted by ${email}`,
+        status: "Pending",
+        color: "yellow"
+    }]);
+
+    res.json({
+        success: true,
+        message: "KYC submitted successfully"
+    });
+});
+
+// ADMIN ACCOUNT-APPROVAL
+app.get("/admin/account-approval", async (req, res) => {
+    const { data, error } = await supabase
+        .from("account_approvals")
+        .select("*")
+        .order("created_at", { ascending: false });
+
+    if (error) return res.status(500).json({ success: false, message: error.message });
+    res.json(data || []);
+});
+
+app.put("/admin/account-approval/:id/status", async (req, res) => {
+    const { id } = req.params;
+    const { status } = req.body;
+
+    if (!["pending", "approved", "rejected"].includes(status)) {
+        return res.status(400).json({ success: false, message: "Invalid status" });
+    }
+
+    const { error } = await supabase
+        .from("account_approvals")
+        .update({ status })
+        .eq("id", id);
+
+    if (error) return res.status(500).json({ success: false, message: error.message });
+    res.json({ success: true, message: "Account status updated" });
+});
+
+app.delete("/admin/account-approval/:id", async (req, res) => {
+    const { id } = req.params;
+
+    const { error } = await supabase
+        .from("account_approvals")
+        .delete()
+        .eq("id", id);
+
+    if (error) return res.status(500).json({ success: false, message: error.message });
+    res.json({ success: true, message: "Account request deleted" });
+});
+
+// ADMIN LOGS
+app.get("/admin/logs", async (req, res) => {
+    const { data, error } = await supabase
+        .from("admin_logs")
+        .select("*")
+        .order("created_at", { ascending: false });
+
+    if (error) return res.status(500).json({ success: false, message: error.message });
+    res.json(data || []);
+});
+
+app.post("/admin/logs", async (req, res) => {
+    const { title, status, color } = req.body;
+
+    if (!title) {
+        return res.status(400).json({ success: false, message: "Missing log title" });
+    }
+
+    const { error } = await supabase.from("admin_logs").insert([{
+        title,
+        status: status || "Info",
+        color: color || "purple"
+    }]);
+
+    if (error) return res.status(500).json({ success: false, message: error.message });
+    res.json({ success: true, message: "Log created" });
+});
+
+app.delete("/admin/logs/:id", async (req, res) => {
+    const { id } = req.params;
+
+    const { error } = await supabase
+        .from("admin_logs")
+        .delete()
+        .eq("id", id);
+
+    if (error) return res.status(500).json({ success: false, message: error.message });
+    res.json({ success: true, message: "Log deleted" });
 });
 
 // START SERVER

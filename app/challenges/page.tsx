@@ -1,137 +1,39 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useEffect } from "react";
 import { useRouter } from "next/navigation";
 
 import DashboardShell from "@/components/DashboardShell";
-import PageSkeleton from "@/components/layout/PageSkeleton";
-import ChallengeHero from "@/components/challenges/ChallengeHero";
-import ActiveChallengeCard from "@/components/challenges/ActiveChallengeCard";
-import ChallengeCard, { ChallengeData } from "@/components/challenges/ChallengeCard";
-
-type ActiveChallenge = ChallengeData & {
-    status: string;
-    started_at: string;
-};
+import HomePricing from "@/components/home/HomePricing";
 
 export default function ChallengesPage() {
     const router = useRouter();
-
-    const [challenges, setChallenges] = useState<ChallengeData[]>([]);
-    const [activeChallenge, setActiveChallenge] =
-        useState<ActiveChallenge | null>(null);
-    const [loading, setLoading] = useState(true);
-    const [message, setMessage] = useState("");
 
     useEffect(() => {
         const email = localStorage.getItem("userEmail");
 
         if (!email) {
             router.push("/login");
-            return;
         }
-
-        Promise.all([
-            fetch("https://websitepro-d5cu.onrender.com/challenge-rules").then((res) =>
-                res.json()
-            ),
-            fetch(
-                `https://websitepro-d5cu.onrender.com/active-challenge?email=${email}`
-            ).then((res) => res.json()),
-        ])
-            .then(([rules, active]) => {
-                setChallenges(Array.isArray(rules) ? rules : []);
-                if (active && active.id) setActiveChallenge(active);
-            })
-            .catch(() => setMessage("Failed to load challenge data."))
-            .finally(() => setLoading(false));
     }, [router]);
-
-    const startChallenge = async (step: number) => {
-        const email = localStorage.getItem("userEmail");
-
-        if (!email) {
-            router.push("/login");
-            return;
-        }
-
-        setMessage("Starting challenge...");
-
-        try {
-            const res = await fetch(
-                "https://websitepro-d5cu.onrender.com/start-challenge",
-                {
-                    method: "POST",
-                    headers: { "Content-Type": "application/json" },
-                    body: JSON.stringify({ user_email: email, step }),
-                }
-            );
-
-            const data = await res.json();
-
-            if (data.success) {
-                setMessage(`Challenge Step ${step} started successfully!`);
-
-                const refreshRes = await fetch(
-                    `https://websitepro-d5cu.onrender.com/active-challenge?email=${email}`
-                );
-                const refreshData = await refreshRes.json();
-
-                if (refreshData && refreshData.id) setActiveChallenge(refreshData);
-
-                setTimeout(() => setMessage(""), 3000);
-            } else {
-                setMessage(data.error || "Failed to start challenge.");
-            }
-        } catch {
-            setMessage("Server error. Please try again.");
-        }
-    };
-
-    if (loading) {
-        return (
-            <DashboardShell>
-                <PageSkeleton />
-            </DashboardShell>
-        );
-    }
 
     return (
         <DashboardShell>
-            <ChallengeHero hasActiveChallenge={activeChallenge !== null} />
-
-            {message && (
-                <div
-                    className={`mb-6 rounded-xl border p-4 ${message.toLowerCase().includes("success")
-                            ? "border-emerald-500/30 bg-emerald-500/10 text-emerald-300"
-                            : "border-violet-500/30 bg-violet-500/10 text-violet-200"
-                        }`}
-                >
-                    {message}
-                </div>
-            )}
-
-            <ActiveChallengeCard challenge={activeChallenge} />
-
-            <div className="mb-6">
-                <h2 className="text-2xl font-bold text-white">
-                    Available Challenges
-                </h2>
-                <p className="mt-2 text-zinc-400">
-                    Select a challenge step below to begin your evaluation.
+            <section className="mb-10 rounded-3xl border border-violet-500/20 bg-gradient-to-br from-violet-950/30 via-zinc-950 to-black p-6 md:p-8">
+                <p className="text-sm font-medium text-violet-400">
+                    Evaluation Challenges
                 </p>
-            </div>
 
-            <div className="grid grid-cols-1 justify-items-center gap-5 md:grid-cols-2 xl:grid-cols-3">
-                {challenges.map((challenge) => (
-                    <ChallengeCard
-                        key={challenge.step}
-                        challenge={challenge}
-                        disabled={activeChallenge !== null}
-                        onStart={startChallenge}
-                    />
-                ))}
-            </div>
+                <h1 className="mt-2 text-3xl font-bold text-white md:text-5xl">
+                    Choose Your Challenge
+                </h1>
+
+                <p className="mt-4 max-w-2xl text-zinc-400">
+                    Start with Free Trial, Step 1 or Step 2. Pricing and account sizes match the Home page.
+                </p>
+            </section>
+
+            <HomePricing programs={["Free Trial", "Step 1", "Step 2"]} />
         </DashboardShell>
     );
 }

@@ -156,6 +156,10 @@ export default function AdminUsersPage() {
                                                         <Mail className="h-3.5 w-3.5" />
                                                         {user.email}
                                                     </p>
+
+                                                    <p className="mt-1 text-xs text-gray-500">
+                                                        User ID: #{user.id}
+                                                    </p>
                                                 </div>
                                             </div>
 

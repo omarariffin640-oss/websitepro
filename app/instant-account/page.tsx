@@ -9,6 +9,7 @@ import DashboardTopbar from "@/components/layout/DashboardTopbar";
 import InstantHero from "@/components/instant/InstantHero";
 import InstantAccountCard from "@/components/instant/InstantAccountCard";
 import InstantBenefits from "@/components/instant/InstantBenefits";
+import HomePricing from "@/components/home/HomePricing";
 
 type InstantAccount = {
     id: number;
@@ -37,7 +38,9 @@ export default function InstantAccountPage() {
         fetch(`https://websitepro-d5cu.onrender.com/instant-account?email=${email}`)
             .then((res) => res.json())
             .then((data) => {
-                if (data && data.id) setAccount(data);
+                if (data && data.id) {
+                    setAccount(data);
+                }
             })
             .catch(() => setMessage("Failed to load instant account."))
             .finally(() => setLoading(false));
@@ -54,8 +57,12 @@ export default function InstantAccountPage() {
                 "https://websitepro-d5cu.onrender.com/create-instant-account",
                 {
                     method: "POST",
-                    headers: { "Content-Type": "application/json" },
-                    body: JSON.stringify({ user_email: email }),
+                    headers: {
+                        "Content-Type": "application/json",
+                    },
+                    body: JSON.stringify({
+                        user_email: email,
+                    }),
                 }
             );
 
@@ -95,10 +102,14 @@ export default function InstantAccountPage() {
         <DashboardShell>
             <DashboardTopbar
                 title="Instant Funding"
-                description="Create and manage your instant funded trading account."
+                description="Choose Instant or Noor Funding account."
             />
 
             <InstantHero hasAccount={account !== null} />
+
+            <HomePricing
+                programs={["Instant", "Noor Funding"]}
+            />
 
             {message && (
                 <div

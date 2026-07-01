@@ -15,7 +15,8 @@ import {
     SelectTrigger,
     SelectValue,
 } from "@/components/ui/select";
-import { Megaphone, Send, Newspaper } from "lucide-react";
+import { Megaphone, Send, Newspaper, Trash2 } from "lucide-react";
+import { API_BASE } from "@/lib/api";
 
 export default function AdminNewsPage() {
     const router = useRouter();
@@ -26,6 +27,17 @@ export default function AdminNewsPage() {
     const [content, setContent] = useState("");
     const [category, setCategory] = useState("");
     const [message, setMessage] = useState("");
+    const [newsList, setNewsList] = useState<any[]>([]);
+
+    const fetchNews = async () => {
+        try {
+            const res = await fetch(`${API_BASE}/admin/news`);
+            const data = await res.json();
+            setNewsList(Array.isArray(data) ? data : []);
+        } catch {
+            setNewsList([]);
+        }
+    };
 
     useEffect(() => {
         const email = localStorage.getItem("userEmail");
@@ -35,21 +47,54 @@ export default function AdminNewsPage() {
             return;
         }
 
+        fetchNews();
         setLoading(false);
     }, [router]);
 
-    const submitNews = () => {
+    const deleteNews = async (id: number) => {
+        if (!confirm("Delete this news?")) return;
+
+        const res = await fetch(`${API_BASE}/admin/news/${id}`, {
+            method: "DELETE",
+        });
+
+        const data = await res.json();
+
+        if (!data.success) {
+            setMessage(data.message || "Failed to delete news.");
+            return;
+        }
+
+        setMessage("News deleted successfully.");
+        fetchNews();
+    };
+
+    const submitNews = async () => {
         if (!title || !content || !category) {
             setMessage("Please fill all fields.");
             return;
         }
 
-        setMessage("News post created successfully.");
+        const res = await fetch(`${API_BASE}/admin/news`, {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json",
+            },
+            body: JSON.stringify({ title, content, category }),
+        });
+
+        const data = await res.json();
+
+        if (!data.success) {
+            setMessage(data.message || "Failed to publish news.");
+            return;
+        }
+
+        setMessage("News published successfully.");
         setTitle("");
         setContent("");
         setCategory("");
-
-        setTimeout(() => setMessage(""), 3000);
+        fetchNews();
     };
 
     if (loading) {
@@ -76,7 +121,9 @@ export default function AdminNewsPage() {
                             News Management
                         </div>
 
-                        <h1 className="text-3xl font-bold md:text-4xl">Create News Post</h1>
+                        <h1 className="text-3xl font-bold md:text-4xl">
+                            Create News Post
+                        </h1>
 
                         <p className="mt-3 text-gray-400">
                             Publish announcements, platform updates, trading tips and maintenance notices.
@@ -145,11 +192,51 @@ export default function AdminNewsPage() {
                                 <h2 className="text-lg font-semibold text-white">News Preview</h2>
 
                                 <p className="mt-3 text-sm text-gray-400">
-                                    Your published news will appear in the user dashboard, blog/news area or announcement section once connected to backend.
+                                    Published news will appear below and can later be shown to users.
                                 </p>
                             </CardContent>
                         </Card>
                     </div>
+
+                    <Card className="mt-6 border-white/10 bg-white/5">
+                        <CardContent className="p-6">
+                            <h2 className="mb-4 text-lg font-semibold text-white">
+                                Published News ({newsList.length})
+                            </h2>
+
+                            <div className="space-y-3">
+                                {newsList.map((news) => (
+                                    <div
+                                        key={news.id}
+                                        className="rounded-xl border border-white/10 bg-black/40 p-4"
+                                    >
+                                        <p className="text-sm text-purple-300">{news.category}</p>
+                                        <h3 className="mt-1 font-bold text-white">
+                                            {news.title}
+                                        </h3>
+
+                                        <p className="mt-1 text-xs text-gray-500">
+                                            News ID: #{news.id}
+                                        </p>
+                                        <p className="mt-2 text-sm text-gray-400">{news.content}</p>
+
+                                        <Button
+                                            onClick={() => deleteNews(news.id)}
+                                            variant="ghost"
+                                            size="icon"
+                                            className="mt-3 h-8 w-8 text-red-400 hover:bg-red-500/10"
+                                        >
+                                            <Trash2 className="h-4 w-4" />
+                                        </Button>
+                                    </div>
+                                ))}
+
+                                {newsList.length === 0 && (
+                                    <p className="text-gray-400">No news published yet.</p>
+                                )}
+                            </div>
+                        </CardContent>
+                    </Card>
                 </div>
             </main>
         </div>

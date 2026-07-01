@@ -127,6 +127,10 @@ export default function AdminPayoutsPage() {
                                                         <Mail className="h-4 w-4 text-purple-400" />
                                                         {payout.user_email}
                                                     </p>
+
+                                                    <p className="mt-1 text-xs text-gray-500">
+                                                        Payout ID: #{payout.id}
+                                                    </p>
                                                 </div>
 
                                                 <div className="grid grid-cols-1 gap-3 text-sm sm:grid-cols-3 xl:min-w-[520px]">

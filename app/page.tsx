@@ -17,7 +17,10 @@ export default function HomePage() {
 
       <EvaluationPrograms />
 
-      <HomePricing />
+      <HomePricing
+        programs={["Free Trial", "Step 1", "Step 2", "Instant", "Noor Funding"]}
+      />
+
       <HomeRewards />
       <HomePlatform />
       <HomeRules />

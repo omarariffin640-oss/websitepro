@@ -66,7 +66,7 @@ export default function AdminOrdersPage() {
         <div className="min-h-screen bg-black text-white">
             <Sidebar isOpen={sidebarOpen} onClose={() => setSidebarOpen(false)} onOpen={() => setSidebarOpen(true)} />
 
-            <main className="pt-6 lg:ml-74">
+            <main className="pt-6 lg:ml-72">
                 <div className="mx-auto max-w-7xl px-4 pb-12 animate-fade-in">
                     <section className="mb-8 rounded-3xl border border-purple-500/20 bg-gradient-to-br from-purple-950/30 via-gray-950 to-black p-6 md:p-8">
                         <div className="mb-3 inline-flex items-center gap-2 rounded-full border border-purple-500/30 bg-purple-500/10 px-3 py-1 text-sm text-purple-300">
@@ -103,6 +103,10 @@ export default function AdminOrdersPage() {
                                                     <p className="mt-1 flex items-center gap-2 text-sm text-gray-400">
                                                         <Mail className="h-4 w-4 text-purple-400" />
                                                         {order.user_email}
+                                                    </p>
+
+                                                    <p className="mt-1 text-xs text-gray-500">
+                                                        Order ID: #{order.id}
                                                     </p>
                                                 </div>
 

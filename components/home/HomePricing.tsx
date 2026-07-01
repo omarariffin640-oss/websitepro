@@ -6,7 +6,7 @@ import { Check, Sparkles, Eye, EyeOff } from "lucide-react";
 import { Button } from "@/components/ui/button";
 
 const currencies = ["USD", "EUR", "GBP", "INR"] as const;
-const programs = ["Free Trial", "Step 1", "Step 2", "Instant", "Noor Funding"] as const;
+type Program = "Free Trial" | "Step 1" | "Step 2" | "Instant" | "Noor Funding";
 
 const rates = { USD: 1, EUR: 0.92, GBP: 0.79, INR: 83 };
 const symbols = { USD: "$", EUR: "€", GBP: "£", INR: "₹" };
@@ -19,9 +19,9 @@ const plans = [
     { capital: "$100K", step1: [599, 399], step2: [699, 499], instant: [899, 649], noor: [999, 749], reward: "Up to 90%" },
 ];
 
-export default function HomePricing() {
+export default function PricingSection({ programs }: { programs: Program[] }) {
     const [currency, setCurrency] = useState<(typeof currencies)[number]>("USD");
-    const [program, setProgram] = useState<(typeof programs)[number]>("Step 1");
+    const [program, setProgram] = useState<Program>(programs[0]);
     const [showAmount, setShowAmount] = useState(true);
 
     const formatPrice = (amount: number) =>
@@ -238,7 +238,11 @@ export default function HomePricing() {
                                             : "bg-violet-600 hover:bg-violet-700"
                                             }`}
                                     >
-                                        {program === "Free Trial" ? "Start Free Trial" : "Start Challenge"}
+                                        {program === "Free Trial"
+                                            ? "Start Free Trial"
+                                            : program === "Instant" || program === "Noor Funding"
+                                                ? "Get Funded"
+                                                : "Start Challenge"}
                                     </Button>
                                 </Link>
                             </div>

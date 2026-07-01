@@ -145,6 +145,10 @@ export default function AdminCertificatesPage() {
                                                         <Mail className="h-4 w-4 text-purple-400" />
                                                         {cert.user_email}
                                                     </p>
+
+                                                    <p className="mt-1 text-xs text-gray-500">
+                                                        Certificate ID: #{cert.id}
+                                                    </p>
                                                 </div>
 
                                                 <div className="grid grid-cols-1 gap-3 text-sm sm:grid-cols-2 xl:min-w-[420px]">
