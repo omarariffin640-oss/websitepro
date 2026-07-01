@@ -1015,6 +1015,28 @@ app.post("/admin/certificates/issue", async (req, res) => {
     });
 });
 
+// DELETE COUPON
+app.delete("/admin/coupons/:id", async (req, res) => {
+    const { id } = req.params;
+
+    const { error } = await supabase
+        .from("coupons")
+        .delete()
+        .eq("id", id);
+
+    if (error) {
+        return res.status(500).json({
+            success: false,
+            message: error.message
+        });
+    }
+
+    res.json({
+        success: true,
+        message: "Coupon deleted"
+    });
+});
+
 // START SERVER
 const port = process.env.PORT || 5000;
 app.listen(port, "0.0.0.0", () => {
