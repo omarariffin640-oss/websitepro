@@ -18,13 +18,21 @@ export default function HomeRules() {
     ];
 
     return (
-        <section className="relative border-y border-white/10 bg-zinc-950/40 px-4 py-20">
+        <section className="relative border-y border-white/10 bg-zinc-950/40 px-4 py-10 md:py-12">
             <div className="absolute inset-0 bg-[radial-gradient(circle_at_center,rgba(139,92,246,0.08),transparent_65%)]" />
 
             <div className="relative mx-auto max-w-7xl">
-                <div className="mx-auto mb-12 max-w-3xl text-center">
+                <div className="mx-auto mb-6 max-w-3xl text-center">
                     <p className="text-sm font-medium uppercase tracking-wider text-violet-400">
                         Trading Rules
+                    </p>
+
+                    <h2 className="mt-2 text-3xl font-bold text-white md:text-4xl">
+                        ...
+                    </h2>
+
+                    <p className="mt-3 text-zinc-400">
+                        ...
                     </p>
 
                     <h2 className="mt-3 text-3xl font-bold text-white md:text-5xl">

@@ -25,7 +25,7 @@ export default function HomeStats() {
     ];
 
     return (
-        <section className="relative border-y border-white/10 bg-white/[0.02] px-4 py-16">
+        <section className="relative border-y border-white/10 bg-white/[0.02] px-4 py-10 md:py-14">
             <div className="absolute inset-0 bg-[radial-gradient(circle_at_center,rgba(139,92,246,0.08),transparent_70%)]" />
 
             <div className="relative mx-auto max-w-7xl">

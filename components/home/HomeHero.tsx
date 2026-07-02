@@ -15,7 +15,7 @@ import { Button } from "@/components/ui/button";
 
 export default function HomeHero() {
     return (
-        <section className="relative overflow-hidden px-4 pb-20 pt-24 md:pb-24 md:pt-28">
+        <section className="relative overflow-hidden px-4 py-10 md:py-14">
             <div className="absolute inset-0 bg-[radial-gradient(circle_at_top_right,rgba(139,92,246,0.24),transparent_34%),radial-gradient(circle_at_bottom_left,rgba(34,211,238,0.08),transparent_28%)]" />
             <div className="absolute inset-0 bg-[linear-gradient(to_right,rgba(255,255,255,0.035)_1px,transparent_1px),linear-gradient(to_bottom,rgba(255,255,255,0.035)_1px,transparent_1px)] bg-[size:72px_72px] opacity-20" />
 

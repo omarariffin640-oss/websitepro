@@ -115,8 +115,8 @@ export default function Sidebar({ isOpen = false, onClose, onOpen }: SidebarProp
                 href={item.href || "#"}
                 onClick={onClose}
                 className={`group flex items-center gap-3 rounded-2xl px-3 py-2.5 transition ${itemIsActive
-                        ? "border border-violet-500/30 bg-violet-500/15 text-white shadow-sm shadow-violet-950/30"
-                        : "text-zinc-400 hover:bg-white/[0.04] hover:text-white"
+                    ? "border border-violet-500/30 bg-violet-500/15 text-white shadow-sm shadow-violet-950/30"
+                    : "text-zinc-400 hover:bg-white/[0.04] hover:text-white"
                     }`}
             >
                 <item.icon
@@ -159,7 +159,7 @@ export default function Sidebar({ isOpen = false, onClose, onOpen }: SidebarProp
                 className={`fixed left-0 top-[112px] z-40 h-[calc(100vh-112px)] w-72 border-r border-white/10 bg-[#050509]/95 backdrop-blur-xl transition-transform duration-300 lg:translate-x-0 ${isOpen ? "translate-x-0" : "-translate-x-full"
                     }`}
             >
-                <div className="flex items-center justify-between border-b border-white/10 px-4 py-4">
+                <div className="flex items-center justify-between border-b border-white/10 px-4 pt-6 pb-4">
                     <Link href="/dashboard" onClick={onClose} className="flex items-center gap-3">
                         <div className="flex h-10 w-10 items-center justify-center rounded-2xl bg-violet-600 shadow-lg shadow-violet-600/20">
                             <span className="text-sm font-bold text-white">NF</span>

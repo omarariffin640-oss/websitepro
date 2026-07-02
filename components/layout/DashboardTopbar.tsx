@@ -48,69 +48,62 @@ export default function DashboardTopbar({
     }, []);
 
     return (
-        <>
-            <header className="mb-6">
-                <div className="flex flex-col gap-5 rounded-3xl border border-white/10 bg-zinc-950/70 p-6 backdrop-blur xl:flex-row xl:items-center xl:justify-between">
-                    <div>
-                        <div className="mb-2 flex items-center gap-2 text-sm text-zinc-500">
-                            <span>Dashboard</span>
-                            <ChevronRight className="h-4 w-4" />
-                            <span className="text-violet-400">{title}</span>
-                        </div>
-
-                        <h1 className="text-3xl font-bold text-white md:text-4xl">
-                            {title}
-                        </h1>
-
-                        {description && (
-                            <p className="mt-2 max-w-2xl text-zinc-400">{description}</p>
-                        )}
+        <header className="mb-5">
+            <div className="flex flex-col gap-4 rounded-2xl border border-white/10 bg-zinc-950/70 p-4 backdrop-blur xl:flex-row xl:items-center xl:justify-between">
+                <div>
+                    <div className="mb-1 flex items-center gap-2 text-xs text-zinc-500">
+                        <span>Dashboard</span>
+                        <ChevronRight className="h-3.5 w-3.5" />
+                        <span className="text-violet-400">{title}</span>
                     </div>
 
-                    <div className="flex flex-col gap-4 md:flex-row md:items-center">
-                        <DashboardSearch placeholder="Search dashboard..." />
+                    <h1 className="text-2xl font-bold text-white md:text-3xl">
+                        {title}
+                    </h1>
 
-                        <div className="flex items-center gap-4">
-                            <div ref={notificationRef} className="relative">
-                                <button
-                                    type="button"
-                                    onClick={() => {
-                                        setShowNotifications(!showNotifications);
-                                        setShowProfile(false);
-                                    }}
-                                    className="flex h-11 w-11 items-center justify-center rounded-xl border border-white/10 bg-white/5 transition hover:border-violet-500/40 hover:bg-violet-500/10"
-                                >
-                                    <Bell className="h-5 w-5 text-zinc-300" />
-                                </button>
+                    {description && (
+                        <p className="mt-1 max-w-2xl text-sm text-zinc-400">
+                            {description}
+                        </p>
+                    )}
+                </div>
 
-                                {showNotifications && <NotificationDropdown />}
-                            </div>
+                <div className="flex flex-col gap-3 md:flex-row md:items-center">
+                    <DashboardSearch placeholder="Search dashboard..." />
 
-                            <div ref={profileRef} className="relative">
-                                <button
-                                    type="button"
-                                    onClick={() => {
-                                        setShowProfile(!showProfile);
-                                        setShowNotifications(false);
-                                    }}
-                                    className="flex items-center gap-3 rounded-xl border border-white/10 bg-white/5 px-4 py-2 transition hover:border-violet-500/40 hover:bg-violet-500/10"
-                                >
-                                    <div className="flex h-10 w-10 items-center justify-center rounded-full bg-violet-600 font-semibold text-white">
-                                        {userName.charAt(0).toUpperCase()}
-                                    </div>
+                    <div className="flex items-center gap-3">
+                        <div ref={notificationRef} className="relative">
+                            <button
+                                type="button"
+                                onClick={() => {
+                                    setShowNotifications(!showNotifications);
+                                    setShowProfile(false);
+                                }}
+                                className="flex h-10 w-10 items-center justify-center rounded-full border border-white/10 bg-white/5 transition hover:border-violet-500/40 hover:bg-violet-500/10"
+                            >
+                                <Bell className="h-4.5 w-4.5 text-zinc-300" />
+                            </button>
 
-                                    <div className="text-left">
-                                        <p className="text-xs text-zinc-500">Welcome Back</p>
-                                        <p className="font-medium text-white">{userName}</p>
-                                    </div>
-                                </button>
+                            {showNotifications && <NotificationDropdown />}
+                        </div>
 
-                                {showProfile && <UserProfileDropdown />}
-                            </div>
+                        <div ref={profileRef} className="relative">
+                            <button
+                                type="button"
+                                onClick={() => {
+                                    setShowProfile(!showProfile);
+                                    setShowNotifications(false);
+                                }}
+                                className="flex h-10 w-10 items-center justify-center rounded-full bg-violet-600 font-semibold text-white transition hover:bg-violet-700"
+                            >
+                                {userName.charAt(0).toUpperCase()}
+                            </button>
+
+                            {showProfile && <UserProfileDropdown />}
                         </div>
                     </div>
                 </div>
-            </header>
-        </>
+            </div>
+        </header>
     );
 }

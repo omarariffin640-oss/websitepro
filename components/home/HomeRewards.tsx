@@ -10,7 +10,7 @@ export default function HomeRewards() {
     ];
 
     return (
-        <section className="px-4 py-20">
+        <section className="px-4 py-2 md:py-4">
             <div className="mx-auto max-w-7xl">
                 <div className="mx-auto mb-10 max-w-3xl text-center">
                     <p className="text-sm font-medium text-violet-400">

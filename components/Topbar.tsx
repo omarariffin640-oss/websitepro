@@ -36,81 +36,89 @@ export default function Topbar() {
 
     return (
         <>
-            <header className="fixed left-0 right-0 top-[48px] z-50 border-b border-white/10 bg-black/80 backdrop-blur-xl">
-                <div className="mx-auto grid h-16 max-w-7xl grid-cols-[auto_1fr_auto] items-center gap-6 px-4">
-                    <Link href={userEmail ? "/dashboard" : "/"} className="flex items-center gap-2">
-                        <div className="flex h-9 w-9 items-center justify-center rounded-xl bg-violet-600 shadow-lg shadow-violet-600/25">
+            <header className="fixed left-0 right-0 top-[64px] z-50 border-b border-white/10 bg-black/80 backdrop-blur-xl">
+                <div className="flex h-16 items-center justify-between px-4">
+                    <Link href={userEmail ? "/dashboard" : "/"} className="flex h-full items-center gap-3">
+                        <div className="flex h-10 w-10 items-center justify-center rounded-xl bg-violet-600">
                             <span className="text-sm font-bold text-white">NF</span>
                         </div>
+
                         <span className="text-sm font-bold tracking-wide text-white">
                             NOOR <span className="text-violet-400">FUNDING</span>
                         </span>
                     </Link>
 
-                    <nav className="hidden justify-center gap-1 lg:flex">
-                        {links.map((link) => {
-                            const active = pathname === link.href;
-                            return (
-                                <Link
-                                    key={link.href}
-                                    href={link.href}
-                                    className={`rounded-xl px-3 py-2 text-sm font-medium transition ${active
-                                        ? "bg-violet-500/15 text-white"
-                                        : "text-zinc-400 hover:bg-white/5 hover:text-white"
-                                        }`}
-                                >
-                                    {link.label}
-                                </Link>
-                            );
-                        })}
-                    </nav>
+                    <div className="hidden items-center gap-6 lg:flex">
+                        <nav className="absolute left-1/2 hidden -translate-x-1/2 items-center gap-1 lg:flex">
+                            {links.map((link) => {
+                                const active = pathname === link.href;
 
-                    <div className="hidden items-center justify-end gap-3 lg:flex">
-                        <button
-                            onClick={() => setLang(lang === "EN" ? "MS" : "EN")}
-                            className="flex h-9 items-center gap-2 rounded-xl border border-white/10 bg-white/[0.03] px-3 text-xs text-zinc-300 hover:border-violet-500/40 hover:text-white"
-                        >
-                            <Globe className="h-4 w-4" />
-                            {lang === "EN" ? "English" : "Malay"}
-                        </button>
-
-                        <button
-                            onClick={() => setTheme(theme === "dark" ? "light" : "dark")}
-                            className="flex h-9 w-9 items-center justify-center rounded-xl border border-white/10 bg-white/[0.03] text-zinc-300 hover:border-violet-500/40 hover:text-white"
-                        >
-                            {theme === "dark" ? <Sun className="h-4 w-4" /> : <Moon className="h-4 w-4" />}
-                        </button>
-
-                        {userEmail ? (
-                            <>
-                                <NotificationBell />
-                                <Link href="/profile">
-                                    <Button variant="outline" className="rounded-xl border-white/10 text-sm text-white hover:bg-white/5">
-                                        {userEmail.split("@")[0]}
-                                    </Button>
-                                </Link>
-                            </>
-                        ) : (
-                            !isAuthPage && (
-                                <>
-                                    <Link href="/login">
-                                        <Button variant="ghost" className="text-sm text-zinc-300 hover:text-white">
-                                            Login
-                                        </Button>
+                                return (
+                                    <Link
+                                        key={link.href}
+                                        href={link.href}
+                                        className={`flex h-9 items-center rounded-xl px-3 text-sm font-medium transition ${active
+                                                ? "bg-violet-500/15 text-white"
+                                                : "text-zinc-400 hover:bg-white/5 hover:text-white"
+                                            }`}
+                                    >
+                                        {link.label}
                                     </Link>
-                                    <Link href="/register">
-                                        <Button className="rounded-xl bg-violet-600 px-5 text-sm text-white hover:bg-violet-700">
-                                            Register
+                                );
+                            })}
+                        </nav>
+
+                        <div className="flex items-center gap-2">
+                            <button
+                                onClick={() => setLang(lang === "EN" ? "English" : "Malay")}
+                                className="flex h-9 w-9 items-center justify-center rounded-full border border-white/10 bg-white/[0.03] text-xs font-semibold text-zinc-300 hover:border-violet-500/40 hover:text-white"
+                            >
+                                {lang}
+                            </button>
+
+                            <button
+                                onClick={() => setTheme(theme === "dark" ? "light" : "dark")}
+                                className="flex h-9 w-9 items-center justify-center rounded-full border border-white/10 bg-white/[0.03] text-zinc-300 hover:border-violet-500/40 hover:text-white"
+                            >
+                                {theme === "dark" ? <Sun className="h-4 w-4" /> : <Moon className="h-4 w-4" />}
+                            </button>
+
+                            {userEmail ? (
+                                <>
+                                    <NotificationBell />
+
+                                    <Link href="/profile">
+                                        <Button
+                                            variant="outline"
+                                            className="h-9 rounded-full border-white/10 px-4 text-sm text-white hover:bg-white/5"
+                                        >
+                                            {userEmail.split("@")[0]}
                                         </Button>
                                     </Link>
                                 </>
-                            )
-                        )}
+                            ) : (
+                                !isAuthPage && (
+                                    <>
+                                        <Link href="/login">
+                                            <Button variant="ghost" className="text-sm text-zinc-300 hover:text-white">
+                                                Login
+                                            </Button>
+                                        </Link>
+
+                                        <Link href="/register">
+                                            <Button className="rounded-full bg-violet-600 px-5 text-sm text-white hover:bg-violet-700">
+                                                Register
+                                            </Button>
+                                        </Link>
+                                    </>
+                                )
+                            )}
+                        </div>
                     </div>
 
                     <button
                         onClick={() => setIsOpen(!isOpen)}
-                        className="flex h-10 w-10 items-center justify-center rounded-xl border border-white/10 text-white lg:hidden"
+                        className="flex h-10 w-10 items-center justify-center rounded-full border border-white/10 text-white lg:hidden"
                     >
                         {isOpen ? <X className="h-5 w-5" /> : <Menu className="h-5 w-5" />}
                     </button>
@@ -133,7 +141,7 @@ export default function Topbar() {
                         <div className="mt-3 grid grid-cols-2 gap-2 border-t border-white/10 pt-4">
                             <button
                                 onClick={() => setLang(lang === "EN" ? "MS" : "EN")}
-                                className="rounded-xl border border-white/10 bg-white/[0.03] py-3 text-sm text-zinc-300"
+                                className="flex h-9 w-9 items-center justify-center rounded-full border border-white/10 bg-white/[0.03] text-xs font-semibold text-zinc-300 hover:border-violet-500/40 hover:text-white"
                             >
                                 {lang}
                             </button>
@@ -153,6 +161,7 @@ export default function Topbar() {
                                         Login
                                     </Button>
                                 </Link>
+
                                 <Link href="/register">
                                     <Button className="w-full bg-violet-600 text-white hover:bg-violet-700">
                                         Register

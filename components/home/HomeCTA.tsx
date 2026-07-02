@@ -4,7 +4,7 @@ import { Button } from "@/components/ui/button";
 
 export default function HomeCTA() {
     return (
-        <section className="px-4 py-20">
+        <section className="px-4 py-2 md:py-4">
             <div className="relative mx-auto max-w-7xl overflow-hidden rounded-3xl border border-violet-500/20 bg-gradient-to-br from-violet-600/20 via-zinc-950 to-cyan-500/10 p-8 text-center md:p-16">
                 <div className="absolute -left-20 top-0 h-72 w-72 rounded-full bg-violet-500/10 blur-3xl" />
                 <div className="absolute -right-20 bottom-0 h-72 w-72 rounded-full bg-cyan-500/10 blur-3xl" />

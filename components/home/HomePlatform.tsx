@@ -45,15 +45,15 @@ export default function HomePlatform() {
     ];
 
     return (
-        <section className="px-4 py-20">
+        <section className="px-4 py-10 md:py-14">
             <div className="mx-auto max-w-7xl">
 
-                <div className="mb-12 max-w-3xl">
+                <div className="mx-auto mb-8 max-w-3xl text-center">
                     <p className="text-sm font-medium text-violet-400">
                         Platform Preview
                     </p>
 
-                    <h2 className="mt-2 text-3xl font-bold text-white md:text-5xl">
+                    <h2 className="mt-2 text-3xl font-bold text-white md:text-4xl">
                         Everything you need after getting funded
                     </h2>
 
@@ -84,7 +84,7 @@ export default function HomePlatform() {
                     ))}
                 </div>
 
-                <div className="mt-10">
+                <div className="mt-8 flex justify-center">
                     <Link href="/dashboard">
                         <Button className="rounded-xl bg-violet-600 hover:bg-violet-700">
                             Explore Dashboard
